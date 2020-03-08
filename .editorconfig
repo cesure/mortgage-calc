@@ -8,3 +8,7 @@ charset = utf-8
 [*.kt]
 indent_style = space
 indent_size = 4
+
+[*.{js, json, ts, vue}]
+indent_style = space
+indent_size = 2

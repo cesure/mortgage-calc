@@ -1,3 +1,3 @@
 rootProject.name = "amortisation-schedule"
 
-include(":backend")
+include(":backend", ":frontend")
