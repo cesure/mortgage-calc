@@ -17,7 +17,7 @@
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
     "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-plugin-eslint": "~4.2.0",
+    "@vue/cli-plugin-eslint": "^4.2.3",
     "@vue/cli-plugin-typescript": "^4.2.3",
     "@vue/cli-service": "~4.2.0",
     "@vue/eslint-config-typescript": "^5.0.1",
@@ -35,10 +35,12 @@
     "extends": [
       "plugin:vue/essential",
       "eslint:recommended",
-      "@vue/typescript"
+      "@vue/typescript",
+      "@vue/typescript/recommended"
     ],
     "parserOptions": {
-      "parser": "@typescript-eslint/parser"
+      "parser": "@typescript-eslint/parser",
+      "ecmaVersion": 2020
     },
     "rules": {}
   },

@@ -11,7 +11,7 @@ declare global {
     }
 
     interface IntrinsicElements {
-      [elem: string]: any
+      [elem: string]: any;
     }
   }
 }
