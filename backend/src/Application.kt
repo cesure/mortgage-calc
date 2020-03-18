@@ -18,20 +18,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    install(Authentication) {
-    }
-
-    install(ContentNegotiation) {
-        jackson {
-            enable(SerializationFeature.INDENT_OUTPUT)
-            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            registerModule(JavaTimeModule())
-        }
-    }
-
-    install(Sessions) {
-        header<Session>("Session")
-    }
+    installFeatures()
 
     routing {
         get("/repaymentPlan") {
@@ -59,6 +46,23 @@ fun Application.module(testing: Boolean = false) {
 
             call.respond(mortgage.repaymentPlan())
         }
+    }
+}
+
+fun Application.installFeatures() {
+    install(Authentication) {
+    }
+
+    install(ContentNegotiation) {
+        jackson {
+            enable(SerializationFeature.INDENT_OUTPUT)
+            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            registerModule(JavaTimeModule())
+        }
+    }
+
+    install(Sessions) {
+        header<Session>("Session")
     }
 }
 
