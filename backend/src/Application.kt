@@ -35,16 +35,26 @@ fun Application.module(testing: Boolean = false) {
 
     routing {
         get("/repaymentPlan") {
-            val interestStart = LocalDate.of(2020, 1, 24)
-            val interestsOnlyMonth = 1
+            val params = call.parameters
+
+            val amount = BigDecimal(params["amount"].orEmpty())
+            val interestsStart = LocalDate.parse(params["interestStart"].orEmpty())
+            val interestsOnlyMonths = params["interestsOnlyMonths"].orEmpty().toIntOrNull() ?: 0
+            val paymentDay = params["paymentDay"]?.toIntOrNull() ?: 31
+            val annuity = BigDecimal(params["annuity"].orEmpty())
+            val interestRates = params["interestRates"].orEmpty()
+                .split(",")
+                .map { token -> token.split(":") }
+                .map { LocalDate.parse(it.first()) to BigDecimal(it.last()) }
+                .toMap()
 
             val mortgage = AdjustableRateMortgage(
-                amount = BigDecimal(83500),
-                interestStart = interestStart,
-                interestsOnlyMonths = interestsOnlyMonth,
-                paymentDay = 30,
-                annuity = BigDecimal("278.34"),
-                interestRates = TreeMap(mapOf(interestStart to BigDecimal(2)))
+                amount,
+                interestsStart,
+                interestsOnlyMonths,
+                paymentDay,
+                annuity,
+                TreeMap(interestRates)
             )
 
             call.respond(mortgage.repaymentPlan())
