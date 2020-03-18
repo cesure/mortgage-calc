@@ -1,11 +1,9 @@
 package de.cesure
 
-import java.math.BigDecimal
-import java.math.RoundingMode
-import java.time.LocalDate
-import java.time.YearMonth
+import java.math.*
+import java.time.*
 import java.util.*
-import kotlin.math.min
+import kotlin.math.*
 
 sealed class Mortgage {
     abstract val amount: BigDecimal
