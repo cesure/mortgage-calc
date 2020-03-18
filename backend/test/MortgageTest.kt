@@ -132,7 +132,7 @@ class MortgageTest {
             interestRates = TreeMap(mapOf(interestStart to BigDecimal(2)))
         )
             .repaymentPlan()
-            .take(1000)
+            .entries
             .forEach { println(it) }
     }
 

@@ -52,35 +52,38 @@ fun Mortgage.paymentDays(): Sequence<LocalDate> = generateSequence(this.firstPay
     this.nextPaymentDate(it)
 }
 
-fun Mortgage.repaymentPlan() = sequence {
-    var amountLeft = amount
-    var currentFrom = this@repaymentPlan.interestStart
-    this@repaymentPlan.paymentDays().forEachIndexed { i, currentTo ->
-        val interestRate = interestRates(currentFrom, currentTo).values.singleOrNull()
-            ?: throw NotImplementedError("Adjustable rates are not implemented yet")
-        val days = if (i == 0) {
-            countDays30E360(currentFrom, currentTo)
-        } else 30
+fun Mortgage.repaymentPlan(): RepaymentPlan {
+    val entries = sequence {
+        var amountLeft = amount
+        var currentFrom = this@repaymentPlan.interestStart
+        this@repaymentPlan.paymentDays().forEachIndexed { i, currentTo ->
+            val interestRate = interestRates(currentFrom, currentTo).values.singleOrNull()
+                ?: throw NotImplementedError("Adjustable rates are not implemented yet")
+            val days = if (i == 0) {
+                countDays30E360(currentFrom, currentTo)
+            } else 30
 
-        val interests = (amountLeft * interestRate * days.toBigDecimal())
-            .divide(36000.toBigDecimal(), 2, RoundingMode.HALF_UP)
-        val downPayment = if (i >= interestsOnlyMonths) {
-            (annuity - interests).min(amountLeft)
-        } else BigDecimal.ZERO
-        amountLeft -= downPayment
+            val interests = (amountLeft * interestRate * days.toBigDecimal())
+                .divide(36000.toBigDecimal(), 2, RoundingMode.HALF_UP)
+            val downPayment = if (i >= interestsOnlyMonths) {
+                (annuity - interests).min(amountLeft)
+            } else BigDecimal.ZERO
+            amountLeft -= downPayment
 
-        val entry = RepaymentPlanEntry(
-            date = currentTo,
-            repayment = Repayment(interests, downPayment),
-            amountLeft = amountLeft
-        )
-        yield(entry)
+            val entry = RepaymentPlanEntry(
+                date = currentTo,
+                repayment = Repayment(interests, downPayment),
+                amountLeft = amountLeft
+            )
+            yield(entry)
 
-        if (amountLeft.equalsZero()) {
-            return@sequence
+            if (amountLeft.equalsZero()) {
+                return@sequence
+            }
+            currentFrom = currentTo
         }
-        currentFrom = currentTo
     }
+    return RepaymentPlan(entries.toList())
 }
 
 fun countDays30E360(from: LocalDate, to: LocalDate): Int {
