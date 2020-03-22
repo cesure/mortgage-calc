@@ -2,6 +2,7 @@ package de.cesure
 
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.datatype.jsr310.*
+import com.fasterxml.jackson.module.kotlin.*
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
@@ -25,15 +26,11 @@ fun Application.module(testing: Boolean = false) {
             val params = call.parameters
 
             val amount = BigDecimal(params["amount"].orEmpty())
-            val interestStart = LocalDate.parse(params["interestStart"].orEmpty())
-            val interestOnlyMonths = params["interestOnlyMonths"].orEmpty().toIntOrNull() ?: 0
-            val paymentDay = params["paymentDay"]?.toIntOrNull() ?: 31
+            val interestStart = LocalDate.parse(params["interestStart"].orEmpty().take(10))
+            val interestOnlyMonths = params["interestOnlyMonths"].orEmpty().toInt()
+            val paymentDay = params["paymentDay"].orEmpty().toInt()
             val annuity = BigDecimal(params["annuity"].orEmpty())
-            val interestRates = params["interestRates"].orEmpty()
-                .split(",")
-                .map { token -> token.split(":") }
-                .map { LocalDate.parse(it.first()) to BigDecimal(it.last()) }
-                .toMap()
+            val interestRates = params.getAll("interestRates[]").orEmpty().toInterestRates()
 
             val mortgage = AdjustableRateMortgage(
                 amount,
@@ -41,7 +38,7 @@ fun Application.module(testing: Boolean = false) {
                 interestOnlyMonths,
                 paymentDay,
                 annuity,
-                TreeMap(interestRates)
+                interestRates
             )
 
             call.respond(mortgage.repaymentPlan())
@@ -66,4 +63,14 @@ fun Application.installFeatures() {
     }
 }
 
-data class Session(val id: String)
+private data class Session(val id: String)
+
+private data class InterestRate(val date: LocalDate, val rate: BigDecimal)
+
+private fun List<String>.toInterestRates(): TreeMap<LocalDate, BigDecimal> {
+    val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
+    return this.map { json ->
+        mapper.readValue<InterestRate>(json).let { ir -> ir.date to ir.rate }
+    }.toMap(TreeMap())
+}
+
