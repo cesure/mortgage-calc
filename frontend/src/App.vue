@@ -1,6 +1,5 @@
 <template>
-  <div id="app">
-    <h1>Mortgage Calc</h1>
+  <div class="px-6 py-4">
     <MortgageCalc/>
   </div>
 </template>
@@ -17,14 +16,3 @@
   export default class App extends Vue {
   }
 </script>
-
-<style>
-  #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
-</style>

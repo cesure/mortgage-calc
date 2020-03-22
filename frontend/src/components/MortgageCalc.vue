@@ -1,5 +1,6 @@
 <template>
-  <div class="mortgage-calc">
+  <div>
+    <h1 class="text-4xl mb-6 font-bold text-gray-700 ">Mortgage Calc</h1>
     <MortgageCalcForm/>
   </div>
 </template>
@@ -16,7 +17,3 @@
   export default class MortgageCalc extends Vue {
   }
 </script>
-
-<style scoped>
-
-</style>
