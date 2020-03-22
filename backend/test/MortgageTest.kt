@@ -10,7 +10,7 @@ class MortgageTest {
     private val dummyMortgage = AdjustableRateMortgage(
         amount = BigDecimal.ZERO,
         interestStart = LocalDate.of(2020, 1, 1),
-        interestsOnlyMonths = 0,
+        interestOnlyMonths = 0,
         paymentDay = 1,
         annuity = BigDecimal.ZERO,
         interestRates = TreeMap()
@@ -119,12 +119,12 @@ class MortgageTest {
     @Test
     fun `test payments`() {
         val interestStart = LocalDate.of(2020, 1, 24)
-        val interestsOnlyMonth = 1
+        val interestOnlyMonth = 1
 
         AdjustableRateMortgage(
             amount = BigDecimal(83500),
             interestStart = interestStart,
-            interestsOnlyMonths = interestsOnlyMonth,
+            interestOnlyMonths = interestOnlyMonth,
             paymentDay = 30,
             annuity = BigDecimal("278.34"),
             interestRates = TreeMap(mapOf(interestStart to BigDecimal(2)))

@@ -25,8 +25,8 @@ fun Application.module(testing: Boolean = false) {
             val params = call.parameters
 
             val amount = BigDecimal(params["amount"].orEmpty())
-            val interestsStart = LocalDate.parse(params["interestStart"].orEmpty())
-            val interestsOnlyMonths = params["interestsOnlyMonths"].orEmpty().toIntOrNull() ?: 0
+            val interestStart = LocalDate.parse(params["interestStart"].orEmpty())
+            val interestOnlyMonths = params["interestOnlyMonths"].orEmpty().toIntOrNull() ?: 0
             val paymentDay = params["paymentDay"]?.toIntOrNull() ?: 31
             val annuity = BigDecimal(params["annuity"].orEmpty())
             val interestRates = params["interestRates"].orEmpty()
@@ -37,8 +37,8 @@ fun Application.module(testing: Boolean = false) {
 
             val mortgage = AdjustableRateMortgage(
                 amount,
-                interestsStart,
-                interestsOnlyMonths,
+                interestStart,
+                interestOnlyMonths,
                 paymentDay,
                 annuity,
                 TreeMap(interestRates)

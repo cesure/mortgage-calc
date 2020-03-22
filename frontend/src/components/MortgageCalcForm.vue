@@ -45,11 +45,11 @@
                id="interestRates" v-model="interestRates">
       </div>
       <div class="w-full md:w-1/2 px-4">
-        <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="interestsOnlyMonths">
+        <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="interestOnlyMonths">
           Interest Only Months
         </label>
         <input class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-               id="interestsOnlyMonths" v-model="interestsOnlyMonths">
+               id="interestOnlyMonths" v-model="interestOnlyMonths">
       </div>
     </div>
 
