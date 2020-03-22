@@ -1,4 +1,4 @@
-# frontend
+# Mortgage Calc Frontend
 
 ## Project setup
 ```

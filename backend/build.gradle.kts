@@ -1,6 +1,7 @@
 val logback_version: String by project
-val ktor_version: String by project
+val jackson_version: String by project
 val kotlin_version: String by project
+val ktor_version: String by project
 
 plugins {
     application
@@ -28,6 +29,7 @@ dependencies {
     implementation("io.ktor:ktor-auth:$ktor_version")
     implementation("io.ktor:ktor-auth-jwt:$ktor_version")
     implementation("io.ktor:ktor-jackson:$ktor_version")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")
     testImplementation("io.ktor:ktor-server-tests:$ktor_version")
 }
 
