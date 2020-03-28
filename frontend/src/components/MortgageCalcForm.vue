@@ -7,15 +7,19 @@
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="amount">
             Amount
           </label>
-          <input class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                 id="amount" type="number" step="0.01" v-model="mortgageParams.amount">
+          <input
+            id="amount" type="number" step="0.01"
+            class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
+            v-model="mortgageParams.amount">
         </div>
         <div class="w-full md:w-1/2 px-4">
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="annuity">
             Annuity
           </label>
-          <input class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                 id="annuity" type="number" step="0.01" v-model="mortgageParams.annuity">
+          <input
+            id="annuity" type="number" step="0.01"
+            class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
+            v-model="mortgageParams.annuity">
         </div>
       </div>
 
@@ -24,17 +28,19 @@
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="interestStart">
             Interests Start
           </label>
-          <input class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                 id="interestStart"
-                 :value="mortgageParams.interestStart && mortgageParams.interestStart.toISOString().split('T')[0]"
-                 @input="mortgageParams.interestStart = $event.target.value">
+          <input
+            id="interestStart" type="date" required="required"
+            class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
+            :value="mortgageParams.interestStart && mortgageParams.interestStart.toISOString().split('T')[0]"
+            @input="mortgageParams.interestStart = $event.target.valueAsDate">
         </div>
         <div class="w-full md:w-1/2 px-4">
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="paymentDay">
             Payment Day
           </label>
-          <input class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                 id="paymentDay" type="number" min="1" max="31" v-model="mortgageParams.paymentDay">
+          <input id="paymentDay" type="number" min="1" max="31"
+                 class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
+                 v-model="mortgageParams.paymentDay">
         </div>
       </div>
 
@@ -47,14 +53,15 @@
             <div class="flex" v-for="(interestRate, index) in mortgageParams.interestRates" :key="index">
               <div class="w-full md:w-1/3 pr-2">
                 <input
-                  required="required"
+                  type="date" required="required"
                   class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                  v-model="interestRate.date">
+                  :value="interestRate.date && interestRate.date.toISOString().split('T')[0]"
+                  @input="interestRate.date = $event.target.valueAsDate">
               </div>
               <div class="w-full md:w-2/3">
                 <input
-                  class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
                   type="number" step="0.01"
+                  class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
                   v-model="interestRate.rate">
               </div>
             </div>
@@ -64,8 +71,10 @@
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="interestOnlyMonths">
             Interest Only Months
           </label>
-          <input class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                 id="interestOnlyMonths" type="number" min="0" v-model="mortgageParams.interestOnlyMonths">
+          <input
+            id="interestOnlyMonths" type="number" min="0"
+            class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
+            v-model="mortgageParams.interestOnlyMonths">
         </div>
       </div>
 
@@ -102,7 +111,7 @@
       interestOnlyMonths: 0,
       paymentDay: 1,
       annuity: 0,
-      interestRates: [{date: new Date().toISOString().split('T')[0], rate: 1.0}]
+      interestRates: [{date: new Date(), rate: 1.0}]
     };
 
     getRepaymentPlan() {
@@ -114,6 +123,16 @@
 </script>
 
 <style>
+  input[type=date] {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+  }
+
+  input[type=date]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+  }
+
   input[type=number] {
     -moz-appearance: textfield;
   }

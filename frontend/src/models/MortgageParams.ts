@@ -8,6 +8,6 @@ export interface MortgageParams {
 }
 
 interface InterestRate {
-  date: string;
+  date: Date;
   rate: number;
 }
