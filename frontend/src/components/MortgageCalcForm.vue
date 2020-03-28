@@ -31,8 +31,8 @@
           <input
             id="interestStart" type="date" required="required"
             class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-            :value="mortgageParams.interestStart && mortgageParams.interestStart.toISOString().split('T')[0]"
-            @input="mortgageParams.interestStart = $event.target.valueAsDate">
+            :value="mortgageParams.interestStart && toDayjs(mortgageParams.interestStart).format('YYYY-MM-DD')"
+            @input="mortgageParams.interestStart = toDayjs($event.target.value).toDate()">
         </div>
         <div class="w-full md:w-1/2 px-4">
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="paymentDay">
@@ -55,8 +55,8 @@
                 <input
                   type="date" required="required"
                   class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                  :value="interestRate.date && interestRate.date.toISOString().split('T')[0]"
-                  @input="interestRate.date = $event.target.valueAsDate">
+                  :value="interestRate.date && toDayjs(interestRate.date).format('YYYY-MM-DD')"
+                  @input="interestRate.date = toDayjs($event.target.value).toDate()">
               </div>
               <div class="w-full md:w-2/3">
                 <input
@@ -93,10 +93,14 @@
 </template>
 
 <script lang="ts">
+  import dayjs from 'dayjs';
+  import utc from 'dayjs/plugin/utc';
   import {Component, Vue} from 'vue-property-decorator';
-  import RepaymentPlanList, {RepaymentPlan} from "@/components/RepaymentPlanList.vue";
-  import {MortgageParams} from "@/models/MortgageParams";
-  import {apiService} from "@/services/api.service";
+  import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
+  import {MortgageParams} from '@/models/MortgageParams';
+  import {apiService} from '@/services/api.service';
+
+  dayjs.extend(utc);
 
   @Component({
     components: {RepaymentPlanList}
@@ -107,17 +111,21 @@
 
     private mortgageParams: MortgageParams = {
       amount: 0,
-      interestStart: new Date(),
+      interestStart: dayjs.utc().startOf('day').toDate(),
       interestOnlyMonths: 0,
       paymentDay: 1,
       annuity: 0,
-      interestRates: [{date: new Date(), rate: 1.0}]
+      interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 1.0}]
     };
 
     getRepaymentPlan() {
       apiService.getRepaymentPlan(this.mortgageParams).then(
         response => (this.repaymentPlan = response.data)
       )
+    }
+
+    toDayjs(s: string | Date) {
+      return dayjs.utc(s).startOf('day');
     }
   }
 </script>
