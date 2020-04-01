@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.*
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
+import io.ktor.http.content.*
 import io.ktor.jackson.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -22,6 +23,11 @@ fun Application.module(testing: Boolean = false) {
     installFeatures()
 
     routing {
+        static {
+            resources("static")
+            defaultResource("static/index.html")
+        }
+
         get("/repaymentPlan") {
             val params = call.parameters
 
