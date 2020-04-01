@@ -1,6 +1,7 @@
 plugins {
     application
     kotlin("jvm") version Versions.Plugin.kotlin
+    id("com.github.johnrengelman.shadow") version Versions.Plugin.shadow
 }
 
 application {
@@ -35,5 +36,15 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "11"
+    }
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes(
+            mapOf(
+                "Main-Class" to application.mainClassName
+            )
+        )
     }
 }
