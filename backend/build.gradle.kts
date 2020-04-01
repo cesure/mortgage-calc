@@ -8,16 +8,11 @@ plugins {
     kotlin("jvm") version "1.3.61"
 }
 
-group = "de.cesure"
-version = "0.0.1-SNAPSHOT"
-
 application {
     mainClassName = "io.ktor.server.netty.EngineMain"
 }
 
 repositories {
-    mavenLocal()
-    jcenter()
     maven { url = uri("https://kotlin.bintray.com/ktor") }
 }
 
@@ -38,3 +33,12 @@ kotlin.sourceSets["test"].kotlin.srcDirs("test")
 
 sourceSets["main"].resources.srcDirs("resources")
 sourceSets["test"].resources.srcDirs("testresources")
+
+tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "11"
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "11"
+    }
+}
