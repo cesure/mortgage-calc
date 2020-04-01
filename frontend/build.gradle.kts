@@ -1,12 +1,12 @@
-import com.moowork.gradle.node.npm.NpmTask
+import com.moowork.gradle.node.npm.*
 
 plugins {
     base
-    id("com.github.node-gradle.node") version "2.2.3"
+    id("com.github.node-gradle.node") version Versions.Plugin.nodeGradle
 }
 
 node {
-    version = "12.16.1"
+    version = Versions.Dependency.node
     download = true
 }
 
