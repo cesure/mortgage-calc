@@ -14,3 +14,13 @@ tasks.create<NpmTask>("serve") {
     dependsOn("npmInstall")
     setArgs(listOf("run", "serve"))
 }
+
+val npmRunBuild = tasks.getByName("npm_run_build") {
+    inputs.files(fileTree("public"))
+    inputs.files(fileTree("src"))
+
+    inputs.file("package.json")
+    inputs.file("package-lock.json")
+
+    outputs.dir("dist")
+}
