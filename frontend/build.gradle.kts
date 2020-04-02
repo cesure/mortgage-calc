@@ -27,7 +27,7 @@ tasks.named<NpmTask>("npm_run_build") {
 
 val packageFrontend by tasks.registering(Jar::class) {
     dependsOn("npm_run_build")
-    archiveBaseName.set("frontend")
+    archiveBaseName.set("mortgage-calc-frontend")
     archiveExtension.set("jar")
     destinationDirectory.file("${projectDir}/build")
     from("dist") {

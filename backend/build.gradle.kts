@@ -41,6 +41,7 @@ tasks {
 }
 
 tasks.withType<Jar> {
+    archiveBaseName.set("mortgage-calc")
     manifest {
         attributes(
             mapOf(
