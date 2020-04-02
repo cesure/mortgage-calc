@@ -22,6 +22,7 @@ dependencies {
     implementation("io.ktor:ktor-jackson:${Versions.Dependency.ktor}")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${Versions.Dependency.jackson}")
     testImplementation("io.ktor:ktor-server-tests:${Versions.Dependency.ktor}")
+    runtimeOnly(project(path = ":frontend", configuration = "frontendResources"))
 }
 
 kotlin.sourceSets["main"].kotlin.srcDirs("src")

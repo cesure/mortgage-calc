@@ -6,8 +6,8 @@ import {MortgageParams} from "@/models/MortgageParams";
 class ApiService {
 
   getRepaymentPlan(params: MortgageParams): Promise<AxiosResponse<RepaymentPlan>> {
-    return axios.get<RepaymentPlan>('http://localhost:8080/repaymentPlan', {params})
+    return axios.get<RepaymentPlan>('/repaymentPlan', {params})
   }
 }
 
-export const apiService = new ApiService()
+export const apiService = new ApiService();
