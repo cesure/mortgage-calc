@@ -26,7 +26,7 @@ tasks.named<NpmTask>("npm_run_build") {
     outputs.dir("dist")
 }
 
-val packageFrontend by tasks.registering(Jar::class) {
+val assembleFrontend by tasks.registering(Jar::class) {
     dependsOn("npm_run_build")
     archiveBaseName.set("mortgage-calc-frontend")
     archiveExtension.set("jar")
@@ -41,18 +41,18 @@ val frontendResources by configurations.creating
 configurations.named("default").get().extendsFrom(frontendResources)
 
 artifacts {
-    add(frontendResources.name, packageFrontend.get().archiveFile) {
-        builtBy(packageFrontend)
+    add(frontendResources.name, assembleFrontend.get().archiveFile) {
+        builtBy(assembleFrontend)
         type = "jar"
     }
 }
 
 tasks.assemble {
-    dependsOn(packageFrontend)
+    dependsOn(assembleFrontend)
 }
 
 tasks.clean {
-    delete(packageFrontend.get().archiveFile)
+    delete(assembleFrontend.get().archiveFile)
 }
 
 val checkVersion by tasks.registering {
