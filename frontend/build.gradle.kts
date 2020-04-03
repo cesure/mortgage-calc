@@ -1,4 +1,5 @@
 import com.moowork.gradle.node.npm.*
+import groovy.json.*
 
 plugins {
     base
@@ -52,4 +53,19 @@ tasks.assemble {
 
 tasks.clean {
     delete(packageFrontend.get().archiveFile)
+}
+
+val checkVersion by tasks.registering {
+    val packageJson = File(projectDir, "package.json")
+    inputs.files(packageJson)
+
+    val packageJsonMap = JsonSlurper().parseText(packageJson.readText()) as Map<*, *>
+    val packageJsonVersion = packageJsonMap["version"] as String
+    if (project.version != packageJsonVersion) {
+        throw GradleException("Version set in package.json \"$packageJsonVersion\" doesn't match project version \"${project.version}\".")
+    }
+}
+
+tasks.check {
+    dependsOn(checkVersion)
 }
