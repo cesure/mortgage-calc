@@ -66,6 +66,17 @@ val checkVersion by tasks.registering {
     }
 }
 
+val lint by tasks.named<NpmTask>("npm_run_lint") {
+    inputs.files(fileTree("public"))
+    inputs.files(fileTree("src"))
+
+    inputs.file("package.json")
+    inputs.file("package-lock.json")
+
+    outputs.files(fileTree("src"))
+}
+
 tasks.check {
     dependsOn(checkVersion)
+    dependsOn(lint)
 }
