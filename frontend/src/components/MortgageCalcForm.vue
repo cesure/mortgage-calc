@@ -7,20 +7,21 @@
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="amount">
             Amount
           </label>
-          <input
+          <CurrencyInput
             id="amount"
             class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-            v-model="amountFormatted"
-            @blur="isAmountInputActive = false" @focus="isAmountInputActive = true">
+            v-model="mortgageParams.amount">
+          </CurrencyInput>
         </div>
         <div class="w-full md:w-1/2 px-4">
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="annuity">
             Annuity
           </label>
-          <input
-            id="annuity" type="number" step="0.01"
+          <CurrencyInput
+            id="annuity"
             class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
             v-model="mortgageParams.annuity">
+          </CurrencyInput>
         </div>
       </div>
 
@@ -97,6 +98,7 @@
   import dayjs from 'dayjs';
   import utc from 'dayjs/plugin/utc';
   import {Component, Vue} from 'vue-property-decorator';
+  import CurrencyInput from "@/components/CurrencyInput.vue";
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
   import {MortgageParams} from '@/models/MortgageParams';
   import {apiService} from '@/services/api.service';
@@ -105,7 +107,7 @@
   dayjs.extend(utc);
 
   @Component({
-    components: {RepaymentPlanList}
+    components: {CurrencyInput, RepaymentPlanList}
   })
   export default class MortgageCalcForm extends Vue {
 
