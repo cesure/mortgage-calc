@@ -18,11 +18,11 @@
         </td>
         <td class="px-4"
             :class="{'pb-2': index !== repaymentPlan.entries.length - 1, 'pb-6': index === repaymentPlan.entries.length - 1}">
-          {{ entry.repayment.interestPayment | formatCurrency}}
+          {{ entry.repayment.interestPayment | formatCurrency }}
         </td>
         <td class="pl-4 pr-8"
             :class="{'pb-2': index !== repaymentPlan.entries.length - 1, 'pb-6': index === repaymentPlan.entries.length - 1}">
-          {{ entry.amountLeft | formatCurrency}}
+          {{ entry.amountLeft | formatCurrency }}
         </td>
       </tr>
     </table>
@@ -31,6 +31,7 @@
 
 <script lang="ts">
   import {Component, Prop, Vue} from "vue-property-decorator";
+  import {numbroService} from '@/services/numbro.service';
 
   export interface Repayment {
     interestPayment: number;
@@ -49,12 +50,8 @@
 
   @Component({
     filters: {
-      formatCurrency(num: number) {
-        return num.toLocaleString(undefined, {
-          style: "currency",
-          currency: "EUR",
-          minimumFractionDigits: 2,
-        });
+      formatCurrency(value: number) {
+        return numbroService.formatCurrency(value);
       },
       formatDate(d: string) {
         const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};

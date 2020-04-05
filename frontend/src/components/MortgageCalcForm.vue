@@ -100,8 +100,7 @@
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
   import {MortgageParams} from '@/models/MortgageParams';
   import {apiService} from '@/services/api.service';
-  import numbro, {Format} from 'numbro';
-  import deDE from 'numbro/languages/de-DE.js';
+  import {numbroService} from '@/services/numbro.service';
 
   dayjs.extend(utc);
 
@@ -122,17 +121,6 @@
     };
 
     isAmountInputActive = false;
-    readonly numbroFormat: Format = {
-      mantissa: 2,
-      thousandSeparated: true,
-      spaceSeparated: true
-    };
-
-    constructor() {
-      super();
-      numbro.registerLanguage(deDE);
-      numbro.setLanguage("de-DE");
-    }
 
     getRepaymentPlan() {
       apiService.getRepaymentPlan(this.mortgageParams).then(
@@ -150,20 +138,14 @@
       }
 
       if (this.isAmountInputActive) {
-        return numbro(this.mortgageParams.amount).format();
+        return numbroService.formatNumber(this.mortgageParams.amount);
       } else {
-        return numbro(this.mortgageParams.amount).formatCurrency(this.numbroFormat);
+        return numbroService.formatCurrency(this.mortgageParams.amount);
       }
     }
 
-    set amountFormatted(inputValue) {
-      let unformatted: number | null = numbro.unformat(inputValue, this.numbroFormat);
-
-      if (isNaN(unformatted)) {
-        unformatted = null;
-      }
-
-      this.mortgageParams.amount = unformatted;
+    set amountFormatted(inputValue: string) {
+      this.mortgageParams.amount = numbroService.unformatNumber(inputValue);
     }
   }
 </script>
