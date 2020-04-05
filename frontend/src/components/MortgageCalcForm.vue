@@ -8,9 +8,10 @@
             Amount
           </label>
           <input
-            id="amount" type="number" step="0.01"
+            id="amount"
             class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-            v-model="mortgageParams.amount">
+            v-model="amountFormatted"
+            @blur="isAmountInputActive = false" @focus="isAmountInputActive = true">
         </div>
         <div class="w-full md:w-1/2 px-4">
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="annuity">
@@ -99,6 +100,8 @@
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
   import {MortgageParams} from '@/models/MortgageParams';
   import {apiService} from '@/services/api.service';
+  import numbro, {Format} from 'numbro';
+  import deDE from 'numbro/languages/de-DE.js';
 
   dayjs.extend(utc);
 
@@ -118,6 +121,19 @@
       interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 1.0}]
     };
 
+    isAmountInputActive = false;
+    readonly numbroFormat: Format = {
+      mantissa: 2,
+      thousandSeparated: true,
+      spaceSeparated: true
+    };
+
+    constructor() {
+      super();
+      numbro.registerLanguage(deDE);
+      numbro.setLanguage("de-DE");
+    }
+
     getRepaymentPlan() {
       apiService.getRepaymentPlan(this.mortgageParams).then(
         response => (this.repaymentPlan = response.data)
@@ -126,6 +142,28 @@
 
     toDayjs(s: string | Date) {
       return dayjs.utc(s).startOf('day');
+    }
+
+    get amountFormatted() {
+      if (this.mortgageParams.amount == null) {
+        return "";
+      }
+
+      if (this.isAmountInputActive) {
+        return numbro(this.mortgageParams.amount).format();
+      } else {
+        return numbro(this.mortgageParams.amount).formatCurrency(this.numbroFormat);
+      }
+    }
+
+    set amountFormatted(inputValue) {
+      let unformatted: number | null = numbro.unformat(inputValue, this.numbroFormat);
+
+      if (isNaN(unformatted)) {
+        unformatted = null;
+      }
+
+      this.mortgageParams.amount = unformatted;
     }
   }
 </script>

@@ -1,5 +1,5 @@
 export interface MortgageParams {
-  amount: number;
+  amount: number | null;
   interestStart: Date;
   interestOnlyMonths: number;
   paymentDay: number;
