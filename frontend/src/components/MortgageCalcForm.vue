@@ -103,7 +103,6 @@
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
   import {MortgageParams} from '@/models/MortgageParams';
   import {apiService} from '@/services/api.service';
-  import {numbroService} from '@/services/numbro.service';
 
   dayjs.extend(utc);
 
@@ -123,8 +122,6 @@
       interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 0.01}]
     };
 
-    isAmountInputActive = false;
-
     getRepaymentPlan() {
       apiService.getRepaymentPlan(this.mortgageParams).then(
         response => (this.repaymentPlan = response.data)
@@ -133,22 +130,6 @@
 
     toDayjs(s: string | Date) {
       return dayjs.utc(s).startOf('day');
-    }
-
-    get amountFormatted() {
-      if (this.mortgageParams.amount == null) {
-        return "";
-      }
-
-      if (this.isAmountInputActive) {
-        return numbroService.formatNumber(this.mortgageParams.amount);
-      } else {
-        return numbroService.formatCurrency(this.mortgageParams.amount);
-      }
-    }
-
-    set amountFormatted(inputValue: string) {
-      this.mortgageParams.amount = numbroService.unformatNumber(inputValue);
     }
   }
 </script>
