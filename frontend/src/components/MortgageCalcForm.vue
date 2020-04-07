@@ -7,19 +7,21 @@
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="amount">
             Amount
           </label>
-          <input
-            id="amount" type="number" step="0.01"
+          <CurrencyInput
+            id="amount"
             class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
             v-model="mortgageParams.amount">
+          </CurrencyInput>
         </div>
         <div class="w-full md:w-1/2 px-4">
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="annuity">
             Annuity
           </label>
-          <input
-            id="annuity" type="number" step="0.01"
+          <CurrencyInput
+            id="annuity"
             class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
             v-model="mortgageParams.annuity">
+          </CurrencyInput>
         </div>
       </div>
 
@@ -59,10 +61,10 @@
                   @input="interestRate.date = toDayjs($event.target.value).toDate()">
               </div>
               <div class="w-full md:w-2/3">
-                <input
-                  type="number" step="0.01"
+                <PercentageInput
                   class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
                   v-model="interestRate.rate">
+                </PercentageInput>
               </div>
             </div>
           </div>
@@ -96,14 +98,17 @@
   import dayjs from 'dayjs';
   import utc from 'dayjs/plugin/utc';
   import {Component, Vue} from 'vue-property-decorator';
+  import CurrencyInput from "@/components/CurrencyInput.vue";
+  import PercentageInput from "@/components/PercentageInput.vue";
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
   import {MortgageParams} from '@/models/MortgageParams';
   import {apiService} from '@/services/api.service';
+  import {numbroService} from '@/services/numbro.service';
 
   dayjs.extend(utc);
 
   @Component({
-    components: {RepaymentPlanList}
+    components: {CurrencyInput, PercentageInput, RepaymentPlanList}
   })
   export default class MortgageCalcForm extends Vue {
 
@@ -115,8 +120,10 @@
       interestOnlyMonths: 0,
       paymentDay: 1,
       annuity: 0,
-      interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 1.0}]
+      interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 0.01}]
     };
+
+    isAmountInputActive = false;
 
     getRepaymentPlan() {
       apiService.getRepaymentPlan(this.mortgageParams).then(
@@ -126,6 +133,22 @@
 
     toDayjs(s: string | Date) {
       return dayjs.utc(s).startOf('day');
+    }
+
+    get amountFormatted() {
+      if (this.mortgageParams.amount == null) {
+        return "";
+      }
+
+      if (this.isAmountInputActive) {
+        return numbroService.formatNumber(this.mortgageParams.amount);
+      } else {
+        return numbroService.formatCurrency(this.mortgageParams.amount);
+      }
+    }
+
+    set amountFormatted(inputValue: string) {
+      this.mortgageParams.amount = numbroService.unformatNumber(inputValue);
     }
   }
 </script>
