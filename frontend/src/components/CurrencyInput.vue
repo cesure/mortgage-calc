@@ -25,7 +25,7 @@
     }
 
     set valueFormatted(inputValue: string) {
-      this.$emit('input', numbroService.unformatNumber(inputValue));
+      this.$emit('input', numbroService.unformatNumber(inputValue) || 0.0);
     }
   }
 </script>
