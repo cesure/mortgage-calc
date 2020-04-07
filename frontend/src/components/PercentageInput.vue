@@ -14,7 +14,7 @@ export default class PercentageInput extends Vue {
   isInputActive = false;
   strValue: string | null = null;
 
-  get valueFormatted() {
+  get valueFormatted(): string {
     if (this.isInputActive) {
       // show the actual user input or if no input was given yet then show the value formatted without percent sign
       return this.strValue || numbroService.formatNumber(this.value.mul(100).toNumber());

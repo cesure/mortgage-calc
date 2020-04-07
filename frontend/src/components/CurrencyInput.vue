@@ -14,12 +14,14 @@ export default class CurrencyInput extends Vue {
   isInputActive = false;
   strValue: string | null = null;
 
-  get valueFormatted() {
+  get valueFormatted(): string {
+    const valueAsNumber = this.value.toNumber();
     if (this.isInputActive) {
-      // show the actual user input or if no input was given yet then show the value formatted without percent sign
-      return this.strValue || numbroService.formatNumber(this.value.toNumber());
+      // show the actual user input or if no input was given yet then show the value formatted without currency sign
+      return this.strValue || numbroService.formatNumber(valueAsNumber);
     } else {
-      return numbroService.formatCurrency(this.value.toNumber());
+      // input is not active: show formatted with currency sign
+      return numbroService.formatCurrency(valueAsNumber);
     }
   }
 

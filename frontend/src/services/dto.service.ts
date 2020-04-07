@@ -12,6 +12,7 @@ class DtoService {
       amount: new Decimal(dto.amount),
       interestStart: this.parseDate(dto.interestStart),
       annuity: new Decimal(dto.annuity),
+      downPaymentRate: new Decimal(dto.downPaymentRate),
       interestRate: new Decimal(dto.interestRate)
     });
   }
@@ -21,6 +22,7 @@ class DtoService {
       amount: params.amount.toString(),
       interestStart: this.formatDate(params.interestStart),
       annuity: params.annuity.toString(),
+      downPaymentRate: params.downPaymentRate.toString(),
       interestRate: params.interestRate.toString()
     });
   }

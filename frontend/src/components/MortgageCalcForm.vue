@@ -14,14 +14,25 @@
           </CurrencyInput>
         </div>
         <div class="w-full md:w-1/2 px-4">
-          <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="annuity">
-            Annuity
+          <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold"
+                 :for="this.mortgageParams.useAnnuity ? 'annuity' : 'downPaymentRate'">
+            <span class="cursor-pointer hover:underline" @click="switchUseAnnuity()"
+                  :class="{ 'text-gray-500': !this.mortgageParams.useAnnuity }">Annuity</span>
+            |
+            <span class="cursor-pointer hover:underline" @click="switchUseAnnuity()"
+                  :class="{ 'text-gray-500': this.mortgageParams.useAnnuity }">Down Payment Rate</span>
           </label>
-          <CurrencyInput
-            id="annuity"
-            class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-            v-model="mortgageParams.annuity">
+          <CurrencyInput v-show="this.mortgageParams.useAnnuity"
+                         id="annuity"
+                         class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
+                         v-model="mortgageParams.annuity">
           </CurrencyInput>
+          <PercentageInput
+            v-show="!this.mortgageParams.useAnnuity"
+            id="downPaymentRate"
+            class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
+            v-model="mortgageParams.downPaymentRate">
+          </PercentageInput>
         </div>
       </div>
 
@@ -108,18 +119,24 @@ export default class MortgageCalcForm extends Vue {
     interestStart: this.today(),
     interestOnlyMonths: 0,
     paymentDay: 1,
-    annuity: new Decimal(0),
+    useAnnuity: true,
+    annuity: null,
+    downPaymentRate: null,
     interestRate: new Decimal(0)
   };
 
-  mounted() {
+  mounted(): void {
     const storedParams = storageService.loadMortgageParams()
     if (storedParams) {
-      this.mortgageParams = storedParams
+      this.mortgageParams = storedParams;
     }
   }
 
-  getRepaymentPlan() {
+  switchUseAnnuity(): void {
+    this.mortgageParams.useAnnuity = !this.mortgageParams.useAnnuity;
+  }
+
+  getRepaymentPlan(): void {
     apiService.getRepaymentPlan(this.mortgageParams).then(
       response => (this.repaymentPlan = response.data)
     );
@@ -127,11 +144,11 @@ export default class MortgageCalcForm extends Vue {
     storageService.storeMortgageParams(this.mortgageParams);
   }
 
-  today() {
-    return dayjs().utc().startOf('day').toDate()
+  today(): Date {
+    return dayjs().utc().startOf('day').toDate();
   }
 
-  toDayjs(s: string | Date) {
+  toDayjs(s: string | Date): dayjs.Dayjs {
     return dayjs.utc(s).startOf('day');
   }
 }
