@@ -62,7 +62,7 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
             } else 30
 
             val interest = (amountLeft * interestRate * days.toBigDecimal())
-                .divide(36000.toBigDecimal(), 2, RoundingMode.HALF_UP)
+                .divide(360.toBigDecimal(), 2, RoundingMode.HALF_UP)
             val downPayment = if (i >= interestOnlyMonths) {
                 (annuity - interest).min(amountLeft)
             } else BigDecimal.ZERO

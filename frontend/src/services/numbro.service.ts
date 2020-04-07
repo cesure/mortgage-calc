@@ -53,10 +53,17 @@ const languageDe: numbro.NumbroLanguage = {
 
 class NumbroService {
 
-  readonly numbroFormat = {
+  readonly format: numbro.Format = {
     mantissa: 2,
     thousandSeparated: true,
     spaceSeparated: true
+  };
+
+  readonly percentagetFormat: numbro.Format = {
+    output: "percent",
+    mantissa: 2,
+    trimMantissa: true,
+    thousandSeparated: true
   };
 
   constructor() {
@@ -64,15 +71,19 @@ class NumbroService {
   }
 
   formatCurrency(value: number): string {
-    return numbro(value).formatCurrency(this.numbroFormat);
+    return numbro(value).formatCurrency(this.format);
   }
 
   formatNumber(value: number): string {
     return numbro(value).format();
   }
 
+  formatPercentage(value: number): string {
+    return numbro(value).format(this.percentagetFormat);
+  }
+
   unformatNumber(value: string): number | null {
-    const num: number = numbro.unformat(value, this.numbroFormat);
+    const num: number = numbro.unformat(value, this.format);
     return isNaN(num) ? null : num;
   }
 }

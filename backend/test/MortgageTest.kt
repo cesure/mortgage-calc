@@ -127,7 +127,7 @@ class MortgageTest {
             interestOnlyMonths = interestOnlyMonth,
             paymentDay = 30,
             annuity = BigDecimal("278.34"),
-            interestRates = TreeMap(mapOf(interestStart to BigDecimal(2)))
+            interestRates = TreeMap(mapOf(interestStart to BigDecimal(0.02)))
         )
             .repaymentPlan()
             .entries

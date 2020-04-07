@@ -61,10 +61,10 @@
                   @input="interestRate.date = toDayjs($event.target.value).toDate()">
               </div>
               <div class="w-full md:w-2/3">
-                <input
-                  type="number" step="0.01"
+                <PercentageInput
                   class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
                   v-model="interestRate.rate">
+                </PercentageInput>
               </div>
             </div>
           </div>
@@ -99,6 +99,7 @@
   import utc from 'dayjs/plugin/utc';
   import {Component, Vue} from 'vue-property-decorator';
   import CurrencyInput from "@/components/CurrencyInput.vue";
+  import PercentageInput from "@/components/PercentageInput.vue";
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
   import {MortgageParams} from '@/models/MortgageParams';
   import {apiService} from '@/services/api.service';
@@ -107,7 +108,7 @@
   dayjs.extend(utc);
 
   @Component({
-    components: {CurrencyInput, RepaymentPlanList}
+    components: {CurrencyInput, PercentageInput, RepaymentPlanList}
   })
   export default class MortgageCalcForm extends Vue {
 
@@ -119,7 +120,7 @@
       interestOnlyMonths: 0,
       paymentDay: 1,
       annuity: 0,
-      interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 1.0}]
+      interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 0.01}]
     };
 
     isAmountInputActive = false;
