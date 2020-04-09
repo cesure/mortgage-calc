@@ -103,6 +103,7 @@
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
   import {MortgageParams} from '@/models/MortgageParams';
   import {apiService} from '@/services/api.service';
+  import {storageService} from "@/services/storage.service";
 
   dayjs.extend(utc);
 
@@ -122,10 +123,19 @@
       interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 0.01}]
     };
 
+    mounted() {
+      const storedParams = storageService.loadMortgageParams()
+      if (storedParams) {
+        this.mortgageParams = storedParams
+      }
+    }
+
     getRepaymentPlan() {
       apiService.getRepaymentPlan(this.mortgageParams).then(
         response => (this.repaymentPlan = response.data)
-      )
+      );
+
+      storageService.storeMortgageParams(this.mortgageParams);
     }
 
     toDayjs(s: string | Date) {
