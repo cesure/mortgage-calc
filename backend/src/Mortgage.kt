@@ -23,8 +23,34 @@ data class AdjustableRateMortgage(
 ) : Mortgage() {
 
     init {
+        require(amount > BigDecimal.ZERO) {
+            "Amount must be greater than zero!"
+        }
+        require(interestRates.isNotEmpty()) {
+            "Interest Rates must be given!"
+        }
+        interestRates.forEach { rate ->
+            require(rate.key >= interestStart) {
+                "All Interest Rate Dates must be greater or equal than interest start date!"
+            }
+            require(rate.value > BigDecimal.ZERO) {
+                "All Interest Rates must be greater than zero!"
+            }
+        }
+        require(interestStart == interestRates.firstKey()) {
+            "Interest Start Date must equal to first interest rate date!"
+        }
+        require(interestOnlyMonths >= 0) {
+            "Interest Only Months must be greater or equal than zero!"
+        }
+        require(paymentDay in 1..31) {
+            "Payment Day must be between 1 and 31!"
+        }
         require(annuity > BigDecimal.ZERO) {
             "Annuity must be greater than zero!"
+        }
+        require(interestRates.isNotEmpty()) {
+            "Interest Rates must be given!"
         }
     }
 }
