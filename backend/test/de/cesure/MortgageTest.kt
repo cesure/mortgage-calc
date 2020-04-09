@@ -15,7 +15,7 @@ class MortgageTest {
         interestStart = LocalDate.of(2020, 1, 1),
         interestOnlyMonths = 0,
         paymentDay = 1,
-        annuity = BigDecimal.ONE,
+        _annuity = BigDecimal.ONE,
         interestRate = BigDecimal.ONE
     )
 
@@ -130,7 +130,7 @@ class MortgageTest {
             interestStart = interestStart,
             interestOnlyMonths = interestOnlyMonth,
             paymentDay = 30,
-            annuity = BigDecimal("278.34"),
+            _annuity = BigDecimal("278.34"),
             interestRate = BigDecimal("0.02")
         ).repaymentPlan()
 
@@ -152,15 +152,51 @@ class MortgageTest {
     @Test
     fun `annuity must be larger than zero`() {
         assertFailsWith(IllegalArgumentException::class) {
-            dummyMortgage.copy(annuity = BigDecimal(-1))
+            dummyMortgage.copy(_annuity = BigDecimal(-1))
         }
         assertFailsWith(IllegalArgumentException::class) {
-            dummyMortgage.copy(annuity = BigDecimal.ZERO)
+            dummyMortgage.copy(_annuity = BigDecimal.ZERO)
         }
 
         // should not fail
-        dummyMortgage.copy(annuity = BigDecimal.ONE)
+        dummyMortgage.copy(_annuity = BigDecimal.ONE)
     }
+
+    @Test
+    fun `down payment rate must be larger than zero`() {
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal(-1))
+        }
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal.ZERO)
+        }
+
+        // should not fail
+        dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal.ONE)
+    }
+
+    @Test
+    fun `either annuity or down payment rate must be gieven and larger than zero`() {
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = null, _downPaymentRate = null)
+        }
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = BigDecimal.ZERO, _downPaymentRate = BigDecimal.ZERO)
+        }
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal.ZERO)
+        }
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = BigDecimal.ZERO, _downPaymentRate = null)
+        }
+
+        // should not fail
+        dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal.ONE)
+
+        // should not fail
+        dummyMortgage.copy(_annuity = BigDecimal.ONE, _downPaymentRate = null)
+    }
+
 
     @Test
     fun `amount must be greater than zero`() {

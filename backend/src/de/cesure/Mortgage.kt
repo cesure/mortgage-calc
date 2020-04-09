@@ -11,7 +11,8 @@ data class Mortgage(
     val interestStart: LocalDate,
     val interestOnlyMonths: Int,
     val paymentDay: Int,
-    val annuity: BigDecimal,
+    private val _annuity: BigDecimal? = null,
+    private val _downPaymentRate: BigDecimal? = null,
     val interestRate: BigDecimal
 ) {
 
@@ -25,13 +26,34 @@ data class Mortgage(
         require(paymentDay in 1..31) {
             "Payment Day must be between 1 and 31!"
         }
-        require(annuity > BigDecimal.ZERO) {
-            "Annuity must be greater than zero!"
+        val annuityGiven = _annuity != null && _annuity > BigDecimal.ZERO
+        val downPaymentRateGiven = _downPaymentRate != null && _downPaymentRate > BigDecimal.ZERO
+        require(annuityGiven xor downPaymentRateGiven) {
+            "Either annuity or down payment rate must be given and greater zero!"
         }
         require(interestRate > BigDecimal.ZERO) {
             "Interest rate must be greater than zero!"
         }
     }
+
+    val annuity: BigDecimal
+        get() = if (_annuity != null && _annuity > BigDecimal.ZERO) {
+            _annuity
+        } else {
+            ((downPaymentRate + interestRate) * amount)
+                .divide(BigDecimal(12), 2, RoundingMode.HALF_UP)
+        }
+
+    val downPaymentRate: BigDecimal
+        get() {
+            return if (_downPaymentRate != null && _downPaymentRate > BigDecimal.ZERO) {
+                _downPaymentRate
+            } else {
+                (annuity * BigDecimal(12))
+                    .divide(amount, 2, RoundingMode.HALF_UP) -
+                    interestRate
+            }
+        }
 }
 
 fun Mortgage.paymentDate(month: YearMonth): LocalDate = month.atDay(min(month.lengthOfMonth(), paymentDay))

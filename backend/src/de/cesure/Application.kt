@@ -40,7 +40,9 @@ fun Application.module(testing: Boolean = false) {
             val interestStart = LocalDate.parse(params["interestStart"].orEmpty().take(10))
             val interestOnlyMonths = params["interestOnlyMonths"].orEmpty().toInt()
             val paymentDay = params["paymentDay"].orEmpty().toInt()
-            val annuity = BigDecimal(params["annuity"].orEmpty())
+            val useAnnuity = params["useAnnuity"]?.toBoolean() ?: true
+            val annuity = params["annuity"]?.takeIf { useAnnuity }?.let { BigDecimal(it) }
+            val downPaymentRate = params["downPaymentRate"]?.takeUnless { useAnnuity }?.let { BigDecimal(it) }
             val interestRate = BigDecimal(params["interestRate"].orEmpty())
 
             val mortgage = Mortgage(
@@ -49,6 +51,7 @@ fun Application.module(testing: Boolean = false) {
                 interestOnlyMonths,
                 paymentDay,
                 annuity,
+                downPaymentRate,
                 interestRate
             )
 
