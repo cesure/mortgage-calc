@@ -117,21 +117,32 @@ class MortgageTest {
     }
 
     @Test
-    fun `test payments`() {
+    fun `verify example payment plan`() {
         val interestStart = LocalDate.of(2020, 1, 24)
         val interestOnlyMonth = 1
 
-        AdjustableRateMortgage(
+        val plan = AdjustableRateMortgage(
             amount = BigDecimal(83500),
             interestStart = interestStart,
             interestOnlyMonths = interestOnlyMonth,
             paymentDay = 30,
             annuity = BigDecimal("278.34"),
             interestRates = TreeMap(mapOf(interestStart to BigDecimal(0.02)))
+        ).repaymentPlan()
+
+        assertEquals(418, plan.entries.size)
+        assertTrue(plan.entries.last().amountLeft.compareTo(BigDecimal.ZERO) == 0)
+
+        val repayment123 = Repayment(
+            interestPayment = BigDecimal("107.81"),
+            downPayment = BigDecimal("170.53")
         )
-            .repaymentPlan()
-            .entries
-            .forEach { println(it) }
+        val entry123 = RepaymentPlanEntry(
+            date = LocalDate.of(2030, 4, 30),
+            repayment = repayment123,
+            amountLeft = BigDecimal("64518.18")
+        )
+        assertEquals(entry123, plan.entries[123])
     }
 
     @Test
