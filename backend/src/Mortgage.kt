@@ -20,7 +20,14 @@ data class AdjustableRateMortgage(
     override val paymentDay: Int,
     override val annuity: BigDecimal,
     val interestRates: TreeMap<LocalDate, BigDecimal>
-) : Mortgage()
+) : Mortgage() {
+
+    init {
+        require(annuity > BigDecimal.ZERO) {
+            "Annuity must be greater than zero!"
+        }
+    }
+}
 
 fun Mortgage.interestRates(from: LocalDate, to: LocalDate): SortedMap<LocalDate, BigDecimal> {
     return when (this) {

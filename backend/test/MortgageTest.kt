@@ -8,11 +8,11 @@ import kotlin.test.*
 class MortgageTest {
 
     private val dummyMortgage = AdjustableRateMortgage(
-        amount = BigDecimal.ZERO,
+        amount = BigDecimal.ONE,
         interestStart = LocalDate.of(2020, 1, 1),
         interestOnlyMonths = 0,
         paymentDay = 1,
-        annuity = BigDecimal.ZERO,
+        annuity = BigDecimal.ONE,
         interestRates = TreeMap()
     )
 
@@ -132,6 +132,13 @@ class MortgageTest {
             .repaymentPlan()
             .entries
             .forEach { println(it) }
+    }
+
+    @Test
+    fun `annuity must be larger than zero`() {
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(annuity = BigDecimal.ZERO)
+        }
     }
 
     @Test
