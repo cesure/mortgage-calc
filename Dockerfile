@@ -4,7 +4,7 @@ FROM openjdk:11-jdk-slim AS build-env
 COPY gradlew /app/
 COPY gradle /app/gradle
 WORKDIR /app
-RUN ./gradlew wrapper
+RUN ./gradlew --no-deamon wrapper
 
 # Then build the app
 COPY . /app/
