@@ -11,11 +11,6 @@ node {
     download = true
 }
 
-tasks.create<NpmTask>("serve") {
-    dependsOn("npmInstall")
-    setArgs(listOf("run", "serve"))
-}
-
 tasks.named<NpmTask>("npm_run_build") {
     inputs.files(fileTree("public"))
     inputs.files(fileTree("src"))
