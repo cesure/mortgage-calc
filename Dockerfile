@@ -1,6 +1,13 @@
 FROM openjdk:11-jdk-slim AS build-env
-ADD . /app
+
+# First install Gradle Wrapper
+COPY gradlew /app/
+COPY gradle /app/gradle
 WORKDIR /app
+RUN ./gradlew wrapper
+
+# Then build the app
+COPY . /app/
 RUN ./gradlew --no-daemon build
 
 FROM gcr.io/distroless/java:11
