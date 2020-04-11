@@ -97,7 +97,7 @@
 <script lang="ts">
   import dayjs from 'dayjs';
   import utc from 'dayjs/plugin/utc';
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Component, Vue, Watch} from 'vue-property-decorator';
   import CurrencyInput from "@/components/CurrencyInput.vue";
   import PercentageInput from "@/components/PercentageInput.vue";
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
@@ -116,11 +116,11 @@
 
     private mortgageParams: MortgageParams = {
       amount: 0,
-      interestStart: dayjs.utc().startOf('day').toDate(),
+      interestStart: this.today(),
       interestOnlyMonths: 0,
       paymentDay: 1,
       annuity: 0,
-      interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 0.01}]
+      interestRates: [{date: this.today(), rate: 0.01}]
     };
 
     mounted() {
@@ -130,12 +130,22 @@
       }
     }
 
+    @Watch('mortgageParams.interestStart')
+    onPropertyChanged(value: Date) {
+      // the first interest rate must have the same date as the interest start date
+      this.mortgageParams.interestRates[0].date = value
+    }
+
     getRepaymentPlan() {
       apiService.getRepaymentPlan(this.mortgageParams).then(
         response => (this.repaymentPlan = response.data)
       );
 
       storageService.storeMortgageParams(this.mortgageParams);
+    }
+
+    today() {
+      return dayjs().utc().startOf('day').toDate()
     }
 
     toDayjs(s: string | Date) {
