@@ -42,7 +42,7 @@
           </label>
           <input id="paymentDay" type="number" min="1" max="31"
                  class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                 v-model="mortgageParams.paymentDay">
+                 v-model.number="mortgageParams.paymentDay">
         </div>
       </div>
 
@@ -76,7 +76,7 @@
           <input
             id="interestOnlyMonths" type="number" min="0"
             class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-            v-model="mortgageParams.interestOnlyMonths">
+            v-model.number="mortgageParams.interestOnlyMonths">
         </div>
       </div>
 
