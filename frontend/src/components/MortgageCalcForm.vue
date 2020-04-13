@@ -53,14 +53,14 @@
           </label>
           <div class="appearance-none block w-full mb-6" id="interestRates">
             <div class="flex" v-for="(interestRate, index) in mortgageParams.interestRates" :key="index">
-              <div class="w-full md:w-1/3 pr-2">
+              <div v-if="mortgageParams.interestRates.length > 1" class="w-full md:w-1/3 pr-2">
                 <input
                   type="date" required="required"
                   class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
                   :value="interestRate.date && toDayjs(interestRate.date).format('YYYY-MM-DD')"
                   @input="interestRate.date = toDayjs($event.target.value).toDate()">
               </div>
-              <div class="w-full md:w-2/3">
+              <div class="w-full" :class="{'md:w-2/3': mortgageParams.interestRates.length > 1}">
                 <PercentageInput
                   class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
                   v-model="interestRate.rate">
