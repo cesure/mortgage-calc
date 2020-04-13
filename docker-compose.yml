@@ -1,0 +1,16 @@
+version: "3.5"
+
+services:
+  app:
+    container_name: mortgage_calc_app
+    build:
+      context: .
+    image: cesure/mortgage-calc:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - mortgage_calc_default
+
+networks:
+  mortgage_calc_default:
+    name: mortgage_calc_default
