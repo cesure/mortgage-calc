@@ -42,7 +42,7 @@
           </label>
           <input id="paymentDay" type="number" min="1" max="31"
                  class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-                 v-model="mortgageParams.paymentDay">
+                 v-model.number="mortgageParams.paymentDay">
         </div>
       </div>
 
@@ -53,14 +53,14 @@
           </label>
           <div class="appearance-none block w-full mb-6" id="interestRates">
             <div class="flex" v-for="(interestRate, index) in mortgageParams.interestRates" :key="index">
-              <div class="w-full md:w-1/3 pr-2">
+              <div v-if="mortgageParams.interestRates.length > 1" class="w-full md:w-1/3 pr-2">
                 <input
                   type="date" required="required"
                   class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
                   :value="interestRate.date && toDayjs(interestRate.date).format('YYYY-MM-DD')"
                   @input="interestRate.date = toDayjs($event.target.value).toDate()">
               </div>
-              <div class="w-full md:w-2/3">
+              <div class="w-full" :class="{'md:w-2/3': mortgageParams.interestRates.length > 1}">
                 <PercentageInput
                   class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
                   v-model="interestRate.rate">
@@ -76,7 +76,7 @@
           <input
             id="interestOnlyMonths" type="number" min="0"
             class="appearance-none block w-full py-3 px-4 border rounded bg-gray-200 text-gray-700 leading-tight"
-            v-model="mortgageParams.interestOnlyMonths">
+            v-model.number="mortgageParams.interestOnlyMonths">
         </div>
       </div>
 
@@ -97,7 +97,7 @@
 <script lang="ts">
   import dayjs from 'dayjs';
   import utc from 'dayjs/plugin/utc';
-  import {Component, Vue} from 'vue-property-decorator';
+  import {Component, Vue, Watch} from 'vue-property-decorator';
   import CurrencyInput from "@/components/CurrencyInput.vue";
   import PercentageInput from "@/components/PercentageInput.vue";
   import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
@@ -116,11 +116,11 @@
 
     private mortgageParams: MortgageParams = {
       amount: 0,
-      interestStart: dayjs.utc().startOf('day').toDate(),
+      interestStart: this.today(),
       interestOnlyMonths: 0,
       paymentDay: 1,
       annuity: 0,
-      interestRates: [{date: dayjs().utc().startOf('day').toDate(), rate: 0.01}]
+      interestRates: [{date: this.today(), rate: 0.01}]
     };
 
     mounted() {
@@ -130,12 +130,22 @@
       }
     }
 
+    @Watch('mortgageParams.interestStart')
+    onPropertyChanged(value: Date) {
+      // the first interest rate must have the same date as the interest start date
+      this.mortgageParams.interestRates[0].date = value
+    }
+
     getRepaymentPlan() {
       apiService.getRepaymentPlan(this.mortgageParams).then(
         response => (this.repaymentPlan = response.data)
       );
 
       storageService.storeMortgageParams(this.mortgageParams);
+    }
+
+    today() {
+      return dayjs().utc().startOf('day').toDate()
     }
 
     toDayjs(s: string | Date) {

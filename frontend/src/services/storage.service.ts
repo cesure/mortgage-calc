@@ -1,4 +1,20 @@
-import {MortgageParams} from "@/models/MortgageParams";
+import dayjs from 'dayjs';
+import {MortgageParams, MortgageParamsJSON} from "@/models/MortgageParams";
+
+function parseDate(value: string): Date {
+  return dayjs.utc(value).startOf('day').toDate()
+}
+
+function decodeMortgageParams(json: MortgageParamsJSON): MortgageParams {
+  return Object.assign({}, json, {
+    interestStart: parseDate(json.interestStart),
+    interestRates: json.interestRates.map(rateJson =>
+      Object.assign({}, rateJson, {
+        date: parseDate(rateJson.date)
+      })
+    )
+  });
+}
 
 class StorageService {
 
@@ -13,9 +29,9 @@ class StorageService {
     const json = localStorage.getItem(StorageService.MORTGAGE_PARAMS_KEY);
 
     if (json) {
-      return JSON.parse(json)
+      return decodeMortgageParams(JSON.parse(json));
     } else {
-      return null
+      return null;
     }
   }
 }
