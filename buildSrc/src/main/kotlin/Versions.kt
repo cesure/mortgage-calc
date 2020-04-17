@@ -1,7 +1,7 @@
 object Versions {
 
     object Plugin {
-        val kotlin = "1.3.61"
+        val kotlin = "1.3.72"
         val nodeGradle = "2.2.3"
         val shadow = "5.2.0"
     }
