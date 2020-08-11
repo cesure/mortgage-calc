@@ -7,12 +7,7 @@ function parseDate(value: string): Date {
 
 function decodeMortgageParams(json: MortgageParamsJSON): MortgageParams {
   return Object.assign({}, json, {
-    interestStart: parseDate(json.interestStart),
-    interestRates: json.interestRates.map(rateJson =>
-      Object.assign({}, rateJson, {
-        date: parseDate(rateJson.date)
-      })
-    )
+    interestStart: parseDate(json.interestStart)
   });
 }
 
