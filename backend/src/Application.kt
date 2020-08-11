@@ -42,7 +42,7 @@ fun Application.module(testing: Boolean = false) {
             val annuity = BigDecimal(params["annuity"].orEmpty())
             val interestRate = BigDecimal(params["interestRate"].orEmpty())
 
-            val mortgage = AdjustableRateMortgage(
+            val mortgage = Mortgage(
                 amount,
                 interestStart,
                 interestOnlyMonths,

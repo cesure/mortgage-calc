@@ -6,23 +6,14 @@ import java.time.LocalDate
 import java.time.YearMonth
 import kotlin.math.min
 
-sealed class Mortgage {
-    abstract val amount: BigDecimal
-    abstract val interestStart: LocalDate
-    abstract val interestOnlyMonths: Int
-    abstract val paymentDay: Int
-    abstract val annuity: BigDecimal
-    abstract val interestRate: BigDecimal
-}
-
-data class AdjustableRateMortgage(
-    override val amount: BigDecimal,
-    override val interestStart: LocalDate,
-    override val interestOnlyMonths: Int,
-    override val paymentDay: Int,
-    override val annuity: BigDecimal,
-    override val interestRate: BigDecimal
-) : Mortgage() {
+data class Mortgage(
+    val amount: BigDecimal,
+    val interestStart: LocalDate,
+    val interestOnlyMonths: Int,
+    val paymentDay: Int,
+    val annuity: BigDecimal,
+    val interestRate: BigDecimal
+) {
 
     init {
         require(amount > BigDecimal.ZERO) {

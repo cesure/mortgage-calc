@@ -10,7 +10,7 @@ import kotlin.test.assertTrue
 
 class MortgageTest {
 
-    private val dummyMortgage = AdjustableRateMortgage(
+    private val dummyMortgage = Mortgage(
         amount = BigDecimal.ONE,
         interestStart = LocalDate.of(2020, 1, 1),
         interestOnlyMonths = 0,
@@ -125,7 +125,7 @@ class MortgageTest {
         val interestStart = LocalDate.of(2020, 1, 24)
         val interestOnlyMonth = 1
 
-        val plan = AdjustableRateMortgage(
+        val plan = Mortgage(
             amount = BigDecimal(83500),
             interestStart = interestStart,
             interestOnlyMonths = interestOnlyMonth,
