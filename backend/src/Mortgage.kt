@@ -58,11 +58,11 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
         var amountLeft = amount
         var currentFrom = this@repaymentPlan.interestStart
         this@repaymentPlan.paymentDays().forEachIndexed { i, currentTo ->
-            val days = if (i == 0) {
-                countDays30E360(currentFrom, currentTo)
-            } else 30
+            val interestDays = if (i == 0 && currentFrom.dayOfMonth != 1) {
+                countDays30E360(currentFrom, currentTo) // calculate part of month
+            } else 30 // German banks use 30 days for a whole month
 
-            val interest = (amountLeft * interestRate * days.toBigDecimal())
+            val interest = (amountLeft * interestRate * interestDays.toBigDecimal())
                 .divide(360.toBigDecimal(), 2, RoundingMode.HALF_UP)
             val downPayment = if (i >= interestOnlyMonths) {
                 (annuity - interest).min(amountLeft)

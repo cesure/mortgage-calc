@@ -28,7 +28,7 @@
       <div class="flex flex-wrap mb-6 -mx-4">
         <div class="w-full md:w-1/2 px-4">
           <label class="block mb-2 uppercase tracking-wide text-gray-700 text-xs font-bold" for="interestStart">
-            Interests Start
+            Interest Start
           </label>
           <input
             id="interestStart" type="date" required="required"
