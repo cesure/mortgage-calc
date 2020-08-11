@@ -4,7 +4,7 @@ export interface MortgageParams {
   interestOnlyMonths: number;
   paymentDay: number;
   annuity: number;
-  interestRates: InterestRate[];
+  interestRate: number;
 }
 
 export interface MortgageParamsJSON {
@@ -13,15 +13,5 @@ export interface MortgageParamsJSON {
   interestOnlyMonths: number;
   paymentDay: number;
   annuity: number;
-  interestRates: InterestRateJson[];
-}
-
-export interface InterestRate {
-  date: Date;
-  rate: number;
-}
-
-export interface InterestRateJson {
-  date: string;
-  rate: number;
+  interestRate: number;
 }
