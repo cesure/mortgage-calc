@@ -2,6 +2,7 @@ plugins {
     application
     kotlin("jvm") version Versions.Plugin.kotlin
     id("com.github.johnrengelman.shadow") version Versions.Plugin.shadow
+    id("org.jlleitschuh.gradle.ktlint") version Versions.Plugin.ktlint
 }
 
 application {
