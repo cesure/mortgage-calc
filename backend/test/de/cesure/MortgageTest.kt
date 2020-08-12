@@ -1,8 +1,12 @@
 package de.cesure
 
-import java.math.*
-import java.time.*
-import kotlin.test.*
+import java.math.BigDecimal
+import java.time.LocalDate
+import java.time.YearMonth
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 class MortgageTest {
 
