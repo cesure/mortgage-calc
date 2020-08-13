@@ -5,14 +5,14 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator';
-  import MortgageCalc from "@/components/MortgageCalc.vue";
+import {Component, Vue} from 'vue-property-decorator';
+import MortgageCalc from "@/components/MortgageCalc.vue";
 
-  @Component({
-    components: {
-      MortgageCalc,
-    },
-  })
-  export default class App extends Vue {
-  }
+@Component({
+  components: {
+    MortgageCalc,
+  },
+})
+export default class App extends Vue {
+}
 </script>

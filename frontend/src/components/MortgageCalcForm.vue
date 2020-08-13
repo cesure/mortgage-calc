@@ -102,58 +102,58 @@ export default class MortgageCalcForm extends Vue {
 
   repaymentPlan: RepaymentPlan | null = null;
 
-    private mortgageParams: MortgageParams = {
-      amount: 0,
-      interestStart: this.today(),
-      interestOnlyMonths: 0,
-      paymentDay: 1,
-      annuity: 0,
-      interestRate: 0.01
-    };
+  private mortgageParams: MortgageParams = {
+    amount: 0,
+    interestStart: this.today(),
+    interestOnlyMonths: 0,
+    paymentDay: 1,
+    annuity: 0,
+    interestRate: 0.01
+  };
 
-    mounted() {
-      const storedParams = storageService.loadMortgageParams()
-      if (storedParams) {
-        this.mortgageParams = storedParams
-      }
-    }
-
-    getRepaymentPlan() {
-      apiService.getRepaymentPlan(this.mortgageParams).then(
-        response => (this.repaymentPlan = response.data)
-      );
-
-      storageService.storeMortgageParams(this.mortgageParams);
-    }
-
-    today() {
-      return dayjs().utc().startOf('day').toDate()
-    }
-
-    toDayjs(s: string | Date) {
-      return dayjs.utc(s).startOf('day');
+  mounted() {
+    const storedParams = storageService.loadMortgageParams()
+    if (storedParams) {
+      this.mortgageParams = storedParams
     }
   }
+
+  getRepaymentPlan() {
+    apiService.getRepaymentPlan(this.mortgageParams).then(
+      response => (this.repaymentPlan = response.data)
+    );
+
+    storageService.storeMortgageParams(this.mortgageParams);
+  }
+
+  today() {
+    return dayjs().utc().startOf('day').toDate()
+  }
+
+  toDayjs(s: string | Date) {
+    return dayjs.utc(s).startOf('day');
+  }
+}
 </script>
 
 <style>
-  input[type=date] {
-    -moz-appearance: textfield;
-    -webkit-appearance: textfield;
-  }
+input[type=date] {
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+}
 
-  input[type=date]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    display: none;
-  }
+input[type=date]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
+}
 
-  input[type=number] {
-    -moz-appearance: textfield;
-  }
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
-  input[type=number]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    display: none;
-  }
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  display: none;
+}
 
 </style>

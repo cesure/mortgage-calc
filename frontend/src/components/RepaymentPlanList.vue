@@ -30,36 +30,36 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from "vue-property-decorator";
-  import {numbroService} from '@/services/numbro.service';
+import {Component, Prop, Vue} from "vue-property-decorator";
+import {numbroService} from '@/services/numbro.service';
 
-  export interface Repayment {
-    interestPayment: number;
-    downPayment: number;
-  }
+export interface Repayment {
+  interestPayment: number;
+  downPayment: number;
+}
 
-  export interface RepaymentPlanEntry {
-    date: string;
-    repayment: Repayment;
-    amountLeft: number;
-  }
+export interface RepaymentPlanEntry {
+  date: string;
+  repayment: Repayment;
+  amountLeft: number;
+}
 
-  export interface RepaymentPlan {
-    entries: RepaymentPlanEntry[];
-  }
+export interface RepaymentPlan {
+  entries: RepaymentPlanEntry[];
+}
 
-  @Component({
-    filters: {
-      formatCurrency(value: number) {
-        return numbroService.formatCurrency(value);
-      },
-      formatDate(d: string) {
-        const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
-        return new Date(d).toLocaleDateString(undefined, options)
-      }
+@Component({
+  filters: {
+    formatCurrency(value: number) {
+      return numbroService.formatCurrency(value);
+    },
+    formatDate(d: string) {
+      const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+      return new Date(d).toLocaleDateString(undefined, options)
     }
-  })
-  export default class RepaymentPlanList extends Vue {
-    @Prop() public repaymentPlan!: RepaymentPlan;
   }
+})
+export default class RepaymentPlanList extends Vue {
+  @Prop() public repaymentPlan!: RepaymentPlan;
+}
 </script>

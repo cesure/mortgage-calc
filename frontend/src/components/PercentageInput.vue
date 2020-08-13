@@ -3,29 +3,29 @@
 </template>
 
 <script lang="ts">
-  import {Component, Prop, Vue} from "vue-property-decorator";
-  import {numbroService} from "@/services/numbro.service";
+import {Component, Prop, Vue} from "vue-property-decorator";
+import {numbroService} from "@/services/numbro.service";
 
-  @Component({})
-  export default class PercentageInput extends Vue {
-    @Prop() public value!: number;
+@Component({})
+export default class PercentageInput extends Vue {
+  @Prop() public value!: number;
 
-    isInputActive = false;
+  isInputActive = false;
 
-    get valueFormatted() {
-      if (this.value == null) {
-        return "";
-      }
-
-      if (this.isInputActive) {
-        return numbroService.formatNumber(this.value * 100.0);
-      } else {
-        return numbroService.formatPercentage(this.value);
-      }
+  get valueFormatted() {
+    if (this.value == null) {
+      return "";
     }
 
-    set valueFormatted(inputValue: string) {
-      this.$emit('input', (numbroService.unformatNumber(inputValue) || 0.0) / 100.0);
+    if (this.isInputActive) {
+      return numbroService.formatNumber(this.value * 100.0);
+    } else {
+      return numbroService.formatPercentage(this.value);
     }
   }
+
+  set valueFormatted(inputValue: string) {
+    this.$emit('input', (numbroService.unformatNumber(inputValue) || 0.0) / 100.0);
+  }
+}
 </script>
