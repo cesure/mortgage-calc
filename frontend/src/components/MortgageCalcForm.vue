@@ -85,6 +85,7 @@
 <script lang="ts">
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import Decimal from "decimal.js";
 import {Component, Vue} from 'vue-property-decorator';
 import CurrencyInput from "@/components/CurrencyInput.vue";
 import PercentageInput from "@/components/PercentageInput.vue";
@@ -103,12 +104,12 @@ export default class MortgageCalcForm extends Vue {
   repaymentPlan: RepaymentPlan | null = null;
 
   private mortgageParams: MortgageParams = {
-    amount: 0,
+    amount: new Decimal(0),
     interestStart: this.today(),
     interestOnlyMonths: 0,
     paymentDay: 1,
-    annuity: 0,
-    interestRate: 0.01
+    annuity: new Decimal(0),
+    interestRate: new Decimal(0)
   };
 
   mounted() {

@@ -3,29 +3,37 @@
 </template>
 
 <script lang="ts">
+import Decimal from "decimal.js";
 import {Component, Prop, Vue} from "vue-property-decorator";
 import {numbroService} from "@/services/numbro.service";
 
 @Component({})
 export default class PercentageInput extends Vue {
-  @Prop() public value!: number;
+  @Prop() public value!: Decimal;
 
   isInputActive = false;
+  strValue: string | null = null;
 
   get valueFormatted() {
-    if (this.value == null) {
-      return "";
-    }
-
     if (this.isInputActive) {
-      return numbroService.formatNumber(this.value * 100.0);
+      // show the actual user input or if no input was given yet then show the value formatted without percent sign
+      return this.strValue || numbroService.formatNumber(this.value.mul(100).toNumber());
     } else {
-      return numbroService.formatPercentage(this.value);
+      // input is not active: show formatted as percentage
+      return numbroService.formatPercentage(this.value.toNumber());
     }
   }
 
   set valueFormatted(inputValue: string) {
-    this.$emit('input', (numbroService.unformatNumber(inputValue) || 0.0) / 100.0);
+    // save user input
+    this.strValue = inputValue;
+
+    // unformat the input, e.g. convert commas into dots etc. and cast into a number
+    const unformatted = numbroService.unformatNumber(inputValue) || 0;
+    const decimal = new Decimal(unformatted).div(100);
+
+    // update value with user input converted to a decimal
+    this.$emit('input', decimal);
   }
 }
 </script>
