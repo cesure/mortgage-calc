@@ -5,7 +5,9 @@ export interface MortgageParams {
   interestStart: Date;
   interestOnlyMonths: number;
   paymentDay: number;
+  useAnnuity: boolean;
   annuity: Decimal;
+  downPaymentRate: Decimal;
   interestRate: Decimal;
 }
 
@@ -14,6 +16,8 @@ export interface MortgageParamsDto {
   interestStart: string;
   interestOnlyMonths: number;
   paymentDay: number;
+  useAnnuity: boolean;
   annuity: string;
+  downPaymentRate: string;
   interestRate: string;
 }
