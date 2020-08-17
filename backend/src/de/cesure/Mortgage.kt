@@ -1,44 +1,24 @@
 package de.cesure
 
-import java.math.*
-import java.time.*
-import java.util.*
-import kotlin.math.*
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.time.LocalDate
+import java.time.YearMonth
+import kotlin.math.min
 
-sealed class Mortgage {
-    abstract val amount: BigDecimal
-    abstract val interestStart: LocalDate
-    abstract val interestOnlyMonths: Int
-    abstract val paymentDay: Int
-    abstract val annuity: BigDecimal
-}
-
-data class AdjustableRateMortgage(
-    override val amount: BigDecimal,
-    override val interestStart: LocalDate,
-    override val interestOnlyMonths: Int,
-    override val paymentDay: Int,
-    override val annuity: BigDecimal,
-    val interestRates: TreeMap<LocalDate, BigDecimal>
-) : Mortgage() {
+data class Mortgage(
+    val amount: BigDecimal,
+    val interestStart: LocalDate,
+    val interestOnlyMonths: Int,
+    val paymentDay: Int,
+    private val _annuity: BigDecimal? = null,
+    private val _downPaymentRate: BigDecimal? = null,
+    val interestRate: BigDecimal
+) {
 
     init {
         require(amount > BigDecimal.ZERO) {
             "Amount must be greater than zero!"
-        }
-        require(interestRates.isNotEmpty()) {
-            "Interest Rates must be given!"
-        }
-        interestRates.forEach { rate ->
-            require(rate.key >= interestStart) {
-                "All Interest Rate Dates must be greater or equal than interest start date!"
-            }
-            require(rate.value > BigDecimal.ZERO) {
-                "All Interest Rates must be greater than zero!"
-            }
-        }
-        require(interestStart == interestRates.firstKey()) {
-            "Interest Start Date must equal to first interest rate date!"
         }
         require(interestOnlyMonths >= 0) {
             "Interest Only Months must be greater or equal than zero!"
@@ -46,22 +26,34 @@ data class AdjustableRateMortgage(
         require(paymentDay in 1..31) {
             "Payment Day must be between 1 and 31!"
         }
-        require(annuity > BigDecimal.ZERO) {
-            "Annuity must be greater than zero!"
+        val annuityGiven = _annuity != null && _annuity > BigDecimal.ZERO
+        val downPaymentRateGiven = _downPaymentRate != null && _downPaymentRate > BigDecimal.ZERO
+        require(annuityGiven xor downPaymentRateGiven) {
+            "Either annuity or down payment rate must be given and greater zero!"
         }
-        require(interestRates.isNotEmpty()) {
-            "Interest Rates must be given!"
+        require(interestRate > BigDecimal.ZERO) {
+            "Interest rate must be greater than zero!"
         }
     }
-}
 
-fun Mortgage.interestRates(from: LocalDate, to: LocalDate): SortedMap<LocalDate, BigDecimal> {
-    return when (this) {
-        is AdjustableRateMortgage -> sortedMapOf(
-            interestRates.entries.singleOrNull()?.toPair()
-                ?: throw NotImplementedError("Adjustable rates are not implemented yet")
-        )
-    }
+    val annuity: BigDecimal
+        get() = if (_annuity != null && _annuity > BigDecimal.ZERO) {
+            _annuity
+        } else {
+            ((downPaymentRate + interestRate) * amount)
+                .divide(BigDecimal(12), 2, RoundingMode.HALF_UP)
+        }
+
+    val downPaymentRate: BigDecimal
+        get() {
+            return if (_downPaymentRate != null && _downPaymentRate > BigDecimal.ZERO) {
+                _downPaymentRate
+            } else {
+                (annuity * BigDecimal(12))
+                    .divide(amount, 2, RoundingMode.HALF_UP) -
+                    interestRate
+            }
+        }
 }
 
 fun Mortgage.paymentDate(month: YearMonth): LocalDate = month.atDay(min(month.lengthOfMonth(), paymentDay))
@@ -88,13 +80,11 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
         var amountLeft = amount
         var currentFrom = this@repaymentPlan.interestStart
         this@repaymentPlan.paymentDays().forEachIndexed { i, currentTo ->
-            val interestRate = interestRates(currentFrom, currentTo).values.singleOrNull()
-                ?: throw NotImplementedError("Adjustable rates are not implemented yet")
-            val days = if (i == 0) {
-                countDays30E360(currentFrom, currentTo)
-            } else 30
+            val interestDays = if (i == 0 && currentFrom.dayOfMonth != 1) {
+                countDays30E360(currentFrom, currentTo) // calculate part of month
+            } else 30 // German banks use 30 days for a whole month
 
-            val interest = (amountLeft * interestRate * days.toBigDecimal())
+            val interest = (amountLeft * interestRate * interestDays.toBigDecimal())
                 .divide(360.toBigDecimal(), 2, RoundingMode.HALF_UP)
             val downPayment = if (i >= interestOnlyMonths) {
                 (annuity - interest).min(amountLeft)

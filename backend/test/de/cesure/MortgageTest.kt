@@ -1,19 +1,22 @@
 package de.cesure
 
-import java.math.*
-import java.time.*
-import java.util.*
-import kotlin.test.*
+import java.math.BigDecimal
+import java.time.LocalDate
+import java.time.YearMonth
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 class MortgageTest {
 
-    private val dummyMortgage = AdjustableRateMortgage(
+    private val dummyMortgage = Mortgage(
         amount = BigDecimal.ONE,
         interestStart = LocalDate.of(2020, 1, 1),
         interestOnlyMonths = 0,
         paymentDay = 1,
-        annuity = BigDecimal.ONE,
-        interestRates = TreeMap(mapOf(LocalDate.of(2020, 1, 1) to BigDecimal.ONE))
+        _annuity = BigDecimal.ONE,
+        interestRate = BigDecimal.ONE
     )
 
     @Test
@@ -111,7 +114,7 @@ class MortgageTest {
                 dummyMortgage.copy(
                     interestStart = it.interestStart,
                     paymentDay = it.paymentDay,
-                    interestRates = TreeMap(mapOf(it.interestStart to BigDecimal.ONE))
+                    interestRate = BigDecimal.ONE
                 ).firstPaymentDate()
             )
         }
@@ -122,13 +125,13 @@ class MortgageTest {
         val interestStart = LocalDate.of(2020, 1, 24)
         val interestOnlyMonth = 1
 
-        val plan = AdjustableRateMortgage(
+        val plan = Mortgage(
             amount = BigDecimal(83500),
             interestStart = interestStart,
             interestOnlyMonths = interestOnlyMonth,
             paymentDay = 30,
-            annuity = BigDecimal("278.34"),
-            interestRates = TreeMap(mapOf(interestStart to BigDecimal(0.02)))
+            _annuity = BigDecimal("278.34"),
+            interestRate = BigDecimal("0.02")
         ).repaymentPlan()
 
         assertEquals(418, plan.entries.size)
@@ -149,15 +152,51 @@ class MortgageTest {
     @Test
     fun `annuity must be larger than zero`() {
         assertFailsWith(IllegalArgumentException::class) {
-            dummyMortgage.copy(annuity = BigDecimal(-1))
+            dummyMortgage.copy(_annuity = BigDecimal(-1))
         }
         assertFailsWith(IllegalArgumentException::class) {
-            dummyMortgage.copy(annuity = BigDecimal.ZERO)
+            dummyMortgage.copy(_annuity = BigDecimal.ZERO)
         }
 
         // should not fail
-        dummyMortgage.copy(annuity = BigDecimal.ONE)
+        dummyMortgage.copy(_annuity = BigDecimal.ONE)
     }
+
+    @Test
+    fun `down payment rate must be larger than zero`() {
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal(-1))
+        }
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal.ZERO)
+        }
+
+        // should not fail
+        dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal.ONE)
+    }
+
+    @Test
+    fun `either annuity or down payment rate must be gieven and larger than zero`() {
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = null, _downPaymentRate = null)
+        }
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = BigDecimal.ZERO, _downPaymentRate = BigDecimal.ZERO)
+        }
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal.ZERO)
+        }
+        assertFailsWith(IllegalArgumentException::class) {
+            dummyMortgage.copy(_annuity = BigDecimal.ZERO, _downPaymentRate = null)
+        }
+
+        // should not fail
+        dummyMortgage.copy(_annuity = null, _downPaymentRate = BigDecimal.ONE)
+
+        // should not fail
+        dummyMortgage.copy(_annuity = BigDecimal.ONE, _downPaymentRate = null)
+    }
+
 
     @Test
     fun `amount must be greater than zero`() {
@@ -171,30 +210,6 @@ class MortgageTest {
 
         // should not fail
         dummyMortgage.copy(amount = BigDecimal.ONE)
-    }
-
-    @Test
-    fun `interest start date must equal to first interest rate date`() {
-        val interestStartDate = LocalDate.now()
-
-        assertFailsWith(IllegalArgumentException::class) {
-            dummyMortgage.copy(
-                interestStart = interestStartDate,
-                interestRates = TreeMap(mapOf(interestStartDate.minusDays(1) to BigDecimal.ONE))
-            )
-        }
-
-        // should not fail
-        dummyMortgage.copy(
-            interestStart = interestStartDate,
-            interestRates = TreeMap(mapOf(interestStartDate to BigDecimal.ONE))
-        )
-
-        // should not fail
-        dummyMortgage.copy(
-            interestStart = interestStartDate,
-            interestRates = TreeMap(mapOf(interestStartDate to BigDecimal.ONE))
-        )
     }
 
     @Test
@@ -232,43 +247,12 @@ class MortgageTest {
     }
 
     @Test
-    fun `interest rates must be given`() {
+    fun `interest rate must be greater than zero`() {
         assertFailsWith(IllegalArgumentException::class) {
-            dummyMortgage.copy(interestRates = TreeMap())
+            dummyMortgage.copy(interestRate = BigDecimal.ZERO)
         }
-    }
-
-    @Test
-    fun `all interest rate dates must be greater or equal than interest start date`() {
-        val now = LocalDate.now()
-
         assertFailsWith(IllegalArgumentException::class) {
-            dummyMortgage.copy(
-                interestStart = now,
-                interestRates = TreeMap(
-                    mapOf(
-                        now to BigDecimal.ONE,
-                        now.minusDays(1) to BigDecimal.ONE
-                    )
-                )
-            )
-        }
-    }
-
-    @Test
-    fun `all interest rates must be greater than zero`() {
-        val now = LocalDate.now()
-
-        assertFailsWith(IllegalArgumentException::class) {
-            dummyMortgage.copy(
-                interestStart = now,
-                interestRates = TreeMap(
-                    mapOf(
-                        now to BigDecimal.ONE,
-                        now.plusDays(1) to BigDecimal.ZERO
-                    )
-                )
-            )
+            dummyMortgage.copy(interestRate = BigDecimal(-1))
         }
     }
 

@@ -1,24 +1,29 @@
 package de.cesure
 
-import com.fasterxml.jackson.databind.*
-import com.fasterxml.jackson.datatype.jsr310.*
-import com.fasterxml.jackson.module.kotlin.*
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.features.*
-import io.ktor.http.content.*
-import io.ktor.jackson.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.sessions.*
-import java.math.*
-import java.time.*
-import java.util.*
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.features.ContentNegotiation
+import io.ktor.http.content.defaultResource
+import io.ktor.http.content.resources
+import io.ktor.http.content.static
+import io.ktor.jackson.jackson
+import io.ktor.response.respond
+import io.ktor.routing.get
+import io.ktor.routing.routing
+import io.ktor.server.netty.EngineMain
+import io.ktor.sessions.Sessions
+import io.ktor.sessions.header
+import java.math.BigDecimal
+import java.time.LocalDate
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
-@kotlin.jvm.JvmOverloads
+@JvmOverloads
 fun Application.module(testing: Boolean = false) {
     installFeatures()
 
@@ -35,16 +40,19 @@ fun Application.module(testing: Boolean = false) {
             val interestStart = LocalDate.parse(params["interestStart"].orEmpty().take(10))
             val interestOnlyMonths = params["interestOnlyMonths"].orEmpty().toInt()
             val paymentDay = params["paymentDay"].orEmpty().toInt()
-            val annuity = BigDecimal(params["annuity"].orEmpty())
-            val interestRates = params.getAll("interestRates[]").orEmpty().toInterestRates()
+            val useAnnuity = params["useAnnuity"]?.toBoolean() ?: true
+            val annuity = params["annuity"]?.takeIf { useAnnuity }?.let { BigDecimal(it) }
+            val downPaymentRate = params["downPaymentRate"]?.takeUnless { useAnnuity }?.let { BigDecimal(it) }
+            val interestRate = BigDecimal(params["interestRate"].orEmpty())
 
-            val mortgage = AdjustableRateMortgage(
+            val mortgage = Mortgage(
                 amount,
                 interestStart,
                 interestOnlyMonths,
                 paymentDay,
                 annuity,
-                interestRates
+                downPaymentRate,
+                interestRate
             )
 
             call.respond(mortgage.repaymentPlan())
@@ -70,13 +78,3 @@ fun Application.installFeatures() {
 }
 
 private data class Session(val id: String)
-
-private data class InterestRate(val date: LocalDate, val rate: BigDecimal)
-
-private fun List<String>.toInterestRates(): TreeMap<LocalDate, BigDecimal> {
-    val mapper = jacksonObjectMapper().registerModule(JavaTimeModule())
-    return this.map { json ->
-        mapper.readValue<InterestRate>(json).let { ir -> ir.date to ir.rate }
-    }.toMap(TreeMap())
-}
-

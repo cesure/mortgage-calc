@@ -1,27 +1,23 @@
+import Decimal from "decimal.js";
+
 export interface MortgageParams {
-  amount: number;
+  amount: Decimal;
   interestStart: Date;
   interestOnlyMonths: number;
   paymentDay: number;
-  annuity: number;
-  interestRates: InterestRate[];
+  useAnnuity: boolean;
+  annuity: Decimal;
+  downPaymentRate: Decimal;
+  interestRate: Decimal;
 }
 
-export interface MortgageParamsJSON {
-  amount: number;
+export interface MortgageParamsDto {
+  amount: string;
   interestStart: string;
   interestOnlyMonths: number;
   paymentDay: number;
-  annuity: number;
-  interestRates: InterestRateJson[];
-}
-
-export interface InterestRate {
-  date: Date;
-  rate: number;
-}
-
-export interface InterestRateJson {
-  date: string;
-  rate: number;
+  useAnnuity: boolean;
+  annuity: string;
+  downPaymentRate: string;
+  interestRate: string;
 }

@@ -1,7 +1,7 @@
 package de.cesure
 
-import java.math.*
-import java.time.*
+import java.math.BigDecimal
+import java.time.LocalDate
 
 data class RepaymentPlan(val entries: List<RepaymentPlanEntry>)
 

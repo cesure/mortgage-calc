@@ -6,14 +6,14 @@
 </template>
 
 <script lang="ts">
-  import {Component, Vue} from 'vue-property-decorator';
-  import MortgageCalcForm from "@/components/MortgageCalcForm.vue";
+import {Component, Vue} from 'vue-property-decorator';
+import MortgageCalcForm from "@/components/MortgageCalcForm.vue";
 
-  @Component({
-    components: {
-      MortgageCalcForm,
-    },
-  })
-  export default class MortgageCalc extends Vue {
-  }
+@Component({
+  components: {
+    MortgageCalcForm,
+  },
+})
+export default class MortgageCalc extends Vue {
+}
 </script>
