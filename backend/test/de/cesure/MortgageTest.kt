@@ -197,7 +197,6 @@ class MortgageTest {
         dummyMortgage.copy(_annuity = BigDecimal.ONE, _downPaymentRate = null)
     }
 
-
     @Test
     fun `amount must be greater than zero`() {
         assertFailsWith(IllegalArgumentException::class) {
