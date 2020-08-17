@@ -120,8 +120,8 @@ export default class MortgageCalcForm extends Vue {
     interestOnlyMonths: 0,
     paymentDay: 1,
     useAnnuity: true,
-    annuity: null,
-    downPaymentRate: null,
+    annuity: new Decimal(0),
+    downPaymentRate: new Decimal(0),
     interestRate: new Decimal(0)
   };
 

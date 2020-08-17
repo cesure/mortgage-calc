@@ -1,5 +1,5 @@
-import com.moowork.gradle.node.npm.*
-import groovy.json.*
+import com.moowork.gradle.node.npm.NpmTask
+import groovy.json.JsonSlurper
 
 plugins {
     base
@@ -15,8 +15,9 @@ tasks.named<NpmTask>("npm_run_build") {
     inputs.files(fileTree("public"))
     inputs.files(fileTree("src"))
 
-    inputs.file("package.json")
-    inputs.file("package-lock.json")
+    inputs.files("package.json", "package-lock.json")
+    inputs.files("tsconfig.json")
+    inputs.files("babel.config.js", "postcss.config.js", "tailwind.config.js", "vue.config.js")
 
     outputs.dir("dist")
 }
