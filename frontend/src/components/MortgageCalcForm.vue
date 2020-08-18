@@ -89,6 +89,8 @@
 
     </form>
 
+    <AmortisationChart v-if="repaymentPlan" :repaymentPlan="repaymentPlan"></AmortisationChart>
+
     <RepaymentPlanList v-if="repaymentPlan" :repaymentPlan="repaymentPlan"/>
   </div>
 </template>
@@ -98,6 +100,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import Decimal from "decimal.js";
 import {Component, Vue} from 'vue-property-decorator';
+import AmortisationChart from "@/components/AmortisationChart.vue";
 import CurrencyInput from "@/components/CurrencyInput.vue";
 import PercentageInput from "@/components/PercentageInput.vue";
 import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
@@ -108,7 +111,7 @@ import {storageService} from "@/services/storage.service";
 dayjs.extend(utc);
 
 @Component({
-  components: {CurrencyInput, PercentageInput, RepaymentPlanList}
+  components: {AmortisationChart, CurrencyInput, PercentageInput, RepaymentPlanList}
 })
 export default class MortgageCalcForm extends Vue {
 
