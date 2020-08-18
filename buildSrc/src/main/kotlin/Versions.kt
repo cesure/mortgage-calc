@@ -12,6 +12,6 @@ object Versions {
         val kotlin = Plugin.kotlin
         val ktor = "1.3.2"
         val logback = "1.2.1"
-        val node = "12.16.2"
+        val node = "12.18.3"
     }
 }
