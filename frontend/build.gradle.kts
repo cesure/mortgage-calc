@@ -1,5 +1,5 @@
-import com.moowork.gradle.node.npm.NpmTask
-import groovy.json.JsonSlurper
+import com.moowork.gradle.node.npm.*
+import groovy.json.*
 
 plugins {
     base
@@ -9,6 +9,7 @@ plugins {
 node {
     version = Versions.Dependency.node
     download = true
+    npmInstallCommand = "ci"
 }
 
 tasks.named<NpmTask>("npm_run_build") {
