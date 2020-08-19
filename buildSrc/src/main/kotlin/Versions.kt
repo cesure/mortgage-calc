@@ -8,7 +8,7 @@ object Versions {
     }
 
     object Dependency {
-        val jackson = "2.9.9"
+        val jackson = "2.10.2"
         val kotlin = Plugin.kotlin
         val ktor = "1.4.0"
         val logback = "1.2.1"
