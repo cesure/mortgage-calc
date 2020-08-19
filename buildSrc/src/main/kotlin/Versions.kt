@@ -3,7 +3,7 @@ object Versions {
     object Plugin {
         val kotlin = "1.4.0"
         val ktlint = "9.3.0"
-        val nodeGradle = "2.2.3"
+        val nodeGradle = "2.2.4"
         val shadow = "5.2.0"
     }
 
