@@ -14,7 +14,6 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Versions.Dependency.kotlin}")
     implementation("io.ktor:ktor-server-netty:${Versions.Dependency.ktor}")
     implementation("ch.qos.logback:logback-classic:${Versions.Dependency.logback}")
     implementation("io.ktor:ktor-server-core:${Versions.Dependency.ktor}")
