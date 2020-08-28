@@ -89,9 +89,9 @@
 
     </form>
 
-    <AmortisationChart v-if="repaymentPlan" :repaymentPlan="repaymentPlan"></AmortisationChart>
+    <AmortisationChart v-if="repaymentPlan" :repayment-plan="repaymentPlan"/>
 
-    <RepaymentPlanList v-if="repaymentPlan" :repaymentPlan="repaymentPlan"/>
+    <RepaymentPlanList v-if="repaymentPlan" :repayment-plan="repaymentPlan"/>
   </div>
 </template>
 
