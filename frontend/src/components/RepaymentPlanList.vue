@@ -46,7 +46,7 @@ export interface RepaymentPlanEntry {
 
 export interface RepaymentPlan {
   entries: RepaymentPlanEntry[];
-  totalAmountPayed: number;
+  totalAmountPaid: number;
   numberOfPayments: number;
   lastPaymentDate: string;
 }

@@ -94,8 +94,8 @@
         <div class="sm:grid sm:grid-cols-3 sm:gap-2">
           <dt class="text-sm font-bold text-gray-700">Number of payments</dt>
           <dd class="text-sm sm:col-span-2">{{ repaymentPlan.numberOfPayments }} payments</dd>
-          <dt class="text-sm font-bold text-gray-700">Total amount payed</dt>
-          <dd class="text-sm sm:col-span-2">{{ repaymentPlan.totalAmountPayed | formatCurrency }}</dd>
+          <dt class="text-sm font-bold text-gray-700">Total amount paid</dt>
+          <dd class="text-sm sm:col-span-2">{{ repaymentPlan.totalAmountPaid | formatCurrency }}</dd>
           <dt class="text-sm font-bold text-gray-700">Last payment date</dt>
           <dd class="text-sm sm:col-span-2">{{ repaymentPlan.lastPaymentDate | formatDate }}</dd>
         </div>
