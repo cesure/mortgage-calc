@@ -5,9 +5,15 @@ import java.time.LocalDate
 
 data class RepaymentPlan(val entries: List<RepaymentPlanEntry>) {
 
-    val totalAmountPaid = entries.sumOf {
-        (it.repayment.downPayment ?: BigDecimal.ZERO) + (it.repayment.interestPayment ?: BigDecimal.ZERO)
+    val interestPayments = entries.sumOf {
+        it.repayment.interestPayment ?: BigDecimal.ZERO
     }
+
+    val downPayments = entries.sumOf {
+        it.repayment.downPayment ?: BigDecimal.ZERO
+    }
+
+    val totalPayments = interestPayments + downPayments
 
     val numberOfPayments = entries.size
 

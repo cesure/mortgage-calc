@@ -11,7 +11,7 @@ export default class LineChart extends Vue {
   @Prop() options!: ChartOptions;
   @Prop({default: "128em"}) height!: string;
 
-  @Watch("chartDataSets", {immediate: true, deep: true})
+  @Watch("chartDataSets", {immediate: true})
   onChartDataChanged(): void {
     this.renderChart({datasets: [this.chartDataSets]}, this.options)
   }
