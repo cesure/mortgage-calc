@@ -3,7 +3,16 @@ package de.cesure
 import java.math.BigDecimal
 import java.time.LocalDate
 
-data class RepaymentPlan(val entries: List<RepaymentPlanEntry>)
+data class RepaymentPlan(val entries: List<RepaymentPlanEntry>) {
+
+    val totalAmountPayed = entries.sumOf {
+        (it.repayment.downPayment ?: BigDecimal.ZERO) + (it.repayment.interestPayment ?: BigDecimal.ZERO)
+    }
+
+    val numberOfPayments = entries.size
+
+    val lastPaymentDate = entries.last().date
+}
 
 data class RepaymentPlanEntry(val date: LocalDate, val repayment: Repayment, val amountLeft: BigDecimal)
 

@@ -89,9 +89,22 @@
 
     </form>
 
-    <AmortisationChart v-if="repaymentPlan" :repayment-plan="repaymentPlan"/>
+    <div v-if="repaymentPlan" class="w-full max-w-6xl px-8 py-6 mt-6 rounded-lg bg-white shadow-md text-gray-700">
+      <dl>
+        <div class="sm:grid sm:grid-cols-3 sm:gap-2">
+          <dt class="text-sm font-bold text-gray-700">Number of payments</dt>
+          <dd class="text-sm sm:col-span-2">{{ repaymentPlan.numberOfPayments }} payments</dd>
+          <dt class="text-sm font-bold text-gray-700">Total amount payed</dt>
+          <dd class="text-sm sm:col-span-2">{{ repaymentPlan.totalAmountPayed | formatCurrency }}</dd>
+          <dt class="text-sm font-bold text-gray-700">Last payment date</dt>
+          <dd class="text-sm sm:col-span-2">{{ repaymentPlan.lastPaymentDate | formatDate }}</dd>
+        </div>
+      </dl>
+    </div>
 
-    <RepaymentPlanList v-if="repaymentPlan" :repayment-plan="repaymentPlan"/>
+    <AmortisationChart v-if="repaymentPlan" :repayment-plan="repaymentPlan"></AmortisationChart>
+
+    <RepaymentPlanList v-if="repaymentPlan" :entries="repaymentPlan.entries"/>
   </div>
 </template>
 
@@ -106,12 +119,22 @@ import PercentageInput from "@/components/PercentageInput.vue";
 import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
 import {MortgageParams} from '@/models/MortgageParams';
 import {apiService} from '@/services/api.service';
+import {numbroService} from "@/services/numbro.service";
 import {storageService} from "@/services/storage.service";
 
 dayjs.extend(utc);
 
 @Component({
-  components: {AmortisationChart, CurrencyInput, PercentageInput, RepaymentPlanList}
+  components: {AmortisationChart, CurrencyInput, PercentageInput, RepaymentPlanList},
+  filters: {
+    formatCurrency(value: number) {
+      return numbroService.formatCurrency(value);
+    },
+    formatDate(d: string) {
+      const options = {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+      return new Date(d).toLocaleDateString(undefined, options)
+    }
+  }
 })
 export default class MortgageCalcForm extends Vue {
 

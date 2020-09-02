@@ -7,21 +7,21 @@
         <th class="text-left pt-6 px-4 pb-2">Interest Payment</th>
         <th class="text-left pt-6 pl-4 pr-8 pb-2">Amount left</th>
       </tr>
-      <tr class="text-gray-700" v-for="(entry, index) in repaymentPlan.entries" :key="entry.date">
+      <tr class="text-gray-700" v-for="(entry, index) in entries" :key="entry.date">
         <td class="pl-8 pr-4"
-            :class="{'pb-2': index !== repaymentPlan.entries.length - 1, 'pb-6': index === repaymentPlan.entries.length - 1}">
+            :class="{'pb-2': index !== entries.length - 1, 'pb-6': index === entries.length - 1}">
           {{ entry.date | formatDate }}
         </td>
         <td class="px-4"
-            :class="{'pb-2': index !== repaymentPlan.entries.length - 1, 'pb-6': index === repaymentPlan.entries.length - 1}">
+            :class="{'pb-2': index !== entries.length - 1, 'pb-6': index === entries.length - 1}">
           {{ entry.repayment.downPayment | formatCurrency }}
         </td>
         <td class="px-4"
-            :class="{'pb-2': index !== repaymentPlan.entries.length - 1, 'pb-6': index === repaymentPlan.entries.length - 1}">
+            :class="{'pb-2': index !== entries.length - 1, 'pb-6': index === entries.length - 1}">
           {{ entry.repayment.interestPayment | formatCurrency }}
         </td>
         <td class="pl-4 pr-8"
-            :class="{'pb-2': index !== repaymentPlan.entries.length - 1, 'pb-6': index === repaymentPlan.entries.length - 1}">
+            :class="{'pb-2': index !== entries.length - 1, 'pb-6': index === entries.length - 1}">
           {{ entry.amountLeft | formatCurrency }}
         </td>
       </tr>
@@ -46,6 +46,9 @@ export interface RepaymentPlanEntry {
 
 export interface RepaymentPlan {
   entries: RepaymentPlanEntry[];
+  totalAmountPayed: number;
+  numberOfPayments: number;
+  lastPaymentDate: string;
 }
 
 @Component({
@@ -60,6 +63,6 @@ export interface RepaymentPlan {
   }
 })
 export default class RepaymentPlanList extends Vue {
-  @Prop() public repaymentPlan!: RepaymentPlan;
+  @Prop() public entries!: RepaymentPlanEntry[];
 }
 </script>
