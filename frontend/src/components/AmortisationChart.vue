@@ -54,7 +54,7 @@ export default class AmortisationChart extends Vue {
   }
 
   @Watch('repaymentPlan', {immediate: true})
-  onRepaymentPlanChange(val: RepaymentPlan, oldVal: RepaymentPlan) {
+  onRepaymentPlanChange(val: RepaymentPlan): void {
     const newData = val.entries.map((entry: RepaymentPlanEntry) => {
       return {
         x: entry.date,
