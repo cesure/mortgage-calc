@@ -22,6 +22,10 @@ class NumbroService {
     return numbro(value).formatCurrency(this.format);
   }
 
+  formatCurrencyNoDecimals(value: number): string {
+    return numbro(value).formatCurrency(Object.assign({}, this.format, {mantissa: 0}));
+  }
+
   formatNumber(value: number): string {
     return numbro(value).format();
   }

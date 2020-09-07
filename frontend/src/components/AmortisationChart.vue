@@ -51,7 +51,7 @@ export default class AmortisationChart extends Vue {
           labelString: 'Amount left',
         },
         ticks: {
-          callback: (value: number): string => numbroService.formatCurrency(value)
+          callback: (value: number): string => numbroService.formatCurrencyNoDecimals(value)
         }
       }]
     }
