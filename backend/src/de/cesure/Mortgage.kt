@@ -92,8 +92,7 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
             amountLeft -= downPayment
 
             val entry = RepaymentPlanEntry(
-                date = currentTo,
-                repayment = Repayment(interest, downPayment),
+                repayment = Repayment(currentTo, interest, downPayment),
                 amountLeft = amountLeft
             )
             yield(entry)

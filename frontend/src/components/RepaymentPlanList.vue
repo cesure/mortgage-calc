@@ -7,10 +7,10 @@
         <th class="text-left pt-6 px-4 pb-2">Interest Payment</th>
         <th class="text-left pt-6 pl-4 pr-8 pb-2">Amount left</th>
       </tr>
-      <tr class="text-gray-700" v-for="(entry, index) in entries" :key="entry.date">
+      <tr class="text-gray-700" v-for="(entry, index) in entries" :key="entry.repayment.date">
         <td class="pl-8 pr-4"
             :class="{'pb-2': index !== entries.length - 1, 'pb-6': index === entries.length - 1}">
-          {{ entry.date | formatDate }}
+          {{ entry.repayment.date | formatDate }}
         </td>
         <td class="px-4"
             :class="{'pb-2': index !== entries.length - 1, 'pb-6': index === entries.length - 1}">
@@ -34,6 +34,7 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import {numbroService} from '@/services/numbro.service';
 
 export interface Repayment {
+  date: string;
   interestPayment: number;
   downPayment: number;
 }

@@ -138,11 +138,11 @@ class MortgageTest {
         assertTrue(plan.entries.last().amountLeft.compareTo(BigDecimal.ZERO) == 0)
 
         val repayment123 = Repayment(
+            date = LocalDate.of(2030, 4, 30),
             interestPayment = BigDecimal("107.81"),
             downPayment = BigDecimal("170.53")
         )
         val entry123 = RepaymentPlanEntry(
-            date = LocalDate.of(2030, 4, 30),
             repayment = repayment123,
             amountLeft = BigDecimal("64518.18")
         )

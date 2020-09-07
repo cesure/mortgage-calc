@@ -17,12 +17,13 @@ data class RepaymentPlan(val entries: List<RepaymentPlanEntry>) {
 
     val numberOfPayments = entries.size
 
-    val lastPaymentDate = entries.last().date
+    val lastPaymentDate = entries.last().repayment.date
 }
 
-data class RepaymentPlanEntry(val date: LocalDate, val repayment: Repayment, val amountLeft: BigDecimal)
+data class RepaymentPlanEntry(val repayment: Repayment, val amountLeft: BigDecimal)
 
 data class Repayment(
+    val date: LocalDate,
     val interestPayment: BigDecimal? = BigDecimal.ZERO,
     val downPayment: BigDecimal? = BigDecimal.ZERO
 )
