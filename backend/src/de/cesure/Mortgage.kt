@@ -13,7 +13,8 @@ data class Mortgage(
     val paymentDay: Int,
     private val _annuity: BigDecimal? = null,
     private val _downPaymentRate: BigDecimal? = null,
-    val interestRate: BigDecimal
+    val interestRate: BigDecimal,
+    val extraRepayments: List<Repayment>
 ) {
 
     init {
@@ -79,14 +80,11 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
     val entries = sequence {
         var amountLeft = amount
         var currentFrom = this@repaymentPlan.interestStart
-        this@repaymentPlan.paymentDays().forEachIndexed { i, currentTo ->
-            val interestDays = if (i == 0 && currentFrom.dayOfMonth != 1) {
-                countDays30E360(currentFrom, currentTo) // calculate part of month
-            } else 30 // German banks use 30 days for a whole month
+        this@repaymentPlan.paymentDays().forEachIndexed { monthIdx, currentTo ->
+            val interestDays = calculateInterestDays(currentFrom, currentTo, monthIdx == 0)
 
-            val interest = (amountLeft * interestRate * interestDays.toBigDecimal())
-                .divide(360.toBigDecimal(), 2, RoundingMode.HALF_UP)
-            val downPayment = if (i >= interestOnlyMonths) {
+            val interest = calculateInterest(interestDays, amountLeft)
+            val downPayment = if (monthIdx >= interestOnlyMonths) {
                 (annuity - interest).min(amountLeft)
             } else BigDecimal.ZERO
             amountLeft -= downPayment
@@ -105,6 +103,17 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
     }
     return RepaymentPlan(entries.toList())
 }
+
+private fun Mortgage.calculateInterest(days: Int, amountLeft: BigDecimal) =
+    (amountLeft * interestRate * days.toBigDecimal())
+        .divide(360.toBigDecimal(), 2, RoundingMode.HALF_UP)
+
+private fun calculateInterestDays(from: LocalDate, to: LocalDate, isFirstMonth: Boolean) =
+    if (isFirstMonth && from.dayOfMonth != 1) {
+        countDays30E360(from, to) // calculate part of month
+    } else {
+        30  // German banks use 30 days for a whole month
+    }
 
 fun countDays30E360(from: LocalDate, to: LocalDate): Int {
     require(to >= from)
