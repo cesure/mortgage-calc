@@ -9,6 +9,7 @@ import {ChartDataSets, ChartOptions} from "chart.js";
 import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 import LineChart from "@/components/LineChart.vue";
 import {RepaymentPlan, RepaymentPlanEntry} from '@/components/RepaymentPlanList.vue';
+import {numbroService} from "@/services/numbro.service";
 
 @Component({
   components: {LineChart}
@@ -48,6 +49,9 @@ export default class AmortisationChart extends Vue {
         scaleLabel: {
           display: true,
           labelString: 'Amount left',
+        },
+        ticks: {
+          callback: (value: number): string => numbroService.formatCurrency(value)
         }
       }]
     }
