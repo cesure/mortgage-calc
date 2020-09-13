@@ -50,14 +50,12 @@ data class Mortgage(
         }
 
     val downPaymentRate: BigDecimal
-        get() {
-            return if (_downPaymentRate != null && _downPaymentRate > BigDecimal.ZERO) {
-                _downPaymentRate
-            } else {
-                (annuity * BigDecimal(12))
-                    .divide(amount, 2, RoundingMode.HALF_UP) -
-                    interestRate
-            }
+        get() = if (_downPaymentRate != null && _downPaymentRate > BigDecimal.ZERO) {
+            _downPaymentRate
+        } else {
+            (annuity * BigDecimal(12))
+                .divide(amount, 2, RoundingMode.HALF_UP) -
+                interestRate
         }
 }
 
