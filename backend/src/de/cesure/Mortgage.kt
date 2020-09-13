@@ -112,7 +112,7 @@ private fun calculateInterestDays(from: LocalDate, to: LocalDate, isFirstMonth: 
     if (isFirstMonth && from.dayOfMonth != 1) {
         countDays30E360(from, to) // calculate part of month
     } else {
-        30  // German banks use 30 days for a whole month
+        30 // German banks use 30 days for a whole month
     }
 
 fun countDays30E360(from: LocalDate, to: LocalDate): Int {

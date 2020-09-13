@@ -16,7 +16,8 @@ class MortgageTest {
         interestOnlyMonths = 0,
         paymentDay = 1,
         _annuity = BigDecimal.ONE,
-        interestRate = BigDecimal.ONE
+        interestRate = BigDecimal.ONE,
+        extraRepayments = emptyList()
     )
 
     @Test
@@ -131,7 +132,8 @@ class MortgageTest {
             interestOnlyMonths = interestOnlyMonth,
             paymentDay = 30,
             _annuity = BigDecimal("278.34"),
-            interestRate = BigDecimal("0.02")
+            interestRate = BigDecimal("0.02"),
+            extraRepayments = emptyList()
         ).repaymentPlan()
 
         assertEquals(418, plan.entries.size)
