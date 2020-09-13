@@ -74,19 +74,17 @@ fun Mortgage.firstPaymentDate(): LocalDate {
     }
 }
 
-fun Mortgage.nextPaymentDate(currentDate: LocalDate) = this.paymentDate(YearMonth.from(currentDate).plusMonths(1))
-
-fun Mortgage.paymentDays(): Sequence<LocalDate> = generateSequence(this.firstPaymentDate()) {
-    this.nextPaymentDate(it)
-}
-
 fun Mortgage.repaymentPlan(): RepaymentPlan {
     val entries = sequence {
         var amountLeft = amount
-        var currentFrom = this@repaymentPlan.interestStart
-        this@repaymentPlan.paymentDays().forEachIndexed { monthIdx, currentTo ->
-            val interestDays = calculateInterestDays(currentFrom, currentTo, monthIdx == 0)
+        val months = generateSequence(YearMonth.from(interestStart)) {
+            it.plusMonths(1)
+        }
 
+        months.forEachIndexed { monthIdx, currentMonth ->
+            val interestDays = if (monthIdx == 0 && interestStart.dayOfMonth != 1) {
+                countDays30E360(interestStart, currentMonth.atEndOfMonth())
+            } else 30
             val interest = calculateInterest(interestDays, amountLeft)
             val downPayment = if (monthIdx >= interestOnlyMonths) {
                 (annuity - interest).min(amountLeft)
@@ -94,7 +92,7 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
             amountLeft -= downPayment
 
             val entry = RepaymentPlanEntry(
-                repayment = Repayment(currentTo, interest, downPayment),
+                repayment = Repayment(paymentDate(currentMonth), interest, downPayment),
                 amountLeft = amountLeft
             )
             yield(entry)
@@ -102,7 +100,6 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
             if (amountLeft.equalsZero()) {
                 return@sequence
             }
-            currentFrom = currentTo
         }
     }
     return RepaymentPlan(entries.toList())
@@ -111,13 +108,6 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
 private fun Mortgage.calculateInterest(days: Int, amountLeft: BigDecimal) =
     (amountLeft * interestRate * days.toBigDecimal())
         .divide(360.toBigDecimal(), 2, RoundingMode.HALF_UP)
-
-private fun calculateInterestDays(from: LocalDate, to: LocalDate, isFirstMonth: Boolean) =
-    if (isFirstMonth && from.dayOfMonth != 1) {
-        countDays30E360(from, to) // calculate part of month
-    } else {
-        30 // German banks use 30 days for a whole month
-    }
 
 fun countDays30E360(from: LocalDate, to: LocalDate): Int {
     require(to >= from)
