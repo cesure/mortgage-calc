@@ -17,6 +17,8 @@ data class Mortgage(
     val extraRepayments: List<Repayment>
 ) {
 
+    private val extraRepaymentsSorted: Map<LocalDate, List<Repayment>>
+
     init {
         require(amount > BigDecimal.ZERO) {
             "Amount must be greater than zero!"
@@ -35,6 +37,8 @@ data class Mortgage(
         require(interestRate > BigDecimal.ZERO) {
             "Interest rate must be greater than zero!"
         }
+
+        extraRepaymentsSorted = extraRepayments.groupBy { it.date }
     }
 
     val annuity: BigDecimal
