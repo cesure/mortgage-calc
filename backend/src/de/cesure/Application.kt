@@ -2,15 +2,21 @@ package de.cesure
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.features.*
-import io.ktor.http.content.*
-import io.ktor.jackson.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.server.netty.*
-import io.ktor.sessions.*
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.features.ContentNegotiation
+import io.ktor.http.content.defaultResource
+import io.ktor.http.content.resources
+import io.ktor.http.content.static
+import io.ktor.jackson.jackson
+import io.ktor.response.respond
+import io.ktor.routing.get
+import io.ktor.routing.routing
+import io.ktor.server.netty.EngineMain
+import io.ktor.sessions.Sessions
+import io.ktor.sessions.header
 import java.math.BigDecimal
 import java.time.LocalDate
 

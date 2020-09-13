@@ -10,3 +10,8 @@ indent_size = 4
 
 [*.{js, json, ts, vue}]
 indent_size = 2
+
+[*.kt]
+ij_kotlin_name_count_to_use_star_import = 99
+ij_kotlin_name_count_to_use_star_import_for_members = 99
+ij_java_class_count_to_use_import_on_demand = 99
