@@ -14,10 +14,8 @@ data class Mortgage(
     private val _annuity: BigDecimal? = null,
     private val _downPaymentRate: BigDecimal? = null,
     val interestRate: BigDecimal,
-    val extraRepayments: List<Repayment>
+    val extraRepayments: List<Pair<LocalDate, BigDecimal>>
 ) {
-
-    private val extraRepaymentsSorted: Map<LocalDate, List<Repayment>>
 
     init {
         require(amount > BigDecimal.ZERO) {
@@ -37,8 +35,6 @@ data class Mortgage(
         require(interestRate > BigDecimal.ZERO) {
             "Interest rate must be greater than zero!"
         }
-
-        extraRepaymentsSorted = extraRepayments.groupBy { it.date }
     }
 
     val annuity: BigDecimal
@@ -80,6 +76,27 @@ fun Mortgage.repaymentPlan(): RepaymentPlan {
         }
 
         months.forEachIndexed { monthIdx, currentMonth ->
+            // first process the extra repayments
+            val firstDayOfMonth = currentMonth.atDay(1)
+            val lastDayOfMonth = currentMonth.atEndOfMonth()
+            extraRepayments
+                .filter { it.first >= firstDayOfMonth && it.first <= lastDayOfMonth }
+                .map { (day, downPayment) ->
+                    // down payment cannot be larger than the amount left to pay
+                    val actualDownPayment = downPayment.min(amountLeft)
+                    amountLeft -= actualDownPayment
+
+                    if (actualDownPayment >= BigDecimal.ZERO) {
+                        RepaymentPlanEntry(
+                            repayment = Repayment(day, downPayment = actualDownPayment),
+                            amountLeft = amountLeft
+                        ).let {
+                            yield(it)
+                        }
+                    }
+                }
+
+            // then process the regular repayment
             val interestDays = if (monthIdx == 0 && interestStart.dayOfMonth != 1) {
                 countDays30E360(interestStart, currentMonth.atEndOfMonth())
             } else 30
