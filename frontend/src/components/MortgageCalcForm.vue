@@ -79,6 +79,10 @@
         </div>
       </div>
 
+      <div class="flex flex-wrap mb-6">
+        <ExtraRepayments/>
+      </div>
+
       <div class="flex flex-wrap -mx-4">
         <div class="w-full px-4">
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded">
@@ -117,6 +121,7 @@ import Decimal from "decimal.js";
 import {Component, Vue} from 'vue-property-decorator';
 import AmortisationChart from "@/components/AmortisationChart.vue";
 import CurrencyInput from "@/components/CurrencyInput.vue";
+import ExtraRepayments from "@/components/ExtraRepayments.vue";
 import PercentageInput from "@/components/PercentageInput.vue";
 import RepaymentPlanList, {RepaymentPlan} from '@/components/RepaymentPlanList.vue';
 import {MortgageParams} from '@/models/MortgageParams';
@@ -127,7 +132,7 @@ import {storageService} from "@/services/storage.service";
 dayjs.extend(utc);
 
 @Component({
-  components: {AmortisationChart, CurrencyInput, PercentageInput, RepaymentPlanList},
+  components: {AmortisationChart, CurrencyInput, ExtraRepayments, PercentageInput, RepaymentPlanList},
   filters: {
     formatCurrency(value: number) {
       return numbroService.formatCurrency(value);
