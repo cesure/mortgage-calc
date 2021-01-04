@@ -12,7 +12,7 @@ import kotlinx.datetime.toLocalDateTime
 fun RenderContext.mortgageForm(): Div {
     val mortgageStore = object : RootStore<Mortgage>(
         Mortgage(
-            amount = 100_000.0,
+            amount = 100_000,
             interestStart = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         )
     ) {}
