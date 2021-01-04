@@ -1,5 +1,6 @@
 package com.github.cesure.mortgagecalc.components
 
+import com.github.cesure.mortgagecalc.formatAsCurrency
 import com.github.cesure.mortgagecalc.model.Mortgage
 import dev.fritz2.binding.RootStore
 import dev.fritz2.dom.html.Div
@@ -12,7 +13,7 @@ import kotlinx.datetime.toLocalDateTime
 fun RenderContext.mortgageForm(): Div {
     val mortgageStore = object : RootStore<Mortgage>(
         Mortgage(
-            amount = 100_000,
+            amount = 100_000 * 100,
             interestStart = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         )
     ) {}
@@ -27,7 +28,7 @@ fun RenderContext.mortgageForm(): Div {
                 }
 
                 currencyInput(id = "amount") {
-                    value(mortgageStore.data.map { it.interestStart }.asString())
+                    value(mortgageStore.data.map { it.amount.formatAsCurrency() }.asString())
                 }
             }
 
