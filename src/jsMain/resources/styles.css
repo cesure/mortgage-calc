@@ -1,0 +1,51 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+body {
+   @apply bg-gray-100;
+}
+
+#mortgage-calc-app {
+   @apply px-6 py-4
+}
+
+h1 {
+   @apply mb-6 text-4xl leading-normal font-bold text-gray-600;
+}
+
+.container {
+   @apply w-full max-w-6xl px-8 py-6 rounded-lg bg-white shadow-md;
+}
+
+.container + .container {
+   @apply mt-6;
+}
+
+.form-row {
+   @apply flex flex-wrap -mx-4;
+}
+
+.form-row + .form-row {
+   @apply mt-6;
+}
+
+.form-cell-half {
+   @apply w-full md:w-1/2 px-4;
+}
+
+.form-cell-full {
+   @apply w-full px-4;
+}
+
+label {
+   @apply block mb-2 tracking-wide text-xs leading-normal font-bold uppercase text-gray-600;
+}
+
+input {
+   @apply appearance-none block w-full px-4 py-3 border rounded bg-gray-100 text-base leading-tight text-gray-600;
+}
+
+button {
+   @apply px-4 py-3 bg-blue-500 hover:bg-blue-700 rounded font-bold text-white
+}
