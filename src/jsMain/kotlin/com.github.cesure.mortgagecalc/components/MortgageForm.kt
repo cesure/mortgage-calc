@@ -1,13 +1,22 @@
 package com.github.cesure.mortgagecalc.components
 
+import com.github.cesure.mortgagecalc.model.Mortgage
 import dev.fritz2.binding.RootStore
 import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.RenderContext
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 fun RenderContext.mortgageForm(): Div {
-    val firstName = object : RootStore<String>("Foo") {}
-    val lastName = object : RootStore<String>("Bar") {}
+    val mortgageStore = object : RootStore<Mortgage>(
+        Mortgage(
+            amount = 100_000.0,
+            interestStart = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        )
+    ) {}
+
 
     return div("container", "mortgage-form") {
         div("form-row") {
@@ -18,9 +27,7 @@ fun RenderContext.mortgageForm(): Div {
                 }
 
                 currencyInput(id = "amount") {
-                    value(firstName.data.combine(lastName.data) { firstName, lastName ->
-                        "Your full name is: $firstName $lastName"
-                    })
+                    value(mortgageStore.data.map { it.interestStart }.asString())
                 }
             }
 
