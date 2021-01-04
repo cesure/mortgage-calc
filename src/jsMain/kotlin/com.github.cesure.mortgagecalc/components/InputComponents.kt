@@ -2,10 +2,11 @@ package com.github.cesure.mortgagecalc.components
 
 import dev.fritz2.dom.html.Input
 import dev.fritz2.dom.html.RenderContext
+import kotlinx.coroutines.flow.Flow
 
-fun RenderContext.currencyInput(baseClass: String? = null, id: String? = null, content: (Input.() -> Unit)?): Input {
+fun RenderContext.currencyInput(baseClass: String? = null, id: String? = null, value: Flow<String>?): Input {
     return input(id = id) {
-        content?.let { it() }
+        value?.let { value(it) }
     }
 }
 

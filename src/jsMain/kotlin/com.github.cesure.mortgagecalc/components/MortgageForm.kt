@@ -28,9 +28,7 @@ fun RenderContext.mortgageForm(): Div {
                     +"Amount"
                 }
 
-                currencyInput(id = "amount") {
-                    value(mortgageStore.data.map { it.amount.formatAsCurrency() }.asString())
-                }
+                currencyInput(id = "amount", value = mortgageStore.data.map { it.amount.formatAsCurrency() }.asString())
             }
 
             div("form-cell-half") {
@@ -38,9 +36,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("annuity")
                     +"Annuity"
                 }
-                currencyInput(id = "annuity") {
-                    value(mortgageStore.data.map { it.annuity.formatAsCurrency() }.asString())
-                }
+                currencyInput(id = "annuity", value = mortgageStore.data.map { it.annuity.formatAsCurrency() }.asString())
             }
         }
 
