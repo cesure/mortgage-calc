@@ -14,7 +14,8 @@ fun RenderContext.mortgageForm(): Div {
     val mortgageStore = object : RootStore<Mortgage>(
         Mortgage(
             amount = 100_000 * 100,
-            interestStart = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+            annuity = 1_234 * 100,
+            interestStart = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
         )
     ) {}
 
@@ -37,7 +38,9 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("annuity")
                     +"Annuity"
                 }
-                currencyInput(id = "annuity") {}
+                currencyInput(id = "annuity") {
+                    value(mortgageStore.data.map { it.annuity.formatAsCurrency() }.asString())
+                }
             }
         }
 
