@@ -26,7 +26,6 @@ fun RenderContext.numberInput(baseClass: String? = null, id: String? = null, val
 
 fun RenderContext.percentageInput(baseClass: String? = null, id: String? = null, value: Flow<String>?): Input {
     return input(id = id) {
-        type("percentage")
         value?.let { value(it) }
     }
 }
