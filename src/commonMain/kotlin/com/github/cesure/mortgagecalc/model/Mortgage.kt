@@ -6,4 +6,5 @@ data class Mortgage(
     val amount: Long,
     val annuity: Long,
     val interestStart: LocalDate,
+    val interestRate: Long,
 )

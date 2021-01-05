@@ -1,6 +1,10 @@
 package com.github.cesure.mortgagecalc
 
-fun Long.formatAsCurrency(): String {
+fun Long.formatCurrency(): String = "${this.formatDecimal()} €"
+
+fun Long.formatPercentage(): String = "${this.formatDecimal()} %"
+
+private fun Long.formatDecimal(): String {
     val asString = this.toString()
     val integerPart = asString.dropLast(2)
         .padStart(1, '0')
@@ -10,5 +14,5 @@ fun Long.formatAsCurrency(): String {
         .reversed()
     val fractionalPart = asString.takeLast(2)
         .padStart(2, '0')
-    return "$integerPart,$fractionalPart €"
+    return "$integerPart,$fractionalPart"
 }
