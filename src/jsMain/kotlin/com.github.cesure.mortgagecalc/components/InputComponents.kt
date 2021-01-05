@@ -16,9 +16,10 @@ fun RenderContext.dateInput(baseClass: String? = null, id: String? = null): Inpu
     }
 }
 
-fun RenderContext.numberInput(baseClass: String? = null, id: String? = null): Input {
+fun RenderContext.numberInput(baseClass: String? = null, id: String? = null, value: Flow<String>?): Input {
     return input(id = id) {
         this.type("number")
+        value?.let { value(it) }
     }
 }
 

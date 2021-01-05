@@ -17,7 +17,9 @@ fun RenderContext.mortgageForm(): Div {
             amount = 100_000 * 100,
             annuity = 1_234 * 100,
             interestStart = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
+            paymentDay = 30,
             interestRate = 175,
+            interestOnlyMonths = 1,
         )
     ) {}
 
@@ -56,7 +58,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("paymentDay")
                     +"Payment Day"
                 }
-                numberInput(id = "paymentDay")
+                numberInput(id = "paymentDay", value = mortgageStore.data.map { it.paymentDay }.asString())
             }
         }
 
@@ -74,7 +76,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("interestOnlyMonths")
                     +"Interest Only Months"
                 }
-                numberInput(id = "interestOnlyMonths")
+                numberInput(id = "interestOnlyMonths", value = mortgageStore.data.map { it.interestOnlyMonths }.asString())
             }
         }
 
