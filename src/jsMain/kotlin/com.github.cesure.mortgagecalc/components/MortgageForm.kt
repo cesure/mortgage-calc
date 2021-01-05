@@ -1,13 +1,19 @@
 package com.github.cesure.mortgagecalc.components
 
 import com.github.cesure.mortgagecalc.MortgageStore
-import com.github.cesure.mortgagecalc.formatCurrency
-import com.github.cesure.mortgagecalc.formatPercentage
+import com.github.cesure.mortgagecalc.model.Formats
+import com.github.cesure.mortgagecalc.model.L
 import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.RenderContext
-import kotlinx.coroutines.flow.map
 
 fun RenderContext.mortgageForm(): Div {
+
+    val amount = MortgageStore.sub(L.Mortgage.amount + Formats.currency)
+    val annuity = MortgageStore.sub(L.Mortgage.annuity + Formats.currency)
+    val interestRate = MortgageStore.sub(L.Mortgage.interestRate + Formats.percentage)
+    val paymentDay = MortgageStore.sub(L.Mortgage.paymentDay + Formats.integer)
+    val interestOnlyMonths = MortgageStore.sub(L.Mortgage.interestOnlyMonths + Formats.integer)
+
     return div("container", "mortgage-form") {
         div("form-row") {
             div("form-cell-half") {
@@ -16,7 +22,7 @@ fun RenderContext.mortgageForm(): Div {
                     +"Amount"
                 }
 
-                currencyInput(id = "amount", value = MortgageStore.data.map { it.amount.formatCurrency() }.asString())
+                currencyInput(id = "amount", value = amount.data)
             }
 
             div("form-cell-half") {
@@ -24,7 +30,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("annuity")
                     +"Annuity"
                 }
-                currencyInput(id = "annuity", value = MortgageStore.data.map { it.annuity.formatCurrency() }.asString())
+                currencyInput(id = "annuity", value = annuity.data)
             }
         }
 
@@ -42,7 +48,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("paymentDay")
                     +"Payment Day"
                 }
-                numberInput(id = "paymentDay", value = MortgageStore.data.map { it.paymentDay }.asString())
+                numberInput(id = "paymentDay", value = paymentDay.data)
             }
         }
 
@@ -52,9 +58,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("interestRate")
                     +"Interest Rate"
                 }
-                percentageInput(
-                    id = "interestRate",
-                    value = MortgageStore.data.map { it.interestRate.formatPercentage() })
+                percentageInput(id = "interestRate", value = interestRate.data)
             }
 
             div("form-cell-half") {
@@ -62,10 +66,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("interestOnlyMonths")
                     +"Interest Only Months"
                 }
-                numberInput(
-                    id = "interestOnlyMonths",
-                    value = MortgageStore.data.map { it.interestOnlyMonths }.asString()
-                )
+                numberInput(id = "interestOnlyMonths", value = interestOnlyMonths.data)
             }
         }
 
