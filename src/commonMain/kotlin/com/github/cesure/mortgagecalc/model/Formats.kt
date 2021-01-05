@@ -2,12 +2,18 @@ package com.github.cesure.mortgagecalc.model
 
 import dev.fritz2.lenses.Lens
 import dev.fritz2.lenses.format
+import kotlinx.datetime.LocalDate
 
 object Formats {
 
     val currency: Lens<Long, String> = format(
         { it.unformatCurrency() },
         { it.formatCurrency() }
+    )
+
+    val localDate: Lens<LocalDate, String> = format(
+        { LocalDate.parse(it.trim()) },
+        { it.toString() },
     )
 
     val integer: Lens<Int, String> = format(

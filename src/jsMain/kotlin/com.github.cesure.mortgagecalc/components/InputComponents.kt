@@ -10,9 +10,10 @@ fun RenderContext.currencyInput(baseClass: String? = null, id: String? = null, v
     }
 }
 
-fun RenderContext.dateInput(baseClass: String? = null, id: String? = null): Input {
+fun RenderContext.dateInput(baseClass: String? = null, id: String? = null, value: Flow<String>?): Input {
     return input(id = id) {
         type("date")
+        value?.let { value(it) }
     }
 }
 
