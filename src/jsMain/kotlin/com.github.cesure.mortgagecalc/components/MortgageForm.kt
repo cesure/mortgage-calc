@@ -23,7 +23,6 @@ fun RenderContext.mortgageForm(): Div {
         )
     ) {}
 
-
     return div("container", "mortgage-form") {
         div("form-row") {
             div("form-cell-half") {
