@@ -40,7 +40,7 @@ fun Long.formatPercentage(): String = "${this.formatDecimal()} %"
 
 fun String.unformatPercentage(): Long = this.replace("%", "").unformatDecimal()
 
-private fun Long.formatDecimal(): String {
+fun Long.formatDecimal(): String {
     val asString = this.toString()
     val integerPart = asString.dropLast(2)
         .padStart(1, '0')

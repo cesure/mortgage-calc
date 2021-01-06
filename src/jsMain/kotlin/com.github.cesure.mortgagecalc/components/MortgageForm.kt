@@ -1,15 +1,26 @@
 package com.github.cesure.mortgagecalc.components
 
 import com.github.cesure.mortgagecalc.MortgageStore
-import com.github.cesure.mortgagecalc.model.Formats
-import com.github.cesure.mortgagecalc.model.L
+import com.github.cesure.mortgagecalc.model.*
 import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.RenderContext
+import dev.fritz2.lenses.Lens
+import dev.fritz2.lenses.format
 
 fun RenderContext.mortgageForm(): Div {
 
-    val amountCurrency = MortgageStore.sub(L.Mortgage.amount + Formats.currency)
-    val amountDecimal = MortgageStore.sub(L.Mortgage.amount + Formats.decimal)
+    val currency: Lens<Long, String> = format(
+        { asd -> asd.unformatCurrency().also { console.log("unformatCurrency String $asd to Long $it") } },
+        { asd -> asd.formatCurrency().also { console.log("formatCurrency Long $asd to String $it") } }
+    )
+
+    val decimal: Lens<Long, String> = format(
+        { asd -> asd.unformatDecimal().also { console.log("unformatDecimal String $asd to Long $it") } },
+        { asd -> asd.formatDecimal().also { console.log("formatDecimal Long $asd to String $it") } }
+    )
+
+    val amountCurrency = MortgageStore.sub(L.Mortgage.amount + currency)
+    val amountDecimal = MortgageStore.sub(L.Mortgage.amount + decimal)
     val annuityCurrency = MortgageStore.sub(L.Mortgage.annuity + Formats.currency)
     val annuityDecimal = MortgageStore.sub(L.Mortgage.annuity + Formats.decimal)
     val interestStart = MortgageStore.sub(L.Mortgage.interestStart + Formats.localDate)

@@ -16,19 +16,17 @@ fun RenderContext.currencyInput(id: String? = null, value: Flow<String>?): Input
 
 fun RenderContext.formattedInput(id: String? = null, defaultStore: Store<String>, focusStore: Store<String>): Input =
     input(id = id) {
+        console.log("render formattedInput")
         val hasFocus = storeOf(false)
 
         hasFocus.data.render { showUnformatted ->
-            if (showUnformatted) {
-                value(focusStore.data)
-            } else {
-                value(defaultStore.data)
-            }
-
-            focuss.events.map { true } handledBy hasFocus.update
-            blurs.events.map { false } handledBy hasFocus.update
-            changes.values() handledBy defaultStore.update
+            console.log("render formattedInput.value")
+            value(if (showUnformatted) focusStore.data else defaultStore.data)
         }
+
+        focuss.events.map { true.also { console.log("focus") } } handledBy hasFocus.update
+        blurs.events.map { false.also { console.log("blur") } } handledBy hasFocus.update
+        changes.values() handledBy focusStore.update.also { console.log("changes") }
     }
 
 fun RenderContext.dateInput(id: String? = null, value: Flow<String>?): Input =
