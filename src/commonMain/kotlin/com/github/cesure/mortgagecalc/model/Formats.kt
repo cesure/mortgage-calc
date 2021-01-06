@@ -11,6 +11,11 @@ object Formats {
         { it.formatCurrency() }
     )
 
+    val decimal: Lens<Long, String> = format(
+        { it.unformatDecimal() },
+        { it.formatDecimal() }
+    )
+
     val localDate: Lens<LocalDate, String> = format(
         { LocalDate.parse(it.trim()) },
         { it.toString() },
@@ -49,7 +54,9 @@ private fun Long.formatDecimal(): String {
 }
 
 fun String.unformatDecimal(): Long {
-    val (integerPart, fractionalPart) = this.trim().split(",")
+    val splitted = this.split(",")
+    val integerPart = splitted.first().trim().ifBlank { "0" }
+    val fractionalPart = splitted.getOrNull(1)?.trim()?.ifBlank { "0" } ?: "0"
     return integerPart.replace(".", "").toLong() * 100 +
-            fractionalPart.replace(".", "").toLong()
+            fractionalPart.toLong()
 }
