@@ -3,12 +3,15 @@ package com.github.cesure.mortgagecalc.components
 import com.github.cesure.mortgagecalc.MortgageStore
 import com.github.cesure.mortgagecalc.model.Formats
 import com.github.cesure.mortgagecalc.model.L
+import dev.fritz2.binding.storeOf
 import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.RenderContext
+import dev.fritz2.dom.values
+import kotlinx.coroutines.flow.map
 
 fun RenderContext.mortgageForm(): Div {
 
-    val amount = MortgageStore.sub(L.Mortgage.amount + Formats.currency)
+    val amountCurrency = MortgageStore.sub(L.Mortgage.amount + Formats.currency)
     val annuity = MortgageStore.sub(L.Mortgage.annuity + Formats.currency)
     val interestStart = MortgageStore.sub(L.Mortgage.interestStart + Formats.localDate)
     val interestRate = MortgageStore.sub(L.Mortgage.interestRate + Formats.percentage)
@@ -23,7 +26,30 @@ fun RenderContext.mortgageForm(): Div {
                     +"Amount"
                 }
 
-                currencyInput(id = "amount", value = amount.data)
+                currencyInput2(id = "amount") {
+                    val amountDecimal = MortgageStore.sub(L.Mortgage.amount + Formats.decimal)
+
+                    console.log("render currencyInput2")
+
+                    val hasFocus = storeOf(false)
+
+                    hasFocus.data.render { showUnformatted ->
+                        console.log("render currencyInput2 value")
+                        console.log(showUnformatted)
+                        if (showUnformatted) {
+                            value(amountDecimal.data)
+                        } else {
+                            value(amountCurrency.data)
+                        }
+                    }
+
+                    changes.values() handledBy amountCurrency.update
+
+                    focuss.events.map { true } handledBy hasFocus.update
+                    blurs.events.map { false } handledBy hasFocus.update
+                }
+
+                input { value(MortgageStore.data.asString()) }
             }
 
             div("form-cell-half") {

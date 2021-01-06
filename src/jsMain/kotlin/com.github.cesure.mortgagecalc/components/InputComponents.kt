@@ -10,6 +10,12 @@ fun RenderContext.currencyInput(baseClass: String? = null, id: String? = null, v
     }
 }
 
+fun RenderContext.currencyInput2(baseClass: String? = null, id: String? = null, content: Input.() -> Unit): Input {
+    return input(id = id) {
+        content()
+    }
+}
+
 fun RenderContext.dateInput(baseClass: String? = null, id: String? = null, value: Flow<String>?): Input {
     return input(id = id) {
         type("date")
