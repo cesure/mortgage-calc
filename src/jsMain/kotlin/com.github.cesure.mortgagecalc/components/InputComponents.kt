@@ -24,9 +24,9 @@ fun RenderContext.formattedInput(id: String? = null, defaultStore: Store<String>
             value(if (showUnformatted) focusStore.data else defaultStore.data)
         }
 
-        focuss.events.map { true.also { console.log("focus") } } handledBy hasFocus.update
-        blurs.events.map { false.also { console.log("blur") } } handledBy hasFocus.update
-        changes.values() handledBy focusStore.update.also { console.log("changes") }
+        focuss.events.map { true } handledBy hasFocus.update
+        blurs.events.map { false } handledBy hasFocus.update
+        changes.values() handledBy focusStore.update
     }
 
 fun RenderContext.dateInput(id: String? = null, value: Flow<String>?): Input =

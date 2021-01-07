@@ -56,7 +56,7 @@ fun Long.formatDecimal(): String {
 fun String.unformatDecimal(): Long {
     val splitted = this.split(",")
     val integerPart = splitted.first().trim().ifBlank { "0" }
-    val fractionalPart = splitted.getOrNull(1)?.trim()?.ifBlank { "0" } ?: "0"
-    return integerPart.replace(".", "").toLong() * 100 +
-            fractionalPart.toLong()
+    val fractionalPart = splitted.getOrNull(1).orEmpty().trim().padEnd(2, '0').take(2)
+    return (integerPart.replace(".", "").toLongOrNull() ?: 0) * 100 +
+            (fractionalPart.toLongOrNull() ?: 0)
 }
