@@ -15,6 +15,11 @@ fun <T> RenderContext.currencyInput(
     store: SubStore<T, T, Long>
 ): Input = formattedInput(id, store, Formats.currency, Formats.decimal)
 
+fun <T> RenderContext.percentageInput(
+    id: String? = null,
+    store: SubStore<T, T, Long>
+): Input = formattedInput(id, store, Formats.percentage, Formats.decimal)
+
 fun <T, S> RenderContext.formattedInput(
     id: String? = null,
     store: SubStore<T, T, S>,
@@ -48,10 +53,5 @@ fun RenderContext.dateInput(id: String? = null, value: Flow<String>?): Input =
 fun RenderContext.numberInput(id: String? = null, value: Flow<String>?): Input =
     input(id = id) {
         type("number")
-        value?.let { value(it) }
-    }
-
-fun RenderContext.percentageInput(id: String? = null, value: Flow<String>?): Input =
-    input(id = id) {
         value?.let { value(it) }
     }
