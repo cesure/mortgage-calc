@@ -1,22 +1,26 @@
 package com.github.cesure.mortgagecalc.components
 
-import dev.fritz2.binding.Store
+import dev.fritz2.binding.SubStore
 import dev.fritz2.binding.storeOf
 import dev.fritz2.dom.html.Input
 import dev.fritz2.dom.html.RenderContext
 import dev.fritz2.dom.values
+import dev.fritz2.lenses.Lens
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-fun RenderContext.currencyInput(id: String? = null, value: Flow<String>?): Input {
-    return input(id = id) {
-        value?.let { value(it) }
-    }
-}
-
-fun RenderContext.formattedInput(id: String? = null, defaultStore: Store<String>, focusStore: Store<String>): Input =
+fun <T> RenderContext.formattedInput(
+    id: String? = null,
+    store: SubStore<T, T, Long>,
+    defaultLens: Lens<Long, String>,
+    focusLens: Lens<Long, String>
+): Input =
     input(id = id) {
         console.log("render formattedInput")
+
+        val defaultStore = store.sub(defaultLens)
+        val focusStore = store.sub(focusLens)
+
         val hasFocus = storeOf(false)
 
         hasFocus.data.render { showUnformatted ->

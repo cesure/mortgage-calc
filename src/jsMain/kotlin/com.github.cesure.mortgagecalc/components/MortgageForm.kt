@@ -8,10 +8,8 @@ import dev.fritz2.dom.html.RenderContext
 
 fun RenderContext.mortgageForm(): Div {
 
-    val amountCurrency = MortgageStore.sub(L.Mortgage.amount + Formats.currency)
-    val amountDecimal = MortgageStore.sub(L.Mortgage.amount + Formats.decimal)
-    val annuityCurrency = MortgageStore.sub(L.Mortgage.annuity + Formats.currency)
-    val annuityDecimal = MortgageStore.sub(L.Mortgage.annuity + Formats.decimal)
+    val amountStore = MortgageStore.sub(L.Mortgage.amount)
+    val annuityStore = MortgageStore.sub(L.Mortgage.annuity)
     val interestStart = MortgageStore.sub(L.Mortgage.interestStart + Formats.localDate)
     val interestRate = MortgageStore.sub(L.Mortgage.interestRate + Formats.percentage)
     val paymentDay = MortgageStore.sub(L.Mortgage.paymentDay + Formats.integer)
@@ -25,8 +23,7 @@ fun RenderContext.mortgageForm(): Div {
                     +"Amount"
                 }
 
-                formattedInput("amount", amountCurrency, amountDecimal)
-//                input { value(MortgageStore.data.asString()) }
+                formattedInput("amount", amountStore, Formats.currency, Formats.decimal)
             }
 
             div("form-cell-half") {
@@ -34,7 +31,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("annuity")
                     +"Annuity"
                 }
-                formattedInput("annuity", annuityCurrency, annuityDecimal)
+                formattedInput("annuity", annuityStore, Formats.currency, Formats.decimal)
             }
         }
 
