@@ -9,11 +9,11 @@ import dev.fritz2.lenses.Lens
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-fun <T> RenderContext.formattedInput(
+fun <T, S> RenderContext.formattedInput(
     id: String? = null,
-    store: SubStore<T, T, Long>,
-    defaultLens: Lens<Long, String>,
-    focusLens: Lens<Long, String>
+    store: SubStore<T, T, S>,
+    defaultLens: Lens<S, String>,
+    focusLens: Lens<S, String>
 ): Input =
     input(id = id) {
         console.log("render formattedInput")
