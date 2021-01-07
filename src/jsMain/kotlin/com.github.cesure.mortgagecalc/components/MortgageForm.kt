@@ -23,7 +23,7 @@ fun RenderContext.mortgageForm(): Div {
                     +"Amount"
                 }
 
-                formattedInput("amount", amountStore, Formats.currency, Formats.decimal)
+                currencyInput("amount", amountStore)
             }
 
             div("form-cell-half") {
@@ -31,7 +31,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("annuity")
                     +"Annuity"
                 }
-                formattedInput("annuity", annuityStore, Formats.currency, Formats.decimal)
+                currencyInput("annuity", annuityStore)
             }
         }
 
