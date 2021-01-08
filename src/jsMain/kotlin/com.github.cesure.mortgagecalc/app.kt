@@ -1,6 +1,7 @@
 package com.github.cesure.mortgagecalc
 
 import com.github.cesure.mortgagecalc.components.mortgageForm
+import com.github.cesure.mortgagecalc.repositories.mortgageStore
 import dev.fritz2.dom.html.render
 import dev.fritz2.dom.mount
 
@@ -14,7 +15,7 @@ fun main() {
 
             mortgageForm()
 
-            MortgageStore.data.renderElement {
+            mortgageStore.data.renderElement {
                 div("container", "repayment-plan-graph") {
                     +it.toString()
                 }
