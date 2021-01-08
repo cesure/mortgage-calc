@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.targets.js.NpmVersions
 
 plugins {
     kotlin("multiplatform") version "1.4.21"
+    kotlin("plugin.serialization") version "1.4.21"
     id("dev.fritz2.fritz2-gradle") version "0.8"
 }
 
@@ -23,8 +24,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.1.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
             }
         }
         val jvmMain by getting {
