@@ -7,7 +7,6 @@ import dev.fritz2.dom.html.Input
 import dev.fritz2.dom.html.RenderContext
 import dev.fritz2.dom.values
 import dev.fritz2.lenses.Lens
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
 
@@ -16,16 +15,23 @@ fun <T> RenderContext.currencyInput(
     store: SubStore<T, T, Long>
 ): Input = formattedInput(id, store, Formats.currency, Formats.decimal)
 
-fun <T> RenderContext.percentageInput(
-    id: String? = null,
-    store: SubStore<T, T, Long>
-): Input = formattedInput(id, store, Formats.percentage, Formats.decimal)
-
 fun <T> RenderContext.dateInput(
     id: String? = null,
     store: SubStore<T, T, LocalDate>
 ): Input = formattedInput(id, store, Formats.localDate) {
     type("date")
+}
+
+fun <T> RenderContext.percentageInput(
+    id: String? = null,
+    store: SubStore<T, T, Long>
+): Input = formattedInput(id, store, Formats.percentage, Formats.decimal)
+
+fun <T> RenderContext.numberInput(
+    id: String? = null,
+    store: SubStore<T, T, Int>
+): Input = formattedInput(id, store, Formats.integer) {
+    type("number")
 }
 
 fun <T, S> RenderContext.formattedInput(
@@ -59,10 +65,4 @@ fun <T, S> RenderContext.formattedInput(
             value(defaultStore.data)
             changes.values() handledBy defaultStore.update
         }
-    }
-
-fun RenderContext.numberInput(id: String? = null, value: Flow<String>?): Input =
-    input(id = id) {
-        type("number")
-        value?.let { value(it) }
     }

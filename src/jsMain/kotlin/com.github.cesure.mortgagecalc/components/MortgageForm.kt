@@ -1,7 +1,6 @@
 package com.github.cesure.mortgagecalc.components
 
 import com.github.cesure.mortgagecalc.MortgageStore
-import com.github.cesure.mortgagecalc.model.Formats
 import com.github.cesure.mortgagecalc.model.L
 import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.RenderContext
@@ -12,10 +11,10 @@ fun RenderContext.mortgageForm(): Div {
     val annuityStore = MortgageStore.sub(L.Mortgage.annuity)
     val interestStartStore = MortgageStore.sub(L.Mortgage.interestStart)
 
-    val interestStart = MortgageStore.sub(L.Mortgage.interestStart + Formats.localDate)
     val interestRateStore = MortgageStore.sub(L.Mortgage.interestRate)
-    val paymentDay = MortgageStore.sub(L.Mortgage.paymentDay + Formats.integer)
-    val interestOnlyMonths = MortgageStore.sub(L.Mortgage.interestOnlyMonths + Formats.integer)
+
+    val paymentDayStore = MortgageStore.sub(L.Mortgage.paymentDay)
+    val interestOnlyMonthsStore = MortgageStore.sub(L.Mortgage.interestOnlyMonths)
 
     return div("container", "mortgage-form") {
         div("form-row") {
@@ -51,7 +50,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("paymentDay")
                     +"Payment Day"
                 }
-                numberInput("paymentDay", paymentDay.data)
+                numberInput("paymentDay", paymentDayStore)
             }
         }
 
@@ -69,7 +68,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("interestOnlyMonths")
                     +"Interest Only Months"
                 }
-                numberInput("interestOnlyMonths", interestOnlyMonths.data)
+                numberInput("interestOnlyMonths", interestOnlyMonthsStore)
             }
         }
 
