@@ -29,9 +29,11 @@ fun <T> RenderContext.percentageInput(
 
 fun <T> RenderContext.numberInput(
     id: String? = null,
-    store: SubStore<T, T, Int>
+    store: SubStore<T, T, Int>,
+    content: (Input.() -> Unit)? = null,
 ): Input = formattedInput(id, store, Formats.integer) {
     type("number")
+    content?.let { it() }
 }
 
 fun <T, S> RenderContext.formattedInput(

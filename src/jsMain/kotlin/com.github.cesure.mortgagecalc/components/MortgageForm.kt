@@ -48,7 +48,10 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("paymentDay")
                     +"Payment Day"
                 }
-                numberInput("paymentDay", paymentDayStore)
+                numberInput("paymentDay", paymentDayStore) {
+                    min("1")
+                    max("31")
+                }
             }
         }
 
@@ -66,7 +69,9 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("interestOnlyMonths")
                     +"Interest Only Months"
                 }
-                numberInput("interestOnlyMonths", interestOnlyMonthsStore)
+                numberInput("interestOnlyMonths", interestOnlyMonthsStore) {
+                    min("0")
+                }
             }
         }
 

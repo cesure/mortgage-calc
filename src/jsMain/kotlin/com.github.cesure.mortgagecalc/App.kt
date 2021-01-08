@@ -11,7 +11,13 @@ fun main() {
             h1 {
                 +"Mortgage Calc"
             }
+
             mortgageForm()
+
+            div("container", "repayment-plan-graph") {
+                MortgageStore.data.asText()
+            }
+
 //            repaymentPlanGraph()
 //            repaymentPlanList()
         }
