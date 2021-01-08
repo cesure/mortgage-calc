@@ -14,8 +14,10 @@ fun main() {
 
             mortgageForm()
 
-            div("container", "repayment-plan-graph") {
-                MortgageStore.data.asText()
+            MortgageStore.data.renderElement {
+                div("container", "repayment-plan-graph") {
+                    +it.toString()
+                }
             }
 
 //            repaymentPlanGraph()
