@@ -9,6 +9,7 @@ import dev.fritz2.dom.values
 import dev.fritz2.lenses.Lens
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDate
 
 fun <T> RenderContext.currencyInput(
     id: String? = null,
@@ -20,14 +21,24 @@ fun <T> RenderContext.percentageInput(
     store: SubStore<T, T, Long>
 ): Input = formattedInput(id, store, Formats.percentage, Formats.decimal)
 
+fun <T> RenderContext.dateInput(
+    id: String? = null,
+    store: SubStore<T, T, LocalDate>
+): Input = formattedInput(id, store, Formats.localDate) {
+    type("date")
+}
+
 fun <T, S> RenderContext.formattedInput(
     id: String? = null,
     store: SubStore<T, T, S>,
-    defaultLens: Lens<S, String>,
-    focusLens: Lens<S, String>?,
+    defaultLlens: Lens<S, String>,
+    focusLens: Lens<S, String>? = null,
+    content: (Input.() -> Unit)? = null,
 ): Input =
     input(id = id) {
-        val defaultStore = store.sub(defaultLens)
+        content?.let { it() }
+
+        val defaultStore = store.sub(defaultLlens)
 
         if (focusLens != null) {
             val focusStore = store.sub(focusLens)
@@ -48,12 +59,6 @@ fun <T, S> RenderContext.formattedInput(
             value(defaultStore.data)
             changes.values() handledBy defaultStore.update
         }
-    }
-
-fun RenderContext.dateInput(id: String? = null, value: Flow<String>?): Input =
-    input(id = id) {
-        type("date")
-        value?.let { value(it) }
     }
 
 fun RenderContext.numberInput(id: String? = null, value: Flow<String>?): Input =

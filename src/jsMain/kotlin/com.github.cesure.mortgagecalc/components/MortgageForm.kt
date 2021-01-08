@@ -10,6 +10,8 @@ fun RenderContext.mortgageForm(): Div {
 
     val amountStore = MortgageStore.sub(L.Mortgage.amount)
     val annuityStore = MortgageStore.sub(L.Mortgage.annuity)
+    val interestStartStore = MortgageStore.sub(L.Mortgage.interestStart)
+
     val interestStart = MortgageStore.sub(L.Mortgage.interestStart + Formats.localDate)
     val interestRateStore = MortgageStore.sub(L.Mortgage.interestRate)
     val paymentDay = MortgageStore.sub(L.Mortgage.paymentDay + Formats.integer)
@@ -41,7 +43,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("interestStart")
                     +"Interest Start"
                 }
-                dateInput("interestStart", interestStart.data)
+                dateInput("interestStart", interestStartStore)
             }
 
             div("form-cell-half") {
