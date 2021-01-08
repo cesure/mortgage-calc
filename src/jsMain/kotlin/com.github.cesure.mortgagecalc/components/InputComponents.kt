@@ -24,24 +24,30 @@ fun <T, S> RenderContext.formattedInput(
     id: String? = null,
     store: SubStore<T, T, S>,
     defaultLens: Lens<S, String>,
-    focusLens: Lens<S, String>
+    focusLens: Lens<S, String>?,
 ): Input =
     input(id = id) {
-        console.log("render formattedInput")
-
         val defaultStore = store.sub(defaultLens)
-        val focusStore = store.sub(focusLens)
 
-        val hasFocus = storeOf(false)
+        if (focusLens != null) {
+            val focusStore = store.sub(focusLens)
+            val hasFocus = storeOf(false)
+            hasFocus.data.render { showUnformatted ->
+                if (showUnformatted) {
+                    value(focusStore.data)
+                } else {
+                    value(defaultStore.data)
+                }
+            }
 
-        hasFocus.data.render { showUnformatted ->
-            console.log("render formattedInput.value")
-            value(if (showUnformatted) focusStore.data else defaultStore.data)
+            changes.values() handledBy (focusStore).update
+
+            focuss.events.map { true } handledBy hasFocus.update
+            blurs.events.map { false } handledBy hasFocus.update
+        } else {
+            value(defaultStore.data)
+            changes.values() handledBy defaultStore.update
         }
-
-        focuss.events.map { true } handledBy hasFocus.update
-        blurs.events.map { false } handledBy hasFocus.update
-        changes.values() handledBy focusStore.update
     }
 
 fun RenderContext.dateInput(id: String? = null, value: Flow<String>?): Input =
