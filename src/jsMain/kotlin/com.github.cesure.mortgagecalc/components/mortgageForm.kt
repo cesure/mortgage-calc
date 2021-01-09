@@ -1,18 +1,18 @@
 package com.github.cesure.mortgagecalc.components
 
 import com.github.cesure.mortgagecalc.model.L
-import com.github.cesure.mortgagecalc.repositories.mortgageStore
+import com.github.cesure.mortgagecalc.repositories.MortgageStore
 import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.RenderContext
 
 fun RenderContext.mortgageForm(): Div {
 
-    val amountStore = mortgageStore.sub(L.Mortgage.amount)
-    val annuityStore = mortgageStore.sub(L.Mortgage.annuity)
-    val interestStartStore = mortgageStore.sub(L.Mortgage.interestStart)
-    val interestRateStore = mortgageStore.sub(L.Mortgage.interestRate)
-    val paymentDayStore = mortgageStore.sub(L.Mortgage.paymentDay)
-    val interestOnlyMonthsStore = mortgageStore.sub(L.Mortgage.interestOnlyMonths)
+    val amountStore = MortgageStore.sub(L.Mortgage.amount)
+    val annuityStore = MortgageStore.sub(L.Mortgage.annuity)
+    val interestStartStore = MortgageStore.sub(L.Mortgage.interestStart)
+    val interestRateStore = MortgageStore.sub(L.Mortgage.interestRate)
+    val paymentDayStore = MortgageStore.sub(L.Mortgage.paymentDay)
+    val interestOnlyMonthsStore = MortgageStore.sub(L.Mortgage.interestOnlyMonths)
 
     return div("container", "mortgage-form") {
         div("form-row") {
