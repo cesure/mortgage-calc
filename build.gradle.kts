@@ -35,7 +35,7 @@ kotlin {
         val jsMain by getting {
             dependencies {
                 val npmVersions = NpmVersions()
-                implementation(npm("decimal.js", "^5.0.3"))
+                implementation(npm("big.js", "^5.2.2"))
                 implementation(devNpm("autoprefixer", "^10.1.0"))
                 implementation(devNpm("css-loader", npmVersions.cssLoader.version))
                 implementation(devNpm("postcss", "^8.2.2"))
