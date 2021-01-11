@@ -6,6 +6,11 @@ import kotlinx.datetime.LocalDate
 
 object Formats {
 
+    val newDecimal: Lens<Decimal, String> = format(
+        { Decimal(it) },
+        { it.toString() }
+    )
+
     val currency: Lens<Long, String> = format(
         { it.unformatCurrency() },
         { it.formatCurrency() }

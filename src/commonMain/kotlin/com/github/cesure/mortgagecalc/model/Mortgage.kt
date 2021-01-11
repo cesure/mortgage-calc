@@ -13,7 +13,9 @@ import kotlinx.serialization.json.Json
 @Lenses
 @Serializable
 data class Mortgage(
-    val amount: Long = 100_000 * 100,
+//    val amount: Long = 100_000 * 100,
+    @Serializable(DecimalSerializer::class)
+    val amount: Decimal = Decimal("100000"),
     val annuity: Long = 1_000 * 100,
     @Serializable(LocalDateSerializer::class)
     val interestStart: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,

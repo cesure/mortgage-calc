@@ -1,60 +1,38 @@
 package com.github.cesure.mortgagecalc.model
 
-@JsModule("decimal.js")
+@JsModule("big.js")
 @JsNonModule
-internal external fun jsBig(raw: dynamic): Big
+private external fun bigJs(raw: dynamic): Big
 
-@JsName("Number")
-internal external fun jsNumber(raw: dynamic): Number
+private external class Big {
 
-internal external class Big {
-    fun plus(other: Big): Big
-    fun minus(other: Big): Big
-    fun times(other: Big): Big
-    fun div(other: Big): Big
-    fun cmp(other: Big): Int
-    fun eq(other: Big): Boolean
-    fun round(dp: Int, rm: Int): Big
+    fun toFixed(decimalPlaces: Int): String
+//    fun plus(other: Big): Big
+//    fun minus(other: Big): Big
+//    fun times(other: Big): Big
+//    fun div(other: Big): Big
+//    fun cmp(other: Big): Int
+//    fun eq(other: Big): Boolean
+//    fun round(dp: Int, rm: Int): Big
 }
 
 actual class Decimal {
 
-    internal val raw: Big
+    private val raw: Big
 
-    internal constructor(raw: Big) {
+    private constructor(raw: Big) {
         this.raw = raw
     }
 
-    constructor() : this(raw = jsBig(0))
+    constructor() : this(raw = bigJs(0))
 
-    actual constructor(strVal: String) : this(raw = jsBig(strVal))
+    actual constructor(strVal: String) : this(raw = bigJs(strVal))
 
-    actual constructor(doubleVal: Double) {
-        check(!doubleVal.isNaN() && !doubleVal.isInfinite())
-        raw = jsBig(doubleVal)
-    }
+//    actual constructor(intVal: Int) : this(raw = bigJs(intVal))
 
-    actual constructor(intVal: Int) : this(raw = jsBig(intVal))
+//    actual constructor(longVal: Long) :this(raw = bigJs(longVal))
 
-    // JS does not support 64-bit integer natively.
-    actual constructor(longVal: Long) : this(raw = jsBig(longVal.toString()))
-
-    fun toLong(): Long {
-        // JSNumber is double precision, so it cannot exactly represent 64-bit `Long`.
-        return toString().toLong()
-    }
-
-    fun toDouble(): Double {
-        return jsNumber(raw).toDouble()
-    }
-}
-
-actual fun Decimal.toNumber(): Number {
-    val rounded = raw.round(0, 0)
-
-    return if (raw.minus(rounded).eq(jsBig(0))) {
-        toLong()
-    } else {
-        toDouble()
+    override fun toString(): String {
+        return raw.toFixed(2)
     }
 }

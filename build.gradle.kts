@@ -28,10 +28,10 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
             }
         }
-//        val jvmMain by getting {
-//            dependencies {
-//            }
-//        }
+        val jvmMain by getting {
+            dependencies {
+            }
+        }
         val jsMain by getting {
             dependencies {
                 val npmVersions = NpmVersions()

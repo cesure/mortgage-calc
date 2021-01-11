@@ -1,5 +1,6 @@
 package com.github.cesure.mortgagecalc.components
 
+import com.github.cesure.mortgagecalc.model.Decimal
 import com.github.cesure.mortgagecalc.model.Formats
 import dev.fritz2.binding.SubStore
 import dev.fritz2.binding.storeOf
@@ -9,6 +10,11 @@ import dev.fritz2.dom.values
 import dev.fritz2.lenses.Lens
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDate
+
+fun <T> RenderContext.currencyInput2(
+    id: String? = null,
+    store: SubStore<T, T, Decimal>
+): Input = formattedInput(id, store, Formats.newDecimal)
 
 fun <T> RenderContext.currencyInput(
     id: String? = null,
