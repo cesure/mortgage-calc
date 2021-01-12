@@ -6,7 +6,7 @@ private external fun bigJs(raw: dynamic): Big
 
 internal external class Big {
 
-    fun round(dp: Int, rm: Int): Big
+    fun round(decimalPlaces: Int, roundingMode: Int): Big
     fun toFixed(decimalPlaces: Int): String
 }
 
@@ -26,9 +26,17 @@ actual class Decimal {
 }
 
 actual fun Decimal.round(decimalPlaces: Int): Decimal {
-    return Decimal(raw.round(decimalPlaces, 1)) // rm = 1 is ROUND_HALF_UP
+    return Decimal(raw.round(decimalPlaces, RoundingMode.ROUND_HALF_UP.value))
 }
 
 actual fun Decimal.toFixed(decimalPlaces: Int): String {
     return raw.toFixed(decimalPlaces)
+}
+
+private enum class RoundingMode(val value: Int) {
+
+    ROUND_DOWN(1),
+    ROUND_HALF_UP(2),
+    ROUND_HALF_EVEN(3),
+    ROUND_UP(4),
 }
