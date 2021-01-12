@@ -6,11 +6,6 @@ import kotlinx.datetime.LocalDate
 
 object Formats {
 
-    val newDecimal: Lens<Decimal, String> = format(
-        { Decimal(it) },
-        { it.toString() }
-    )
-
     val currency: Lens<Long, String> = format(
         { it.unformatCurrency() },
         { it.formatCurrency() }
@@ -19,6 +14,11 @@ object Formats {
     val decimal: Lens<Long, String> = format(
         { it.unformatDecimal() },
         { it.formatDecimal() }
+    )
+
+    val newDecimal: Lens<Decimal, String> = format(
+        { it.unformatNewDecimal() },
+        { it.formatNewDecimal() }
     )
 
     val localDate: Lens<LocalDate, String> = format(
@@ -65,3 +65,18 @@ fun String.unformatDecimal(): Long {
     return (integerPart.replace(".", "").toLongOrNull() ?: 0) * 100 +
             (fractionalPart.toLongOrNull() ?: 0)
 }
+
+fun Decimal.formatNewDecimal(): String {
+    val (integerPart, decimalPart) = this.toFixed(2).split(".")
+    val integerPartFormatted = integerPart.reversed().chunked(3).joinToString(".").reversed()
+    return "$integerPartFormatted,$decimalPart"
+}
+
+fun String.unformatNewDecimal(): Decimal {
+    val splitted = this.split(",")
+    val integerPart = splitted.first().filter { it.isDigit() }.ifBlank { "0" }
+    val decimalPart = splitted.getOrNull(1).orEmpty().filter { it.isDigit() }.ifBlank { "0" }
+    return Decimal("$integerPart.$decimalPart")
+}
+
+private fun Char.isDigit(): Boolean = this in '0'..'9'
