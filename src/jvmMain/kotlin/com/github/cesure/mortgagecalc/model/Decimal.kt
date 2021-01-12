@@ -4,6 +4,10 @@ import java.math.BigDecimal
 
 actual typealias Decimal = BigDecimal
 
+actual fun Decimal.round(decimalPlaces: Int): Decimal {
+    TODO()
+}
+
 actual fun Decimal.toFixed(decimalPlaces: Int): String {
     TODO()
 }

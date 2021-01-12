@@ -76,7 +76,7 @@ fun String.unformatNewDecimal(): Decimal {
     val splitted = this.split(",")
     val integerPart = splitted.first().filter { it.isDigit() }.ifBlank { "0" }
     val decimalPart = splitted.getOrNull(1).orEmpty().filter { it.isDigit() }.ifBlank { "0" }
-    return Decimal("$integerPart.$decimalPart")
+    return Decimal("$integerPart.$decimalPart").round(2)
 }
 
 private fun Char.isDigit(): Boolean = this in '0'..'9'
