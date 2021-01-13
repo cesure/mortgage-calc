@@ -13,7 +13,6 @@ import kotlinx.serialization.json.Json
 @Lenses
 @Serializable
 data class Mortgage(
-//    val amount: Long = 100_000 * 100,
     @Serializable(DecimalSerializer::class)
     val amount: Decimal = Decimal(100_000),
     @Serializable(DecimalSerializer::class)

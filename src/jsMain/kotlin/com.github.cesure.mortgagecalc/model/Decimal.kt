@@ -6,13 +6,14 @@ private external fun bigJs(raw: dynamic): Big
 
 internal external class Big {
 
+    fun cmp(other: Decimal): Int
     fun div(number: Number): Big
     fun round(decimalPlaces: Int, roundingMode: Int): Big
     fun times(number: Number): Big
     fun toFixed(decimalPlaces: Int): String
 }
 
-actual class Decimal {
+actual class Decimal : Comparable<Decimal> {
 
     internal val raw: Big
 
@@ -23,6 +24,10 @@ actual class Decimal {
     actual constructor(strVal: String) : this(raw = bigJs(strVal))
 
     actual constructor(intVal: Int) : this(raw = bigJs(intVal))
+
+    override fun compareTo(other: Decimal): Int {
+        return raw.cmp(other)
+    }
 
     override fun toString(): String {
         return raw.toString()

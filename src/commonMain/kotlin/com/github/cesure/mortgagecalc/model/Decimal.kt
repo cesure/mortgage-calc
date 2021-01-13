@@ -1,6 +1,6 @@
 package com.github.cesure.mortgagecalc.model
 
-expect class Decimal {
+expect class Decimal : Comparable<Decimal> {
 
     constructor(strVal: String)
     constructor(intVal: Int)
