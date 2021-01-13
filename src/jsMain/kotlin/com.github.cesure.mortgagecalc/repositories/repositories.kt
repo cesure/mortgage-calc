@@ -13,20 +13,10 @@ object MortgageStore : RootStore<Mortgage>(mortgageResource.emptyEntity) {
     private val localStorage = localStorageEntity(mortgageResource, "mortgage")
 
     val load = handle { mortgage ->
-
-        console.log("##########")
-        console.log(mortgage.toString())
-        console.log("##########")
-
         localStorage.load(mortgage, 0)
     }
 
     val addOrUpdate = handle {
-
-        console.log("**********")
-        console.log(it.toString())
-        console.log("**********")
-
         localStorage.addOrUpdate(it)
     }
 
