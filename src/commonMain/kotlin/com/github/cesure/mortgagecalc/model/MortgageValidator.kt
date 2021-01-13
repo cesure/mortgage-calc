@@ -4,9 +4,9 @@ import dev.fritz2.identification.inspect
 import dev.fritz2.validation.ValidationMessage
 import dev.fritz2.validation.Validator
 
-class PersonValidator : Validator<Mortgage, Message, String>() {
+class MortgageValidator : Validator<Mortgage, Message, Unit>() {
 
-    override fun validate(data: Mortgage, metadata: String): List<Message> {
+    override fun validate(data: Mortgage, metadata: Unit): List<Message> {
         val msgs = mutableListOf<Message>()
         val inspector = inspect(data)
 
