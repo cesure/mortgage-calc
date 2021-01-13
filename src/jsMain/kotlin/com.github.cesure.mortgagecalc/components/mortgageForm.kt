@@ -22,7 +22,7 @@ fun RenderContext.mortgageForm(): Div {
                     +"Amount"
                 }
 
-                currencyInput2("amount", amountStore)
+                currencyInput("amount", amountStore)
             }
 
             div("form-cell-half") {

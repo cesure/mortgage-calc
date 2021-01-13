@@ -6,7 +6,9 @@ private external fun bigJs(raw: dynamic): Big
 
 internal external class Big {
 
+    fun div(number: Number): Big
     fun round(decimalPlaces: Int, roundingMode: Int): Big
+    fun times(number: Number): Big
     fun toFixed(decimalPlaces: Int): String
 }
 
@@ -25,8 +27,16 @@ actual class Decimal {
     }
 }
 
+actual fun Decimal.div(number: Int): Decimal {
+    return Decimal(raw.div(number))
+}
+
 actual fun Decimal.round(decimalPlaces: Int): Decimal {
     return Decimal(raw.round(decimalPlaces, RoundingMode.ROUND_HALF_UP.value))
+}
+
+actual fun Decimal.times(number: Int): Decimal {
+    return Decimal(raw.times(number))
 }
 
 actual fun Decimal.toFixed(decimalPlaces: Int): String {

@@ -16,11 +16,13 @@ data class Mortgage(
 //    val amount: Long = 100_000 * 100,
     @Serializable(DecimalSerializer::class)
     val amount: Decimal = Decimal("100000"),
-    val annuity: Long = 1_000 * 100,
+    @Serializable(DecimalSerializer::class)
+    val annuity: Decimal = Decimal("1000"),
     @Serializable(LocalDateSerializer::class)
     val interestStart: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
     val paymentDay: Int = 31,
-    val interestRate: Long = 175,
+    @Serializable(DecimalSerializer::class)
+    val interestRate: Decimal = Decimal("0.0175"),
     val interestOnlyMonths: Int = 0,
 )
 
