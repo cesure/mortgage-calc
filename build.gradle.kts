@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.targets.js.NpmVersions
 
 plugins {
+    application
     kotlin("multiplatform") version Versions.Plugin.kotlin
     kotlin("plugin.serialization") version Versions.Plugin.kotlin
     id("dev.fritz2.fritz2-gradle") version Versions.Plugin.fritz2
@@ -30,6 +31,8 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-server-netty:${Versions.Dependency.ktor}")
+                implementation("ch.qos.logback:logback-classic:${Versions.Dependency.logback}")
             }
         }
         val jsMain by getting {
@@ -45,5 +48,14 @@ kotlin {
                 implementation(devNpm("tailwindcss", "^2.0.2"))
             }
         }
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test-junit"))
+            }
+        }
     }
+}
+
+application {
+    mainClass.set("com.github.cesure.mortgagecalc.appKt")
 }
