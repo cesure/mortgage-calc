@@ -22,7 +22,7 @@ object Formats {
     )
 
     val integer: Lens<Int, String> = format(
-        { it.replace(",", "").trim().toInt() },
+        { it.replace(".", "").trim().toInt() },
         { it.toString().reversed().chunked(3).joinToString(separator = ".").reversed() }
     )
 
