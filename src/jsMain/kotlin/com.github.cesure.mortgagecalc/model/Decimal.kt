@@ -22,6 +22,8 @@ actual class Decimal {
 
     actual constructor(strVal: String) : this(raw = bigJs(strVal))
 
+    actual constructor(intVal: Int) : this(raw = bigJs(intVal))
+
     override fun toString(): String {
         return raw.toString()
     }

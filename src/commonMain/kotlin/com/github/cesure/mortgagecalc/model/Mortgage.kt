@@ -15,9 +15,9 @@ import kotlinx.serialization.json.Json
 data class Mortgage(
 //    val amount: Long = 100_000 * 100,
     @Serializable(DecimalSerializer::class)
-    val amount: Decimal = Decimal("100000"),
+    val amount: Decimal = Decimal(100_000),
     @Serializable(DecimalSerializer::class)
-    val annuity: Decimal = Decimal("1000"),
+    val annuity: Decimal = Decimal(1_000),
     @Serializable(LocalDateSerializer::class)
     val interestStart: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
     val paymentDay: Int = 31,
