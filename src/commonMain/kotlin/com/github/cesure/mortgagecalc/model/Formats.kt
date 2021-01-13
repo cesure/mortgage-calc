@@ -22,8 +22,8 @@ object Formats {
     )
 
     val integer: Lens<Int, String> = format(
-        { it.replace(".", "").trim().toInt() },
-        { it.toString().reversed().chunked(3).joinToString(separator = ".").reversed() }
+        { str -> str.replace(".", "").filter { it.isDigit() }.toIntOrNull() ?: 0 },
+        { num -> num.toString().reversed().chunked(3).joinToString(separator = ".").reversed() }
     )
 
     val percentage: Lens<Decimal, String> = format(
@@ -46,9 +46,9 @@ fun Decimal.formatDecimal(decimalPlaces: Int): String {
 }
 
 fun String.parseDecimal(decimalPlaces: Int): Decimal {
-    val splitted = this.split(",")
-    val integerPart = splitted.first().filter { it.isDigit() }.ifBlank { "0" }
-    val decimalPart = splitted.getOrNull(1).orEmpty().filter { it.isDigit() }.ifBlank { "0" }
+    val splitByDecimalSeparator = this.split(",")
+    val integerPart = splitByDecimalSeparator.first().filter { it.isDigit() }.ifBlank { "0" }
+    val decimalPart = splitByDecimalSeparator.getOrNull(1).orEmpty().filter { it.isDigit() }.ifBlank { "0" }
     return Decimal("$integerPart.$decimalPart").round(decimalPlaces)
 }
 
