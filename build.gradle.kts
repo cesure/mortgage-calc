@@ -32,6 +32,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-server-netty:${Versions.Dependency.ktor}")
+                implementation("io.ktor:ktor-serialization:${Versions.Dependency.ktor}")
                 implementation("ch.qos.logback:logback-classic:${Versions.Dependency.logback}")
             }
         }
