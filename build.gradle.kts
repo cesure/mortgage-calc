@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.targets.js.NpmVersions
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer
 
 plugins {
     application
@@ -14,11 +15,23 @@ repositories {
 
 kotlin {
     jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "11"
+        }
+        withJava()
     }
 
     js {
         browser {
             binaries.executable()
+
+            runTask {
+                devServer = DevServer(
+                    port = 9090,
+                    contentBase = listOf("$projectDir/src/jsMain/resources"),
+                    proxy = mapOf("/api" to "http://localhost:8080")
+                )
+            }
         }
     }
 
@@ -58,5 +71,5 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.github.cesure.mortgagecalc.appKt")
+    mainClass.set("com.github.cesure.mortgagecalc.ServerKt")
 }
