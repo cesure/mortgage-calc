@@ -27,7 +27,7 @@ kotlin {
 
             runTask {
                 devServer = DevServer(
-                    port = 9090,
+                    port = 9000,
                     contentBase = listOf("$projectDir/src/jsMain/resources"),
                     proxy = mapOf("/api" to "http://localhost:8080")
                 )
