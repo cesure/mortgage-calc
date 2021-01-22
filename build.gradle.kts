@@ -3,10 +3,12 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevSer
 
 plugins {
     application
-    kotlin("multiplatform") version Versions.Plugin.kotlin
-    kotlin("plugin.serialization") version Versions.Plugin.kotlin
     id("dev.fritz2.fritz2-gradle") version Versions.Plugin.fritz2
+    kotlin("plugin.serialization") version Versions.Plugin.kotlin
 }
+
+group = "com.github.cesure"
+version = "1.0"
 
 repositories {
     jcenter()
@@ -14,17 +16,8 @@ repositories {
 }
 
 kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
-        withJava()
-    }
-
-    js {
+    js(LEGACY) {
         browser {
-            binaries.executable()
-
             runTask {
                 devServer = DevServer(
                     port = 9000,
@@ -32,6 +25,12 @@ kotlin {
                     proxy = mapOf("/api" to "http://localhost:8080")
                 )
             }
+        }
+    }
+
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
         }
     }
 

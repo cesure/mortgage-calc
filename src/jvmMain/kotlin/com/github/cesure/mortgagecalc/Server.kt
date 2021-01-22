@@ -1,31 +1,17 @@
 package com.github.cesure.mortgagecalc
 
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.response.respond
-import io.ktor.response.respondText
-import io.ktor.routing.get
-import io.ktor.routing.routing
-import io.ktor.serialization.json
-import io.ktor.server.netty.EngineMain
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.serialization.*
+import io.ktor.server.netty.*
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
 @Suppress("unused")
 fun Application.main() {
     installFeatures()
-
-    routing {
-        get("/") {
-            call.respondText {
-                val asd = "ddd"
-                val def = "fff"
-                "Hello $asd $def!"
-            }
-        }
-    }
 
     routing {
         get("/api/repaymentPlan") {

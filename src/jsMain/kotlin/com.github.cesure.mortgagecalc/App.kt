@@ -24,7 +24,7 @@ fun main() {
 
             button {
                 +"test"
-                clicks.map { "foo" } handledBy RepaymentPlanStore.addRepaymentPlan
+                clicks.map { "buttonValue" } handledBy RepaymentPlanStore.addRepaymentPlan
             }
 
             MortgageStore.data.renderElement {
