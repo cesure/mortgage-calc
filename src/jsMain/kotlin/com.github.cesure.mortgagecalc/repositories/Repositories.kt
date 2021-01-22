@@ -39,7 +39,7 @@ object RepaymentPlanStore : RootStore<String>("") {
 
     private val repaymentPlanApi = http("/api/repaymentPlan").acceptJson().contentType("application/json")
 
-    val addRepaymentPlan = handle<String> { _, s: String ->
+    val addRepaymentPlan = handle { _, s: String ->
 
         val asd = URLSearchParams("")
         asd.append("foo", s)
