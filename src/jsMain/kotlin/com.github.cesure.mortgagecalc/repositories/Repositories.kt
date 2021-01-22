@@ -39,15 +39,9 @@ object RepaymentPlanStore : RootStore<String>("") {
 
     private val repaymentPlanApi = http("/api/repaymentPlan").acceptJson().contentType("application/json")
 
-    val addRepaymentPlan = handle { _, s: String ->
-
-        val asd = URLSearchParams("")
-        asd.append("foo", s)
-        asd.append("ding", "dong")
-
-        console.log(asd)
-        console.log(asd.toString())
-
-        repaymentPlanApi.get("?$asd").getBody()
+    val calculateRepaymentPlan = handle<Mortgage> { _, mortgage ->
+        val params = URLSearchParams("")
+        params.append("mortgage", MortgageSerializer.write(mortgage))
+        repaymentPlanApi.get("?$params").getBody()
     }
 }

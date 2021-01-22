@@ -2,6 +2,7 @@ package com.github.cesure.mortgagecalc.components
 
 import com.github.cesure.mortgagecalc.model.L
 import com.github.cesure.mortgagecalc.repositories.MortgageStore
+import com.github.cesure.mortgagecalc.repositories.RepaymentPlanStore
 import dev.fritz2.dom.html.Div
 import dev.fritz2.dom.html.RenderContext
 
@@ -78,6 +79,7 @@ fun RenderContext.mortgageForm(): Div {
             div("form-cell-full") {
                 button {
                     +"Calculate"
+                    clicks.map { MortgageStore.data.value } handledBy RepaymentPlanStore.calculateRepaymentPlan
                 }
             }
         }

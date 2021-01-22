@@ -18,7 +18,11 @@ fun Application.main() {
 
     routing {
         get("/api/repaymentPlan") {
-            call.respond(emptyMap<String, Any>())
+            call.respond(
+                mapOf(
+                    "mortgage" to call.parameters["mortgage"]
+                )
+            )
         }
     }
 }
