@@ -4,8 +4,11 @@ import com.github.cesure.mortgagecalc.model.Mortgage
 import com.github.cesure.mortgagecalc.model.MortgageSerializer
 import com.github.cesure.mortgagecalc.model.MortgageValidator
 import dev.fritz2.binding.RootStore
+import dev.fritz2.remote.getBody
+import dev.fritz2.remote.http
 import dev.fritz2.repositories.Resource
 import dev.fritz2.repositories.localstorage.localStorageEntity
+import org.w3c.dom.url.URLSearchParams
 
 val mortgageResource = Resource({ 0 }, MortgageSerializer, Mortgage())
 
@@ -29,5 +32,22 @@ object MortgageStore : RootStore<Mortgage>(mortgageResource.emptyEntity) {
 
     init {
         syncBy(addOrUpdate)
+    }
+}
+
+object RepaymentPlanStore : RootStore<String>("") {
+
+    private val repaymentPlanApi = http("/api/repaymentPlan").acceptJson().contentType("application/json")
+
+    val addRepaymentPlan = handle<String> { _, s: String ->
+
+        val asd = URLSearchParams("")
+        asd.append("foo", s)
+        asd.append("ding", "dong")
+
+        console.log(asd)
+        console.log(asd.toString())
+
+        repaymentPlanApi.get("?$asd").getBody()
     }
 }

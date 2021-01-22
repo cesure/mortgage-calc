@@ -3,6 +3,7 @@ package com.github.cesure.mortgagecalc
 import com.github.cesure.mortgagecalc.components.mortgageForm
 import com.github.cesure.mortgagecalc.model.Decimal
 import com.github.cesure.mortgagecalc.repositories.MortgageStore
+import com.github.cesure.mortgagecalc.repositories.RepaymentPlanStore
 import dev.fritz2.binding.invoke
 import dev.fritz2.dom.html.render
 import dev.fritz2.dom.mount
@@ -20,6 +21,11 @@ fun main() {
             }
 
             mortgageForm()
+
+            button {
+                +"test"
+                clicks.map { "foo" } handledBy RepaymentPlanStore.addRepaymentPlan
+            }
 
             MortgageStore.data.renderElement {
                 div("container", "repayment-plan-graph") {
