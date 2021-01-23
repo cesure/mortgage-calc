@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 typealias RepaymentPlan = List<Payment>
 
-fun repaymentPlan(vararg payments: Payment) = listOf(payments)
+fun repaymentPlan(vararg payments: Payment): RepaymentPlan = payments.asList()
 
 @Serializable
 data class Payment(

@@ -1,6 +1,7 @@
 package com.github.cesure.mortgagecalc
 
 import com.github.cesure.mortgagecalc.components.mortgageForm
+import com.github.cesure.mortgagecalc.components.repaymentPlanList
 import com.github.cesure.mortgagecalc.model.Decimal
 import com.github.cesure.mortgagecalc.repositories.MortgageStore
 import dev.fritz2.binding.invoke
@@ -28,7 +29,7 @@ fun main() {
             }
 
 //            repaymentPlanGraph()
-//            repaymentPlanList()
+            repaymentPlanList()
         }
     }.mount("target")
 }
