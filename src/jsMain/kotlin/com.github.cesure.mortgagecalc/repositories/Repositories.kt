@@ -1,7 +1,7 @@
 package com.github.cesure.mortgagecalc.repositories
 
 import com.github.cesure.mortgagecalc.model.Mortgage
-import com.github.cesure.mortgagecalc.model.MortgageSerializer
+import com.github.cesure.mortgagecalc.model.serialization.MortgageSerializer
 import com.github.cesure.mortgagecalc.model.validation.MortgageValidator
 import dev.fritz2.binding.RootStore
 import dev.fritz2.remote.getBody
