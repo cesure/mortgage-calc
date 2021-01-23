@@ -1,4 +1,4 @@
-package com.github.cesure.mortgagecalc.model
+package com.github.cesure.mortgagecalc.model.serialization
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.KSerializer

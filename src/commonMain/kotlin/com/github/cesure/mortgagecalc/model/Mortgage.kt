@@ -1,5 +1,7 @@
 package com.github.cesure.mortgagecalc.model
 
+import com.github.cesure.mortgagecalc.model.serialization.DecimalSerializer
+import com.github.cesure.mortgagecalc.model.serialization.LocalDateSerializer
 import dev.fritz2.lenses.Lenses
 import dev.fritz2.serialization.Serializer
 import kotlinx.datetime.Clock

@@ -1,5 +1,8 @@
-package com.github.cesure.mortgagecalc.model
+package com.github.cesure.mortgagecalc.model.validation
 
+import com.github.cesure.mortgagecalc.model.Decimal
+import com.github.cesure.mortgagecalc.model.L
+import com.github.cesure.mortgagecalc.model.Mortgage
 import dev.fritz2.identification.inspect
 import dev.fritz2.validation.ValidationMessage
 import dev.fritz2.validation.Validator

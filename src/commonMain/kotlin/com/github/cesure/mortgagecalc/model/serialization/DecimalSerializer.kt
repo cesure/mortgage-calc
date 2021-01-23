@@ -1,5 +1,6 @@
-package com.github.cesure.mortgagecalc.model
+package com.github.cesure.mortgagecalc.model.serialization
 
+import com.github.cesure.mortgagecalc.model.Decimal
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind.STRING
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
