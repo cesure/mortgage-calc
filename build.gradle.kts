@@ -5,6 +5,7 @@ plugins {
     application
     id("dev.fritz2.fritz2-gradle") version Versions.Plugin.fritz2
     kotlin("plugin.serialization") version Versions.Plugin.kotlin
+    id("io.gitlab.arturbosch.detekt") version Versions.Plugin.detekt
 }
 
 group = "com.github.cesure"
@@ -13,6 +14,12 @@ version = "1.0"
 repositories {
     jcenter()
     maven(url = "https://kotlin.bintray.com/kotlinx/")
+}
+
+detekt {
+    config = files("${projectDir}/.detekt/config.yml")
+    input = files("src/commonMain/kotlin", "src/jsMain/kotlin", "src/jvmMain/kotlin")
+    buildUponDefaultConfig = true
 }
 
 kotlin {

@@ -1,0 +1,4 @@
+style:
+  MagicNumber:
+    ignoreEnums: true
+    ignoreRanges: true

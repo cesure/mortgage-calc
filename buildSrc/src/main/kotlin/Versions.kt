@@ -1,6 +1,7 @@
 object Versions {
 
     object Plugin {
+        val detekt = "1.15.0"
         val fritz2 = "0.8"
         val kotlin = "1.4.21"
     }

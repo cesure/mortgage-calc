@@ -23,17 +23,17 @@ object Formats {
 
     val integer: Lens<Int, String> = format(
         { str -> str.replace(".", "").filter { it.isDigit() }.toIntOrNull() ?: 0 },
-        { num -> num.toString().reversed().chunked(3).joinToString(separator = ".").reversed() }
+        { num -> num.toString().reversed().chunked(size = 3).joinToString(separator = ".").reversed() }
     )
 
     val percentage: Lens<Decimal, String> = format(
         { it.parsePercentage() },
-        { it.times(100).formatPercentage() }
+        { it.times(number = 100).formatPercentage() }
     )
 
     val percentageWithoutSign: Lens<Decimal, String> = format(
         { it.parsePercentage() },
-        { it.times(100).formatDecimal(2) }
+        { it.times(number = 100).formatDecimal(2) }
     )
 }
 
@@ -41,7 +41,7 @@ fun Decimal.formatCurrency(): String = "${this.formatDecimal(2)} €"
 
 fun Decimal.formatDecimal(decimalPlaces: Int): String {
     val (integerPart, decimalPart) = this.toFixed(decimalPlaces).split(".")
-    val integerPartFormatted = integerPart.reversed().chunked(3).joinToString(".").reversed()
+    val integerPartFormatted = integerPart.reversed().chunked(size = 3).joinToString(".").reversed()
     return "$integerPartFormatted,$decimalPart"
 }
 
@@ -54,6 +54,6 @@ fun String.parseDecimal(decimalPlaces: Int): Decimal {
 
 fun Decimal.formatPercentage(): String = "${this.formatDecimal(2)} %" // multiply 100
 
-fun String.parsePercentage(): Decimal = this.parseDecimal(2).div(100)
+fun String.parsePercentage(): Decimal = this.parseDecimal(2).div(number = 100)
 
 private fun Char.isDigit(): Boolean = this in '0'..'9'

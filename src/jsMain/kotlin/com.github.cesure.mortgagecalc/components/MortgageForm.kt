@@ -21,7 +21,6 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("amount")
                     +"Amount"
                 }
-
                 currencyInput("amount", amountStore)
             }
 
