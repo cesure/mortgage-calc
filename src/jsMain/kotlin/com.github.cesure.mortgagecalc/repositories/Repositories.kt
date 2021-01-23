@@ -1,7 +1,9 @@
 package com.github.cesure.mortgagecalc.repositories
 
 import com.github.cesure.mortgagecalc.model.Mortgage
+import com.github.cesure.mortgagecalc.model.RepaymentPlan
 import com.github.cesure.mortgagecalc.model.serialization.MortgageSerializer
+import com.github.cesure.mortgagecalc.model.serialization.RepaymentPlanSerializer
 import com.github.cesure.mortgagecalc.model.validation.MortgageValidator
 import dev.fritz2.binding.RootStore
 import dev.fritz2.remote.getBody
@@ -35,13 +37,15 @@ object MortgageStore : RootStore<Mortgage>(mortgageResource.emptyEntity) {
     }
 }
 
-object RepaymentPlanStore : RootStore<String>("") {
+object RepaymentPlanStore : RootStore<RepaymentPlan?>(null) {
 
     private val repaymentPlanApi = http("/api/repaymentPlan").acceptJson().contentType("application/json")
 
     val calculateRepaymentPlan = handle<Mortgage> { _, mortgage ->
-        val params = URLSearchParams("")
-        params.append("mortgage", MortgageSerializer.write(mortgage))
-        repaymentPlanApi.get("?$params").getBody()
+        val params = URLSearchParams().apply {
+            append("mortgage", MortgageSerializer.write(mortgage))
+        }
+        val responseBody = repaymentPlanApi.get("?$params").getBody()
+        RepaymentPlanSerializer.read(responseBody)
     }
 }
