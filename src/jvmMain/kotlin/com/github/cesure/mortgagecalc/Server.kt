@@ -1,8 +1,11 @@
 package com.github.cesure.mortgagecalc
 
+import com.github.cesure.mortgagecalc.model.RepaymentPlan
+import com.github.cesure.mortgagecalc.model.serialization.MortgageSerializer
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
+import io.ktor.application.log
 import io.ktor.features.ContentNegotiation
 import io.ktor.response.respond
 import io.ktor.routing.get
@@ -18,11 +21,13 @@ fun Application.main() {
 
     routing {
         get("/api/repaymentPlan") {
-            call.respond(
-                mapOf(
-                    "mortgage" to call.parameters["mortgage"]
-                )
-            )
+            val mortgage = call.parameters["mortgage"]?.let {
+                MortgageSerializer.read(it)
+            }
+            log.info("Got mortgage: $mortgage")
+
+            val response = RepaymentPlan()
+            call.respond(response)
         }
     }
 }

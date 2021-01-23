@@ -13,13 +13,24 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Mortgage(
     @Serializable(DecimalSerializer::class)
-    val amount: Decimal = Decimal(intVal = 100_000),
+    val amount: Decimal = Decimal(defaultAmount),
     @Serializable(DecimalSerializer::class)
-    val annuity: Decimal = Decimal(intVal = 1_000),
+    val annuity: Decimal = Decimal(defaultAnnuity),
     @Serializable(LocalDateSerializer::class)
-    val interestStart: LocalDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date,
-    val paymentDay: Int = 31,
+    val interestStart: LocalDate = defaultClock,
+    val paymentDay: Int = defaultPaymentDay,
     @Serializable(DecimalSerializer::class)
-    val interestRate: Decimal = Decimal("0.0175"),
-    val interestOnlyMonths: Int = 0,
-)
+    val interestRate: Decimal = Decimal(defaultInterestRate),
+    val interestOnlyMonths: Int = defaultInterestOnlyMonths,
+) {
+    companion object {
+        const val defaultAmount = 100_000
+        const val defaultAnnuity = 1_000
+        const val defaultPaymentDay = 31
+        const val defaultInterestRate = "0.0175"
+        const val defaultInterestOnlyMonths = 0
+
+        val defaultClock: LocalDate
+            get() = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    }
+}
