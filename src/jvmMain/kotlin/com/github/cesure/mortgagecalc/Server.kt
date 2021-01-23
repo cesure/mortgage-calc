@@ -1,6 +1,9 @@
 package com.github.cesure.mortgagecalc
 
-import com.github.cesure.mortgagecalc.model.RepaymentPlan
+import com.github.cesure.mortgagecalc.model.Decimal
+import com.github.cesure.mortgagecalc.model.Payment
+import com.github.cesure.mortgagecalc.model.PaymentType
+import com.github.cesure.mortgagecalc.model.repaymentPlan
 import com.github.cesure.mortgagecalc.model.serialization.MortgageSerializer
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -12,6 +15,7 @@ import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.serialization.json
 import io.ktor.server.netty.EngineMain
+import kotlinx.datetime.LocalDate
 
 fun main(args: Array<String>): Unit = EngineMain.main(args)
 
@@ -24,10 +28,16 @@ fun Application.main() {
             val mortgage = call.parameters["mortgage"]?.let {
                 MortgageSerializer.read(it)
             }
-            log.info("Got mortgage: $mortgage")
+            log.info("Received mortgage: $mortgage")
 
-            val response = RepaymentPlan()
-            call.respond(response)
+            val payment = Payment(
+                type = PaymentType.PAYOUT,
+                date = LocalDate(2020, 1, 1),
+                amount = Decimal(10_000)
+            )
+            call.respond(
+                repaymentPlan(payment)
+            )
         }
     }
 }

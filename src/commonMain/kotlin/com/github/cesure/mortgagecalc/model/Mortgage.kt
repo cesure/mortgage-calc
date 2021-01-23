@@ -12,15 +12,11 @@ import kotlinx.serialization.Serializable
 @Lenses
 @Serializable
 data class Mortgage(
-    @Serializable(DecimalSerializer::class)
-    val amount: Decimal = Decimal(defaultAmount),
-    @Serializable(DecimalSerializer::class)
-    val annuity: Decimal = Decimal(defaultAnnuity),
-    @Serializable(LocalDateSerializer::class)
-    val interestStart: LocalDate = defaultClock,
+    @Serializable(DecimalSerializer::class) val amount: Decimal = Decimal(defaultAmount),
+    @Serializable(DecimalSerializer::class) val annuity: Decimal = Decimal(defaultAnnuity),
+    @Serializable(LocalDateSerializer::class) val interestStart: LocalDate = defaultClock,
     val paymentDay: Int = defaultPaymentDay,
-    @Serializable(DecimalSerializer::class)
-    val interestRate: Decimal = Decimal(defaultInterestRate),
+    @Serializable(DecimalSerializer::class) val interestRate: Decimal = Decimal(defaultInterestRate),
     val interestOnlyMonths: Int = defaultInterestOnlyMonths,
 ) {
     companion object {
