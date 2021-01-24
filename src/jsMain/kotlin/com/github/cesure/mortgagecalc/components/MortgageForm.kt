@@ -55,6 +55,16 @@ fun RenderContext.mortgageForm(): Div {
 
         div("form-row") {
             div("form-cell-full") {
+                label {
+                    `for`("transactions")
+                    +"Transactions"
+                }
+                transactionInput("transactions")
+            }
+        }
+
+        div("form-row") {
+            div("form-cell-full") {
                 button {
                     +"Calculate"
                     clicks.map { MortgageStore.data.value } handledBy RepaymentPlanStore.calculateRepaymentPlan
