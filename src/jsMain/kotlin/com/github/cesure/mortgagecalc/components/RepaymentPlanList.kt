@@ -9,7 +9,7 @@ fun RenderContext.repaymentPlanList(): Div = div("container", "repayment-plan-li
     RepaymentPlanStore.data.renderElement {
         ul {
             li {
-                +"${it?.first()?.amount?.formatCurrency()}"
+                +"${it?.first()?.payment?.amount?.formatCurrency()}"
             }
         }
     }

@@ -8,12 +8,10 @@ import dev.fritz2.dom.html.RenderContext
 
 fun RenderContext.mortgageForm(): Div {
 
-    val amountStore = MortgageStore.sub(L.Mortgage.amount)
+    val amountStore = MortgageStore.sub(L.Mortgage.totalAmount)
     val annuityStore = MortgageStore.sub(L.Mortgage.annuity)
-    val interestStartStore = MortgageStore.sub(L.Mortgage.interestStart)
     val interestRateStore = MortgageStore.sub(L.Mortgage.interestRate)
     val paymentDayStore = MortgageStore.sub(L.Mortgage.paymentDay)
-    val interestOnlyMonthsStore = MortgageStore.sub(L.Mortgage.interestOnlyMonths)
 
     return div("container", "mortgage-form") {
         div("form-row") {
@@ -37,10 +35,10 @@ fun RenderContext.mortgageForm(): Div {
         div("form-row") {
             div("form-cell-half") {
                 label {
-                    `for`("interestStart")
-                    +"Interest Start"
+                    `for`("interestRate")
+                    +"Interest Rate"
                 }
-                dateInput("interestStart", interestStartStore)
+                percentageInput("interestRate", interestRateStore)
             }
 
             div("form-cell-half") {
@@ -51,26 +49,6 @@ fun RenderContext.mortgageForm(): Div {
                 numberInput("paymentDay", paymentDayStore) {
                     min("1")
                     max("31")
-                }
-            }
-        }
-
-        div("form-row") {
-            div("form-cell-half") {
-                label {
-                    `for`("interestRate")
-                    +"Interest Rate"
-                }
-                percentageInput("interestRate", interestRateStore)
-            }
-
-            div("form-cell-half") {
-                label {
-                    `for`("interestOnlyMonths")
-                    +"Interest Only Months"
-                }
-                numberInput("interestOnlyMonths", interestOnlyMonthsStore) {
-                    min("0")
                 }
             }
         }

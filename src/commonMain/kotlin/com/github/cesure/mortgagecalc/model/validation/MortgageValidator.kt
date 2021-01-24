@@ -13,7 +13,7 @@ class MortgageValidator : Validator<Mortgage, Message, Unit>() {
         val msgs = mutableListOf<Message>()
         val inspector = inspect(data)
 
-        val amount = inspector.sub(L.Mortgage.amount)
+        val amount = inspector.sub(L.Mortgage.totalAmount)
         if (amount.data < Decimal(0)) {
             msgs.add(Message(amount.id, "Amount must be larger or equal 0"))
         }
@@ -31,11 +31,6 @@ class MortgageValidator : Validator<Mortgage, Message, Unit>() {
         val interestRate = inspector.sub(L.Mortgage.interestRate)
         if (interestRate.data < Decimal(0)) {
             msgs.add(Message(interestRate.id, "Interest Rate must be larger or equal 0"))
-        }
-
-        val interestOnlyMonths = inspector.sub(L.Mortgage.interestOnlyMonths)
-        if (interestOnlyMonths.data < 0) {
-            msgs.add(Message(interestOnlyMonths.id, "Interest Only Month must be larger or equal 0"))
         }
 
         return msgs

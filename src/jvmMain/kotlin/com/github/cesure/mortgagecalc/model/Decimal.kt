@@ -12,9 +12,7 @@ actual fun Decimal.round(decimalPlaces: Int): Decimal {
     TODO()
 }
 
-actual fun Decimal.times(number: Int): Decimal {
-    TODO()
-}
+actual fun Decimal.times(number: Int): Decimal = this.times(BigDecimal(number))
 
 actual fun Decimal.toFixed(decimalPlaces: Int): String {
     TODO()

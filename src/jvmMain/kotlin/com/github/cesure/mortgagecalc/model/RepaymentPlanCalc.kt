@@ -7,7 +7,6 @@ fun Mortgage.calculateRepaymentPlan(): RepaymentPlan {
         type = PaymentType.PAYOUT,
         date = LocalDate(2020, 1, 1),
         amount = this.totalAmount.times(-1),
-        balanceAfter = this.totalAmount.times(-1),
     )
-    return repaymentPlan(firstPayment)
+    return repaymentPlan(firstPayment to this.totalAmount.times(-1))
 }
