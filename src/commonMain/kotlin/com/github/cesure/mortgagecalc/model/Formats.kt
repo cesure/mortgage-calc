@@ -37,11 +37,15 @@ object Formats {
     )
 }
 
-fun Decimal.formatCurrency(): String = "${this.formatDecimal(2)} €"
+fun Decimal.formatCurrency(hideSign: Boolean = false): String = "${this.formatDecimal(2, hideSign)} €"
 
-fun Decimal.formatDecimal(decimalPlaces: Int): String {
+fun Decimal.formatDecimal(decimalPlaces: Int, hideSign: Boolean = false): String {
     val (integerPart, decimalPart) = this.toFixed(decimalPlaces).split(".")
-    val integerPartFormatted = integerPart.reversed().chunked(size = 3).joinToString(".").reversed()
+    val integerPartFormatted = integerPart.let {
+        if (hideSign) {
+            it.filter { c -> c.isDigit() }
+        } else it
+    }.reversed().chunked(size = 3).joinToString(".").reversed()
     return "$integerPartFormatted,$decimalPart"
 }
 

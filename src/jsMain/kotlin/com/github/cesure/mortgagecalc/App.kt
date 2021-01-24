@@ -4,6 +4,7 @@ import com.github.cesure.mortgagecalc.components.mortgageForm
 import com.github.cesure.mortgagecalc.components.repaymentPlanList
 import com.github.cesure.mortgagecalc.model.Decimal
 import com.github.cesure.mortgagecalc.repositories.MortgageStore
+import com.github.cesure.mortgagecalc.repositories.RepaymentPlanStore
 import dev.fritz2.binding.invoke
 import dev.fritz2.dom.html.render
 import dev.fritz2.dom.mount
@@ -28,8 +29,9 @@ fun main() {
                 }
             }
 
-//            repaymentPlanGraph()
-            repaymentPlanList()
+            RepaymentPlanStore.data.render { repaymentPlan ->
+                repaymentPlan?.let { repaymentPlanList(it) }
+            }
         }
     }.mount("target")
 }

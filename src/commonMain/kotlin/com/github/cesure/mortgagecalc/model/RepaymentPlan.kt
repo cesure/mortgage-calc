@@ -8,24 +8,24 @@ import kotlinx.serialization.Serializable
 typealias RepaymentPlan = List<RepaymentPlanEntry>
 
 fun repaymentPlan(vararg payments: RepaymentPlanEntry): RepaymentPlan = payments.asList()
-fun repaymentPlan(vararg payments: Pair<Payment, Decimal>): RepaymentPlan =
+fun repaymentPlan(vararg payments: Pair<Transaction, Decimal>): RepaymentPlan =
     repaymentPlan(*payments.map { RepaymentPlanEntry(it.first, it.second) }.toTypedArray())
 
 @Serializable
 data class RepaymentPlanEntry(
-    val payment: Payment,
+    val transaction: Transaction,
     @Serializable(DecimalSerializer::class) val balanceAfter: Decimal,
 )
 
 @Serializable
-data class Payment(
-    val type: PaymentType,
+data class Transaction(
+    val type: TransactionType,
     @Serializable(LocalDateSerializer::class) val date: LocalDate,
     @Serializable(DecimalSerializer::class) val amount: Decimal,
 )
 
 @Serializable
-enum class PaymentType {
+enum class TransactionType {
     DEPOSIT,
     INTEREST,
     PAYOUT,

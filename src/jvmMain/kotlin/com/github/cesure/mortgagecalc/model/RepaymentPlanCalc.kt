@@ -3,8 +3,8 @@ package com.github.cesure.mortgagecalc.model
 import kotlinx.datetime.LocalDate
 
 fun Mortgage.calculateRepaymentPlan(): RepaymentPlan {
-    val firstPayment = Payment(
-        type = PaymentType.PAYOUT,
+    val firstPayment = Transaction(
+        type = TransactionType.PAYOUT,
         date = LocalDate(2020, 1, 1),
         amount = this.totalAmount.times(-1),
     )
