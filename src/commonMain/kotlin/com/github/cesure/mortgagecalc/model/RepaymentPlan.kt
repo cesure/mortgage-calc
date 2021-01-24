@@ -14,6 +14,7 @@ data class Payment(
     val type: PaymentType,
     @Serializable(LocalDateSerializer::class) val date: LocalDate,
     @Serializable(DecimalSerializer::class) val amount: Decimal,
+    @Serializable(DecimalSerializer::class) val balanceAfter: Decimal,
 )
 
 @Serializable
