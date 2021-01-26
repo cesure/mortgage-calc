@@ -20,7 +20,9 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("amount")
                     +"Amount"
                 }
-                currencyInput("amount", amountStore)
+                div("input-wrapper") {
+                    currencyInput("amount", amountStore)
+                }
             }
 
             div("form-cell-half") {
@@ -28,7 +30,9 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("annuity")
                     +"Annuity"
                 }
-                currencyInput("annuity", annuityStore)
+                div("input-wrapper") {
+                    currencyInput("annuity", annuityStore)
+                }
             }
         }
 
@@ -38,7 +42,9 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("interestRate")
                     +"Interest Rate"
                 }
-                percentageInput("interestRate", interestRateStore)
+                div("input-wrapper") {
+                    percentageInput("interestRate", interestRateStore)
+                }
             }
 
             div("form-cell-half") {
@@ -46,9 +52,11 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("paymentDay")
                     +"Payment Day"
                 }
-                numberInput("paymentDay", paymentDayStore) {
-                    min("1")
-                    max("31")
+                div("input-wrapper") {
+                    numberInput("paymentDay", paymentDayStore) {
+                        min("1")
+                        max("31")
+                    }
                 }
             }
         }
@@ -59,7 +67,17 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("transactions")
                     +"Transactions"
                 }
-                transactionInput("transactions")
+
+
+                div("combined-input", "transactions") {
+                    input {
+                        type("date")
+                    }
+                    input {
+                        type("number")
+                    }
+                }
+
             }
         }
 

@@ -37,19 +37,6 @@ fun <T> RenderContext.numberInput(
     content?.let { it() }
 }
 
-fun RenderContext.transactionInput(
-    id: String? = null,
-) {
-    div("combined-input", id) {
-        input {
-            type("date")
-        }
-        input {
-            type("number")
-        }
-    }
-}
-
 private fun <T, S> RenderContext.formattedInput(
     id: String? = null,
     store: SubStore<T, T, S>,

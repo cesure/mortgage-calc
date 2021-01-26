@@ -23,7 +23,7 @@ h1 {
 }
 
 .form-row {
-   @apply flex flex-wrap -mx-4;
+   @apply flex flex-wrap;
 }
 
 .form-row + .form-row {
@@ -31,11 +31,15 @@ h1 {
 }
 
 .form-cell-half {
-   @apply w-full md:w-1/2 px-4;
+   @apply w-full md:w-1/2 pr-16;
+}
+
+.form-cell-half + .form-cell-half {
+   @apply pr-8;
 }
 
 .form-cell-full {
-   @apply w-full px-4;
+   @apply w-full;
 }
 
 label {
@@ -43,11 +47,20 @@ label {
 }
 
 input {
-   @apply appearance-none block w-full px-4 py-3 border rounded bg-gray-100 text-base leading-tight text-gray-600;
+   @apply appearance-none block w-full px-4 py-3 box-content border rounded bg-gray-100 text-base leading-tight text-gray-600;
+   min-height: 1.5em;
+}
+
+.input-wrapper {
+   padding-right: 2px; /* should be 2x the border-with from input */
 }
 
 button {
    @apply px-4 py-3 bg-blue-500 hover:bg-blue-700 rounded font-bold text-white
+}
+
+.combined-input {
+   @apply w-full;
 }
 
 .combined-input input {
