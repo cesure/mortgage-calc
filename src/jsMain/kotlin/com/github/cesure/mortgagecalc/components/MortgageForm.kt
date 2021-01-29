@@ -62,22 +62,26 @@ fun RenderContext.mortgageForm(): Div {
         }
 
         div("form-row") {
-            div("form-cell-full") {
+            div("form-cell-quarter") {
                 label {
-                    `for`("transactions")
-                    +"Transactions"
+                    `for`("transactionDate")
+                    +"Transaction${Typography.nbsp}Date"
                 }
+                input {
+                    type("date")
+                }
+            }
 
-
-                div("combined-input", "transactions") {
-                    input {
-                        type("date")
-                    }
+            div("form-cell-three-quarter") {
+                label {
+                    `for`("transactionAmount")
+                    +"Transaction Amount"
+                }
+                div("input-wrapper") {
                     input {
                         type("number")
                     }
                 }
-
             }
         }
 

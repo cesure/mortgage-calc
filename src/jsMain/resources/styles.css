@@ -38,6 +38,14 @@ h1 {
    @apply pr-8;
 }
 
+.form-cell-quarter {
+   @apply w-full md:w-1/4 pr-16;
+}
+
+.form-cell-three-quarter {
+   @apply w-full md:w-3/4 pr-8;
+}
+
 .form-cell-full {
    @apply w-full;
 }
@@ -51,26 +59,10 @@ input {
    min-height: 1.5em;
 }
 
-.input-wrapper {
-   padding-right: 2px; /* should be 2x the border-with from input */
-}
-
 button {
    @apply px-4 py-3 bg-blue-500 hover:bg-blue-700 rounded font-bold text-white
 }
 
-.combined-input {
-   @apply w-full;
-}
-
-.combined-input input {
-   @apply inline-block;
-}
-
-.combined-input input:first-child {
-   @apply md:w-1/4;
-}
-
-.combined-input input + input {
-   @apply md:w-3/4;
+.input-wrapper {
+   padding-right: 2px; /* should be 2x the border-with from input */
 }
