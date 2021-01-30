@@ -38,19 +38,11 @@ h1 {
    @apply pr-8;
 }
 
-.form-cell-quarter {
-   @apply w-full md:w-1/4 pr-16;
-}
-
-.form-cell-three-quarter {
-   @apply w-full md:w-3/4 pr-8;
-}
-
 .form-cell-full {
    @apply w-full;
 }
 
-label {
+label, legend {
    @apply block mb-2 tracking-wide text-xs leading-normal font-bold uppercase text-gray-600;
 }
 
@@ -61,6 +53,18 @@ input {
 
 button {
    @apply px-4 py-3 bg-blue-500 hover:bg-blue-700 rounded font-bold text-white
+}
+
+.combined-input {
+   @apply block w-full border rounded bg-gray-100 text-base leading-tight text-gray-600;
+}
+
+.combined-input input {
+   @apply p-0 border-0 bg-transparent;
+}
+
+fieldset {
+   /*@apply pr-8;*/
 }
 
 .input-wrapper {

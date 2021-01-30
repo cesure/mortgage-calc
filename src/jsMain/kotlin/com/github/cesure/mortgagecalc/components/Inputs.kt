@@ -37,6 +37,26 @@ fun <T> RenderContext.numberInput(
     content?.let { it() }
 }
 
+fun RenderContext.transactionInput() {
+    fieldset {
+        legend {
+            +"Transactions"
+        }
+        div("combined-input") {
+            div {
+                input {
+                    type("date")
+                }
+            }
+            div {
+                input {
+                    type("number")
+                }
+            }
+        }
+    }
+}
+
 private fun <T, S> RenderContext.formattedInput(
     id: String? = null,
     store: SubStore<T, T, S>,
@@ -60,7 +80,7 @@ private fun <T, S> RenderContext.formattedInput(
                 }
             }
 
-            changes.values() handledBy (focusStore).update
+            changes.values() handledBy focusStore.update
 
             focuss.events.map { true } handledBy hasFocus.update
             blurs.events.map { false } handledBy hasFocus.update
