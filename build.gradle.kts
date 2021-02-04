@@ -1,4 +1,7 @@
+import org.jetbrains.kotlin.cli.common.toBooleanLenient
 import org.jetbrains.kotlin.gradle.targets.js.NpmVersions
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootPlugin
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig.DevServer
 
 plugins {
@@ -78,4 +81,22 @@ kotlin {
 
 application {
     mainClass.set("com.github.cesure.mortgagecalc.ServerKt")
+}
+
+val mortgagecalcUseNvm: String? by project
+
+// use Node.js from nvm when `mortgagecalcUseNvm=true` is set in gradle.properties
+rootProject.plugins.withType(NodeJsRootPlugin::class.java) {
+    if (mortgagecalcUseNvm.toBooleanLenient() == true) {
+        val nodeBinary = File(System.getProperty("user.home"), ".nvm/versions/node/v${Versions.Plugin.node}/bin/node")
+        if (!nodeBinary.isFile) {
+            throw GradleException("Cannot find node binary at $nodeBinary")
+        }
+
+        rootProject.the<NodeJsRootExtension>().apply {
+            download = false
+            nodeVersion = Versions.Plugin.node
+            nodeCommand = nodeBinary.toString()
+        }
+    }
 }
