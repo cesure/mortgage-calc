@@ -20,7 +20,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("amount")
                     +"Amount"
                 }
-                div("input-wrapper") {
+                div("input-decoration") {
                     currencyInput("amount", amountStore)
                 }
             }
@@ -30,7 +30,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("annuity")
                     +"Annuity"
                 }
-                div("input-wrapper") {
+                div("input-decoration") {
                     currencyInput("annuity", annuityStore)
                 }
             }
@@ -42,7 +42,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("interestRate")
                     +"Interest Rate"
                 }
-                div("input-wrapper") {
+                div("input-decoration") {
                     percentageInput("interestRate", interestRateStore)
                 }
             }
@@ -52,7 +52,7 @@ fun RenderContext.mortgageForm(): Div {
                     `for`("paymentDay")
                     +"Payment Day"
                 }
-                div("input-wrapper") {
+                div("input-decoration") {
                     numberInput("paymentDay", paymentDayStore) {
                         min("1")
                         max("31")

@@ -42,13 +42,13 @@ fun RenderContext.transactionInput() {
         legend {
             +"Transactions"
         }
-        div("combined-input") {
-            div {
+        div("input-decoration combined-input") {
+            div("combined-input-element") {
                 input {
                     type("date")
                 }
             }
-            div {
+            div("combined-input-element") {
                 input {
                     type("number")
                 }
@@ -63,29 +63,28 @@ private fun <T, S> RenderContext.formattedInput(
     defaultLlens: Lens<S, String>,
     focusLens: Lens<S, String>? = null,
     content: (Input.() -> Unit)? = null,
-): Input =
-    input(id = id) {
-        content?.let { it() }
+): Input = input(id = id) {
+    content?.let { it() }
 
-        val defaultStore = store.sub(defaultLlens)
+    val defaultStore = store.sub(defaultLlens)
 
-        if (focusLens != null) {
-            val focusStore = store.sub(focusLens)
-            val hasFocus = storeOf(false)
-            hasFocus.data.render { showUnformatted ->
-                if (showUnformatted) {
-                    value(focusStore.data)
-                } else {
-                    value(defaultStore.data)
-                }
+    if (focusLens != null) {
+        val focusStore = store.sub(focusLens)
+        val hasFocus = storeOf(false)
+        hasFocus.data.render { showUnformatted ->
+            if (showUnformatted) {
+                value(focusStore.data)
+            } else {
+                value(defaultStore.data)
             }
-
-            changes.values() handledBy focusStore.update
-
-            focuss.events.map { true } handledBy hasFocus.update
-            blurs.events.map { false } handledBy hasFocus.update
-        } else {
-            value(defaultStore.data)
-            changes.values() handledBy defaultStore.update
         }
+
+        changes.values() handledBy focusStore.update
+
+        focuss.events.map { true } handledBy hasFocus.update
+        blurs.events.map { false } handledBy hasFocus.update
+    } else {
+        value(defaultStore.data)
+        changes.values() handledBy defaultStore.update
     }
+}

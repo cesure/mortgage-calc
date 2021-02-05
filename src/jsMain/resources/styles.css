@@ -31,11 +31,15 @@ h1 {
 }
 
 .form-cell-half {
-   @apply w-full md:w-1/2 pr-16;
+   @apply w-full md:w-1/2;
 }
 
-.form-cell-half + .form-cell-half {
-   @apply pr-8;
+.form-cell-half:first-child {
+   @apply pr-4;
+}
+
+.form-cell-half + .form-cell-half  {
+   @apply pl-4;
 }
 
 .form-cell-full {
@@ -50,31 +54,23 @@ label, legend {
     @apply px-4 py-3 border rounded bg-gray-100 text-base leading-tight text-gray-600
 }
 
+.combined-input-element {
+    @apply inline-block;
+}
+
+.combined-input-element:first-child {
+    @apply md:w-1/4;
+}
+
+.combined-input-element + .combined-input-element {
+    @apply md:w-3/4 pl-4;
+}
+
 input {
-   @apply appearance-none block w-full px-4 py-3 box-content border rounded bg-gray-100 text-base leading-tight text-gray-600;
-   min-height: 1.5em;
+    @apply box-content w-full p-0 border-0 bg-transparent text-base leading-tight text-gray-600 appearance-none;
+    min-height: 1.5em;
 }
 
 button {
    @apply px-4 py-3 bg-blue-500 hover:bg-blue-700 rounded font-bold text-white
-}
-
-.combined-input {
-   @apply block w-full input-decoration;
-}
-
-.combined-input input {
-   @apply p-0 border-0 bg-transparent;
-}
-
-.combined-input div {
-    @apply inline-block md:w-1/4;
-}
-
-.combined-input div + div {
-    @apply md:w-3/4 pl-4;
-}
-
-.input-wrapper {
-   padding-right: 2px; /* should be 2x the border-with from input */
 }
