@@ -46,6 +46,10 @@ label, legend {
    @apply block mb-2 tracking-wide text-xs leading-normal font-bold uppercase text-gray-600;
 }
 
+.input-decoration {
+    @apply px-4 py-3 border rounded bg-gray-100 text-base leading-tight text-gray-600
+}
+
 input {
    @apply appearance-none block w-full px-4 py-3 box-content border rounded bg-gray-100 text-base leading-tight text-gray-600;
    min-height: 1.5em;
@@ -56,19 +60,19 @@ button {
 }
 
 .combined-input {
-   @apply block w-full px-4 py-3 border rounded bg-gray-100 text-base leading-tight text-gray-600;
+   @apply block w-full input-decoration;
 }
 
 .combined-input input {
-   @apply inline-block md:w-1/4 p-0 border-0 bg-transparent;
+   @apply p-0 border-0 bg-transparent;
 }
 
-.combined-input input + input{
-   @apply inline-block md:w-3/4 p-0 border-0 bg-transparent;
+.combined-input div {
+    @apply inline-block md:w-1/4;
 }
 
-fieldset {
-   /*@apply pr-8;*/
+.combined-input div + div {
+    @apply md:w-3/4 pl-4;
 }
 
 .input-wrapper {

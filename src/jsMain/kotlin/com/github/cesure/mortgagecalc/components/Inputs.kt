@@ -43,16 +43,16 @@ fun RenderContext.transactionInput() {
             +"Transactions"
         }
         div("combined-input") {
-//            div {
+            div {
                 input {
                     type("date")
                 }
-//            }
-//            div {
+            }
+            div {
                 input {
                     type("number")
                 }
-//            }
+            }
         }
     }
 }
