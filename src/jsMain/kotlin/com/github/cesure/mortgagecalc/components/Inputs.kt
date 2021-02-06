@@ -82,7 +82,7 @@ private fun <T, S> RenderContext.formattedInput(
 fun RenderContext.transactionInput(id: String) {
     fieldset {
         legend {
-            +(id.capitalize())
+            +(id.toTitleCase())
         }
         div("input-decoration combined-input") {
             div("combined-input-element") {
