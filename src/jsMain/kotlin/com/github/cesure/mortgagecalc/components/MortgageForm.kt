@@ -37,7 +37,7 @@ fun RenderContext.mortgageForm(): Div {
 
         div("form-row") {
             div("form-cell-full") {
-                transactionInput()
+                transactionInput("transactions")
             }
         }
 

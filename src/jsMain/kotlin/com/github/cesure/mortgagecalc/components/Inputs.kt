@@ -38,26 +38,6 @@ fun <T> RenderContext.numberInput(
     content?.let { it() }
 }
 
-fun RenderContext.transactionInput() {
-    fieldset {
-        legend {
-            +"Transactions"
-        }
-        div("input-decoration combined-input") {
-            div("combined-input-element") {
-                input {
-                    type("date")
-                }
-            }
-            div("combined-input-element") {
-                input {
-                    type("number")
-                }
-            }
-        }
-    }
-}
-
 private fun <T, S> RenderContext.formattedInput(
     id: String,
     store: SubStore<T, T, S>,
@@ -67,7 +47,7 @@ private fun <T, S> RenderContext.formattedInput(
 ): Div = div {
     label {
         `for`(id)
-        +(id.capitalize())
+        +(id.toTitleCase())
     }
 
     div("input-decoration") {
@@ -98,3 +78,35 @@ private fun <T, S> RenderContext.formattedInput(
         }
     }
 }
+
+fun RenderContext.transactionInput(id: String) {
+    fieldset {
+        legend {
+            +(id.capitalize())
+        }
+        div("input-decoration combined-input") {
+            div("combined-input-element") {
+                input {
+                    type("date")
+                }
+            }
+            div("combined-input-element") {
+                input {
+                    type("number")
+                }
+            }
+        }
+    }
+}
+
+private fun String.toTitleCase() = this.mapIndexed { index: Int, c: Char ->
+    if (index == 0) {
+        return@mapIndexed "${c.toUpperCase()}"
+    }
+
+    if (c.toUpperCase() == c) {
+        " $c"
+    } else {
+        "$c"
+    }
+}.joinToString("")
