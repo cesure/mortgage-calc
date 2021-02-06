@@ -41,7 +41,7 @@ fun <T> RenderContext.numberInput(
 private fun <T, S> RenderContext.formattedInput(
     id: String,
     store: SubStore<T, T, S>,
-    defaultLlens: Lens<S, String>,
+    defaultLens: Lens<S, String>,
     focusLens: Lens<S, String>? = null,
     content: (Input.() -> Unit)? = null,
 ): Div = div {
@@ -54,7 +54,7 @@ private fun <T, S> RenderContext.formattedInput(
         input(id = id) {
             content?.let { it() }
 
-            val defaultStore = store.sub(defaultLlens)
+            val defaultStore = store.sub(defaultLens)
 
             if (focusLens != null) {
                 val focusStore = store.sub(focusLens)
