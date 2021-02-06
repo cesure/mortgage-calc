@@ -35,11 +35,11 @@ h1 {
 }
 
 .form-cell-half:first-child {
-   @apply pr-4;
+   @apply md:pr-4;
 }
 
 .form-cell-half + .form-cell-half  {
-   @apply pl-4;
+   @apply pt-6 md:pt-0 md:pl-4;
 }
 
 .form-cell-full {
