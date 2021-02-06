@@ -16,47 +16,21 @@ fun RenderContext.mortgageForm(): Div {
     return div("container", "mortgage-form") {
         div("form-row") {
             div("form-cell-half") {
-                label {
-                    `for`("amount")
-                    +"Amount"
-                }
-                div("input-decoration") {
-                    currencyInput("amount", amountStore)
-                }
+                currencyInput("amount", amountStore)
             }
-
             div("form-cell-half") {
-                label {
-                    `for`("annuity")
-                    +"Annuity"
-                }
-                div("input-decoration") {
-                    currencyInput("annuity", annuityStore)
-                }
+                currencyInput("annuity", annuityStore)
             }
         }
 
         div("form-row") {
             div("form-cell-half") {
-                label {
-                    `for`("interestRate")
-                    +"Interest Rate"
-                }
-                div("input-decoration") {
-                    percentageInput("interestRate", interestRateStore)
-                }
+                percentageInput("interestRate", interestRateStore)
             }
-
             div("form-cell-half") {
-                label {
-                    `for`("paymentDay")
-                    +"Payment Day"
-                }
-                div("input-decoration") {
-                    numberInput("paymentDay", paymentDayStore) {
-                        min("1")
-                        max("31")
-                    }
+                numberInput("paymentDay", paymentDayStore) {
+                    min("1")
+                    max("31")
                 }
             }
         }
