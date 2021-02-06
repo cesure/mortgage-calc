@@ -15,7 +15,7 @@ h1 {
 }
 
 .container {
-   @apply w-full max-w-6xl px-8 py-6 rounded-lg bg-white shadow-md;
+   @apply w-full max-w-4xl px-8 py-6 rounded-lg bg-white shadow-md;
 }
 
 .container + .container {
