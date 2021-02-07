@@ -14,4 +14,3 @@ data class RepaymentPlanEntry(
     val transaction: Transaction,
     @Serializable(DecimalSerializer::class) val balanceAfter: Decimal,
 )
-
