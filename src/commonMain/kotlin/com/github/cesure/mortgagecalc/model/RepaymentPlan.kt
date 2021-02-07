@@ -1,8 +1,6 @@
 package com.github.cesure.mortgagecalc.model
 
 import com.github.cesure.mortgagecalc.model.serialization.DecimalSerializer
-import com.github.cesure.mortgagecalc.model.serialization.LocalDateSerializer
-import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 typealias RepaymentPlan = List<RepaymentPlanEntry>
@@ -17,16 +15,3 @@ data class RepaymentPlanEntry(
     @Serializable(DecimalSerializer::class) val balanceAfter: Decimal,
 )
 
-@Serializable
-data class Transaction(
-    val type: TransactionType,
-    @Serializable(LocalDateSerializer::class) val date: LocalDate,
-    @Serializable(DecimalSerializer::class) val amount: Decimal,
-)
-
-@Serializable
-enum class TransactionType {
-    DEPOSIT,
-    INTEREST,
-    PAYOUT,
-}

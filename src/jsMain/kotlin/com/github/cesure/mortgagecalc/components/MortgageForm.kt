@@ -19,13 +19,13 @@ fun RenderContext.mortgageForm(): Div {
                 currencyInput("amount", amountStore)
             }
             div("form-cell-half") {
-                currencyInput("annuity", annuityStore)
+                percentageInput("interestRate", interestRateStore)
             }
         }
 
         div("form-row") {
             div("form-cell-half") {
-                percentageInput("interestRate", interestRateStore)
+                currencyInput("annuity", annuityStore)
             }
             div("form-cell-half") {
                 numberInput("paymentDay", paymentDayStore) {
@@ -37,7 +37,7 @@ fun RenderContext.mortgageForm(): Div {
 
         div("form-row") {
             div("form-cell-full") {
-                transactionInput("transactions")
+                transactionInput("payouts")
             }
         }
 

@@ -12,9 +12,10 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Mortgage(
     @Serializable(DecimalSerializer::class) val totalAmount: Decimal = Decimal(defaultTotalAmount),
+    @Serializable(DecimalSerializer::class) val interestRate: Decimal = Decimal(defaultInterestRate),
     @Serializable(DecimalSerializer::class) val annuity: Decimal = Decimal(defaultAnnuity),
     val paymentDay: Int = defaultPaymentDay,
-    @Serializable(DecimalSerializer::class) val interestRate: Decimal = Decimal(defaultInterestRate),
+    val transactions: Set<Transaction> = emptySet(),
 ) {
     companion object {
         const val defaultTotalAmount = 100_000
